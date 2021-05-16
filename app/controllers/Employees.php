@@ -7,7 +7,7 @@ class Employees extends Controller{
 
     public function login(){
         $data = [
-            'title' => 'Employee Login Page',
+            'title' => 'Employee Login',
             'usernameError' => '',
             'passwordError' => '',
             'username' => '',
@@ -19,7 +19,7 @@ class Employees extends Controller{
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
             $data = [
-                'title' => 'Employee Login Page',
+                'title' => 'Employee Login',
                 'username' => trim($_POST['username']),
                 'password' => trim($_POST['password']),
                 'usernameError' => '',
@@ -49,7 +49,7 @@ class Employees extends Controller{
 
         }else{
             $data = [
-                'title' => ' Employee Login Page',
+                'title' => ' Employee Login',
                 'usernameError' => '',
                 'passwordError' => '',
                 'username' => '',
@@ -61,7 +61,7 @@ class Employees extends Controller{
     }
     public function register(){
         $data = [
-            'title' => 'Employee Registration Page',
+            'title' => 'Employee Registration',
             'registrationComplete' => '',
             'registrationError' => '',
             'firstNameError' => '',
@@ -87,7 +87,7 @@ class Employees extends Controller{
             //Sanitize post data
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             $data = [
-                'title' => 'Employee Registration Page',
+                'title' => 'Employee Registration',
                 'registrationComplete' => '',
                 'registrationError' => '',
                 'firstNameError' => '',

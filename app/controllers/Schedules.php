@@ -13,7 +13,8 @@ class Schedules extends Controller{
         $schedules = $this->scheduleModel->getAllSchedulesByStatus($status);
         $data = [
             'schedules' => $schedules,
-            'status' => $status
+            'status' => $status,
+            'title' => 'Flight Scheduler'
         ];
         $this->view("schedules/index", $data);
     }
@@ -29,6 +30,7 @@ class Schedules extends Controller{
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
             $data = [
+                'title' => 'Create Schedule',
                 'flightNumber' => trim($_POST['flightNumber']),
                 'flights' => $flights,
                 'time' => trim($_POST['time']),
@@ -70,6 +72,7 @@ class Schedules extends Controller{
             }
         }else{
             $data = [
+                'title' => 'Create Schedule',
                 'flightNumber' => '',
                 'flights' => $flights,
                 'time' => '',
@@ -83,5 +86,81 @@ class Schedules extends Controller{
             ];
         }
         $this->view("schedules/create", $data);
+    }
+
+    public function edit($id){
+        if(isLoggedIn()!="employee"){
+            header("location: " . URLROOT . "/employees/login");
+        }
+        $schedule = $this->scheduleModel->getScheduleById($id);
+        $flights = $this->flightModel->getAllActiveFlights();
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            //sanitize post data
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            
+            $data = [
+                'title' => 'Edit Schedule',
+                'schedule' => $schedule,
+                'flightNumber' => trim($_POST['flightNumber']),
+                'flights' => $flights,
+                'time' => trim($_POST['time']),
+                'date' => trim($_POST['date']),
+                'gate' => trim($_POST['gate']),
+                'status' => trim($_POST['status']),
+                'flightNumberError' => '',
+                'timeError' => '',
+                'dateError' => '',
+                'gateError' => '',
+                'statusError' => '',
+                'successMessage' => ''
+            ];
+
+            //validate input
+            
+            if(empty($data['flightNumber'])){
+                $data['flightNumberError'] = 'Please select a flight number.';
+            }
+            if(empty($data['time'])){
+                $data['timeError'] = 'Please select a time.';
+            }
+            if(empty($data['date'])){
+                $data['dateError'] = 'Please select a date.';
+            }elseif($data['date'] <= date("Y-m-d")){
+                $data['dateError'] = 'Please select a date after today.';
+            }
+            
+            if(empty($data['gate'])){
+                $data['gateError'] = 'Please enter a gate.';
+            }
+
+            //check if all errors are clear
+            if(empty($data['flightNumberError']) && empty($data['timeError']) && empty($data['dateError']) && empty($data['gateError'])){
+                // $this->airportModel->add($data);
+                if($this->scheduleModel->edit($data)){
+                    header("location: " . URLROOT . "/schedules");
+                }else{
+                    die("Something went wrong.");
+                }
+            }
+        }else{
+            $data = [
+                'title' => 'Edit Schedule',
+                'schedule' => $schedule,
+                'flightNumber' => '',
+                'flights' => $flights,
+                'time' => '',
+                'date' => '',
+                'gate' => '',
+                'status' => '',
+                'flightNumberError' => '',
+                'timeError' => '',
+                'dateError' => '',
+                'gateError' => '',
+                'statusError' => '',
+                'successMessage' => ''
+            ];
+        }
+        $this->view("schedules/edit", $data);
     }
 }

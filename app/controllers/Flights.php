@@ -12,7 +12,8 @@ class Flights extends Controller{
         }
         $flights = $this->flightModel->getAllActiveFlights();
         $data = [
-            'flights' => $flights
+            'flights' => $flights,
+            'title' => 'Flight Maintenance'
         ];
         $this->view('flights/index', $data);
     }
@@ -32,6 +33,7 @@ class Flights extends Controller{
                 $type = "Local";
             }
             $data = [
+                'title' => 'Create Flight',
                 'flightNumber' => trim($_POST['flightNumber']),
                 'duration' => $_POST['duration'],
                 'origin' => $_POST['origin'],
@@ -78,6 +80,7 @@ class Flights extends Controller{
             }
         }else{
             $data = [
+                'title' => 'Create Flight',
                 'flightNumber' => '',
                 'duration' => '',
                 'origin' => '',
@@ -113,6 +116,7 @@ class Flights extends Controller{
                 $type = "Local";
             }
             $data = [
+                'title' => 'Edit Flight',
                 'flight' => $flight,
                 'duration' => $_POST['duration'],
                 'origin' => $_POST['origin'],
@@ -150,6 +154,7 @@ class Flights extends Controller{
             }
         }else{
             $data = [
+                'title' => 'Edit Flight',
                 'flight' => $flight,
                 'duration' => '',
                 'origin' => '',

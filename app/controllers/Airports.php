@@ -11,7 +11,8 @@ class Airports extends Controller{
         }
         $airports = $this->airportModel->getAllActiveAirports();
         $data = [
-            'airports' => $airports
+            'airports' => $airports,
+            'title' => 'Airports'
         ];
         $this->view("airports/index", $data);
     }
@@ -25,6 +26,7 @@ class Airports extends Controller{
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
             $data = [
+                'title' => 'Add Airport',
                 'airportCode' => trim($_POST['airportCode']),
                 'name' => trim($_POST['name']),
                 'address' => trim($_POST['address']),
@@ -67,6 +69,7 @@ class Airports extends Controller{
             }
         }else{
             $data = [
+                'title' => 'Add Airport',
                 'airportCode' => '',
                 'name' => '',
                 'address' => '',
@@ -87,6 +90,7 @@ class Airports extends Controller{
             header("location: " . URLROOT . "/employees/login");
         }
         $data = [
+            'title' => 'Edit Airport',
             'airport' => $airport,
             'code' => $code,
             'name' => '',
@@ -104,6 +108,7 @@ class Airports extends Controller{
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
             $data = [
+                'title' => 'Edit Airport',
                 'airport' => $airport,
                 'code' => $code,
                 'name' => trim($_POST['name']),

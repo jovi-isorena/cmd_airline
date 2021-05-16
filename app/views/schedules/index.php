@@ -51,7 +51,7 @@
                 <td>
                     <div class="btn-group" role="group">
                         <a href="<?php echo URLROOT . "/schedules/edit/" . $schedule->schedule_id?>" class="btn btn-outline-primary"><i class="far fa-edit"></i></a>
-                        <a href="<?php echo URLROOT . "/schedules/delete/" . $schedule->schedule_id?>" class="btn btn-outline-danger"><i class="far fa-trash-alt"></i></a>
+                        
                     </div>
                 </td>
             </tr>

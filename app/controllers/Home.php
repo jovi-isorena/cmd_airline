@@ -7,7 +7,7 @@ class Home extends Controller{
     public function index(){
         $users = $this->userModel->getUsers();
         $data = [
-            'title' => 'Home Page',
+            'title' => SITENAME,
             'users' => $users
         ];
         $this->view('home/index', $data);

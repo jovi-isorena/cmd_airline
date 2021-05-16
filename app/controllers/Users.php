@@ -7,7 +7,7 @@ class Users extends Controller{
 
     public function login(){
         $data = [
-            'title' => 'Login Page',
+            'title' => 'User Login',
             'usernameError' => '',
             'passwordError' => '',
             'username' => '',
@@ -19,7 +19,7 @@ class Users extends Controller{
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
             $data = [
-                'title' => 'Login Page',
+                'title' => 'User Login',
                 'username' => trim($_POST['username']),
                 'password' => trim($_POST['password']),
                 'usernameError' => '',
@@ -49,7 +49,7 @@ class Users extends Controller{
 
         }else{
             $data = [
-                'title' => 'Login Page',
+                'title' => 'User Login',
                 'usernameError' => '',
                 'passwordError' => '',
                 'username' => '',
@@ -75,7 +75,7 @@ class Users extends Controller{
 
     public function register(){
         $data = [
-            'title' => 'Registration Page',
+            'title' => 'Registration',
             'registrationComplete' => '',
             'registrationError' => '',
             'firstNameError' => '',
@@ -100,6 +100,7 @@ class Users extends Controller{
             //Sanitize post data
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             $data = [
+                'title' => 'Registration',
                 'registrationComplete' => '',
                 'registrationError' => '',
                 'firstNameError' => '',
@@ -204,6 +205,12 @@ class Users extends Controller{
     public function logout(){
         unset($_SESSION['user_id']);
         unset($_SESSION['email']);
+        unset($_SESSION['firstname']);
+        unset($_SESSION['middlename']);
+        unset($_SESSION['lastname']);
+        unset($_SESSION['suffix']);
+        unset($_SESSION['birthdate']);
+        unset($_SESSION['mobile_no']);
         header("location: " . URLROOT . "/users/login");
     }
 }
