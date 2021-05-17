@@ -28,7 +28,7 @@
                 <td><?php echo $flight->type;?></td>
                 <td>
                     <div class="btn-group" role="group">
-                        <a href="#" class="btn btn-outline-warning"><i class="fas fa-th"></i></a>
+                        <a href="<?php echo URLROOT . "/flights/manage/" . $flight->flight_no;?>" class="btn btn-outline-warning" data-toggle="tooltip" data-placement="top" title="Manage Flight"><i class="fas fa-cogs"></i></a>
                         <a href="<?php echo URLROOT . "/flights/edit/" . $flight->flight_no?>" class="btn btn-outline-primary"  data-toggle="tooltip" data-placement="top" title="Edit"><i class="far fa-edit"></i></a>
                         <a href="<?php echo URLROOT . "/flights/delete/" . $flight->flight_no?>" class="btn btn-outline-danger"  data-toggle="tooltip" data-placement="top" title="Delete"><i class="far fa-trash-alt"></i></a>
                     </div>

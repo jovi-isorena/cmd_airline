@@ -85,4 +85,76 @@ class Extras extends Controller{
         }
         $this->view("extras/create", $data);
     }
+
+    public function edit($id){
+        if(isLoggedIn()!="employee"){
+            header("location: " . URLROOT . "/employees/login");
+        }
+        $extra = $this->extraModel->getExtraById($id);
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            //sanitize post data
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            
+            $data = [
+                'title' => 'Edit Extra',
+                'extra' => $extra,
+                'type' => trim($_POST['type']),
+                'name' => trim($_POST['name']),
+                'description' => trim($_POST['description']),
+                'price' => trim($_POST['price']),
+                'typeError' => '',
+                'nameError' => '',
+                'descriptionError' => '',
+                'priceError' => '',
+                'successMessage' => ''
+            ];
+
+            //validate input
+            if(empty($data['type'])){
+                $data['typeError'] = 'Please select a type.';
+            }
+            if(empty($data['name'])){
+                $data['nameError'] = 'Please enter a name.';
+            }
+            if(empty($data['description'])){
+                $data['descriptionError'] = 'Please enter a description.';
+            }
+            if(intval($data['price']) < 0){
+                $data['priceError'] = 'Price cannot go lower than 0.';
+            }
+            //check if all errors are clear
+            if(empty($data['typeError']) && empty($data['nameError']) && empty($data['descriptionError']) && empty($data['priceError']) ){
+                // $this->airportModel->add($data);
+                if($this->extraModel->edit($data)){
+                    header('location: ' . URLROOT . '/extras');
+                }else{
+                    die("Something went wrong.");
+                }
+            }
+        }else{
+            $data = [
+                'title' => 'Edit Extra',
+                'extra' => $extra,
+                'type' => $extra->type,
+                'name' => $extra->name,
+                'description' => $extra->description,
+                'price' => $extra->price,
+                'typeError' => '',
+                'nameError' => '',
+                'descriptionError' => '',
+                'priceError' => '',
+                'successMessage' => ''
+            ];
+        }
+        $this->view("extras/edit", $data);
+    }
+
+    public function delete($id){
+        if($this->extraModel->delete($id)){
+            header('location: ' . URLROOT . '/extras');
+        }else{
+            die('Something went wrong');
+        }
+    }
 }

@@ -4,6 +4,8 @@ class Flights extends Controller{
     public function __construct(){
         $this->flightModel = $this->model('Flight');
         $this->airportModel = $this->model('Airport');
+        $this->extraModel = $this->model('Extra');
+        // $this->fareModel = $this->model('Fare');
     }
 
     public function index(){
@@ -184,4 +186,19 @@ class Flights extends Controller{
         }
     }
     
+    public function manage($num){
+        if(isLoggedIn()!="employee"){
+            header("location: " . URLROOT . "/employees/login");
+        }
+        $flight = $this->flightModel->getFlightByNumber($num);
+        $extras = $this->extraModel->getAllActiveExtras();
+        
+        $data = [
+            'title' => 'Manage Flight',
+            'flight' => $flight,
+            'extras' => $extras
+        ];
+
+        $this->view("flights/manage", $data);
+    }
 }

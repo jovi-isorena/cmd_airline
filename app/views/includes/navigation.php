@@ -19,6 +19,10 @@
                 <li class="nav-item">
                     <a class="nav-link" href="<?php echo URLROOT?>/extras">Extras</a>
                 </li>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo URLROOT?>/fares">Fares</a>
+                </li>
                 <li class="nav-item">
                     <a href="<?php echo URLROOT;?>/employees/logout" class="ml-2 nav-link btn btn-outline-primary" style="font-size:small;">Logout</a>
                 </li>

@@ -1,9 +1,8 @@
 <?php
     require APPROOT . '/views/includes/head.php';
     require APPROOT . '/views/includes/navigation.php';
-    
+    var_dump($data);
 ?>
-
 
 <div class="container pt-5">
     <a href="<?php echo URLROOT;?>/extras" class="btn btn-secondary"><i class="far fa-arrow-alt-circle-left"></i> Back To List</a>
@@ -13,15 +12,15 @@
             <?php echo $data['successMessage'];?>
         </span>
     <?php endif;?>
-    <form method="post" action="<?php echo URLROOT; ?>/extras/create">
+    <form method="post" action="<?php echo URLROOT . '/extras/edit/' . $data['extra']->id;?>">
         <div class="form-group">
             <label for="type">Type</label>
             <span style="color: red;">* <?php echo $data['typeError'];?></span>
             <select name="type" id="type" class="form-control custom-select">
                 <option value='' <?php echo empty($data['type'])?'selected':'';?>>Select a Type</option>
                 <option value="Baggage" <?php echo $data['type']=="Baggage"?"selected":"";?>>Baggage</option>
-                <option value="Meal" <?php echo $data['type']=="Meal"?"selected":"";?>>Meal</option>
-                <option value="Roaming Service" <?php echo $data['type']=="Roaming Service"?"selected":"";?>>Roaming Service</option>
+                <option value="Baggage" <?php echo $data['type']=="Meal"?"selected":"";?>>Meal</option>
+                <option value="Baggage" <?php echo $data['type']=="Roaming Service"?"selected":"";?>>Roaming Service</option>
             </select>
         </div>
         <div class="form-group">
