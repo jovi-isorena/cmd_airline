@@ -41,4 +41,4 @@
 </form>
 </div>
 
-
+<?php require APPROOT . '/views/includes/foot.php'; ?>

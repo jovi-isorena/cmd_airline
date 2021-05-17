@@ -35,6 +35,7 @@
                 $url = rtrim($_GET['url'], '/');
                 //allows you to filter variables as string/number
                 $url = filter_var($url, FILTER_SANITIZE_URL);
+                // $url = rawurldecode($url);
                 //breaking it into an array
                 $url = explode('/',$url);
                 return $url;

@@ -45,3 +45,4 @@
         <button type="submit" class="btn btn-primary btn-block" name="submit">Add</button>
     </form>
 </div>
+<?php require APPROOT . '/views/includes/foot.php'; ?>

@@ -35,3 +35,4 @@
         </tbody>
     </table>
 </div>
+<?php require APPROOT . '/views/includes/foot.php'; ?>

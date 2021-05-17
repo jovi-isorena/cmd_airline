@@ -17,7 +17,7 @@
                     <a class="nav-link" href="<?php echo URLROOT?>/airports">Airports</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Extras</a>
+                    <a class="nav-link" href="<?php echo URLROOT?>/extras">Extras</a>
                 </li>
                 <li class="nav-item">
                     <a href="<?php echo URLROOT;?>/employees/logout" class="ml-2 nav-link btn btn-outline-primary" style="font-size:small;">Logout</a>

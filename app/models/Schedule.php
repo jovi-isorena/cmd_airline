@@ -24,12 +24,20 @@ class Schedule{
     }
 
     public function add($data){
-        $this->db->query("INSERT INTO `flight_schedule` (`flight_no`, `departure_time`, `departure_date`, `gate`, `schedule_status`) VALUES (:num, :time, :date, :gate, 'Scheduled');");
+        $this->db->query("INSERT INTO `flight_schedule`(`flight_no`, `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, `sunday`, `departure_time`, `gate`, `effective_start_date`, `effective_end_date`, `schedule_status`) VALUES (:num,:mon,:tue,:wed,:thu,:fri,:sat,:sun,:time,:gate,:start,:end,'Scheduled')");
         // INSERT INTO `flight_schedule` (`schedule_id`, `flight_no`, `departure_time`, `departure_date`, `gate`, `schedule_status`) VALUES (NULL, '11111', '05:30:00', '2021-05-18', 'A2', 'Scheduled');
         $this->db->bind(":num", $data['flightNumber']);
+        $this->db->bind(":mon", $data['monday']);
+        $this->db->bind(":tue", $data['tuesday']);
+        $this->db->bind(":wed", $data['wednesday']);
+        $this->db->bind(":thu", $data['thursday']);
+        $this->db->bind(":fri", $data['friday']);
+        $this->db->bind(":sat", $data['saturday']);
+        $this->db->bind(":sun", $data['sunday']);
         $this->db->bind(":time", $data['time']);
-        $this->db->bind(":date", $data['date']);
         $this->db->bind(":gate", $data['gate']);
+        $this->db->bind(":start", $data['startDate']);
+        $this->db->bind(":end", $data['endDate']);
         if($this->db->execute()){
             return true;
         }else{
@@ -38,11 +46,19 @@ class Schedule{
     }
 
     public function edit($data){
-        $this->db->query("UPDATE `flight_schedule` SET `flight_no`= :num,`departure_time`=:time,`departure_date`=:date,`gate`=:gate,`schedule_status`=:status WHERE `schedule_id`=:id");
+        $this->db->query("UPDATE `flight_schedule` SET `flight_no`=:num,`monday`=:mon,`tuesday`=:tue,`wednesday`=:wed,`thursday`=:thu,`friday`=:fri,`saturday`=:sat,`sunday`=:sun,`departure_time`=:time,`gate`=:gate,`effective_start_date`=:start,`effective_end_date`=:end,`schedule_status`=:status WHERE `schedule_id`=:id");
         $this->db->bind(":num",$data['flightNumber']);
+        $this->db->bind(":mon",$data['monday']);
+        $this->db->bind(":tue",$data['tuesday']);
+        $this->db->bind(":wed",$data['wednesday']);
+        $this->db->bind(":thu",$data['thursday']);
+        $this->db->bind(":fri",$data['friday']);
+        $this->db->bind(":sat",$data['saturday']);
+        $this->db->bind(":sun",$data['sunday']);
         $this->db->bind(":time",$data['time']);
-        $this->db->bind(":date",$data['date']);
         $this->db->bind(":gate",$data['gate']);
+        $this->db->bind(":start",$data['startDate']);
+        $this->db->bind(":end",$data['endDate']);
         $this->db->bind(":status",$data['status']);
         $this->db->bind(":id",$data['schedule']->schedule_id);
         if($this->db->execute()){

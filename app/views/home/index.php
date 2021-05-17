@@ -8,3 +8,4 @@
     <h1><?php echo $data['title']; ?></h1>
     <?php var_dump($_SESSION); ?>
 </div>
+<?php require APPROOT . '/views/includes/foot.php'; ?>

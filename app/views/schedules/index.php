@@ -27,15 +27,20 @@
             <li class="nav-item">
                 <a class="nav-link <?php echo $data['status']=='cancelled'?'active font-weight-bold':'';?>" href="<?php echo URLROOT . '/schedules/index/cancelled';?>">Cancelled</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo $data['status']=='cancelled'?'active font-weight-bold':'';?>" href="<?php echo URLROOT . '/schedules/index/inactive';?>">Inactive</a>
+            </li>
         </ul>
     </div>
     <table class="table mt-5">
         <thead class="thead-dark">
             <tr>
                 <th scope="col">Flight Number</th>
+                <th scope="col">Frequency</th>
                 <th scope="col">Departure Time</th>
-                <th scope="col">Departure Date</th>
                 <th scope="col">Gate</th>
+                <th scope="col">Effective Start Date</th>
+                <th scope="col">Effective End Date</th>
                 <th scope="col">Status</th>
                 <th scope="col">Action</th>
             </tr>
@@ -44,9 +49,25 @@
             <?php foreach($data['schedules'] as $schedule):?>
             <tr>
                 <th scope="row"><?php echo $schedule->flight_no;?></th>
+                <td>
+                    <?php
+                        if($schedule->monday && $schedule->tuesday && $schedule->wednesday && $schedule->thursday && $schedule->friday && $schedule->saturday && $schedule->sunday){
+                            echo 'Daily';
+                        }else{
+                            echo $schedule->monday?'Mo ':'';
+                            echo $schedule->tuesday?'Tu ':'';
+                            echo $schedule->wednesday?'We ':'';
+                            echo $schedule->thursday?'Th ':'';
+                            echo $schedule->friday?'Fr ':'';
+                            echo $schedule->saturday?'Sa ':'';
+                            echo $schedule->sunday?'Su ':'';
+                        }
+                    ?>
+                </td>
                 <td><?php echo $schedule->departure_time;?></td>
-                <td><?php echo $schedule->departure_date;?></td>
                 <td><?php echo $schedule->gate;?></td>
+                <td><?php echo $schedule->effective_start_date;?></td>
+                <td><?php echo $schedule->effective_end_date;?></td>
                 <td><?php echo $schedule->schedule_status;?></td>
                 <td>
                     <div class="btn-group" role="group">
@@ -59,3 +80,5 @@
         </tbody>
     </table>
 </div>
+
+<?php require APPROOT . '/views/includes/foot.php'; ?>
