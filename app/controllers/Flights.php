@@ -5,7 +5,7 @@ class Flights extends Controller{
         $this->flightModel = $this->model('Flight');
         $this->airportModel = $this->model('Airport');
         $this->extraModel = $this->model('Extra');
-        // $this->fareModel = $this->model('Fare');
+        $this->fareModel = $this->model('Fare');
     }
 
     public function index(){
@@ -192,11 +192,12 @@ class Flights extends Controller{
         }
         $flight = $this->flightModel->getFlightByNumber($num);
         $extras = $this->extraModel->getAllActiveExtras();
-        
+        $fares = $this->fareModel->getAllActiveFares();
         $data = [
             'title' => 'Manage Flight',
             'flight' => $flight,
-            'extras' => $extras
+            'extras' => $extras,
+            'fares' => $fares
         ];
 
         $this->view("flights/manage", $data);

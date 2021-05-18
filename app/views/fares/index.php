@@ -8,7 +8,7 @@
         <a href="<?php echo URLROOT;?>/fares/create" class="btn btn-outline-success mt-5"><i class="far fa-plus-square mr-2"></i>Add Fare</a>
     </div>
     <table class="table mt-5">
-        <thead class="thead-dark">
+        <thead class="thead-dark ">
             <tr>
                 <th scope="col">Name</th>
                 <th scope="col">Class</th>
@@ -16,7 +16,7 @@
                 <th scope="col">Flight Date Change</th>
                 <th scope="col">Cancellation Before Departure</th>
                 <th scope="col">No Show Fee</th>
-                <th scope="col">Mileage Accrual</th>
+                <th scope="col">Mileage Accrual (%)</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
