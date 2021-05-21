@@ -3,6 +3,7 @@
 class Fares extends Controller{
     public function __construct(){
         $this->fareModel = $this->model('Fare');
+        $this->flightModel = $this->model('Flight');
     }
 
     public function index(){
@@ -200,4 +201,6 @@ class Fares extends Controller{
             die('Something went wrong');
         }
     }
+
+
 }

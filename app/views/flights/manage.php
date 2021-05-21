@@ -10,7 +10,7 @@
     <div class="row pb-5">
         <div class="col-12">
             <div class="card">
-                <div class="card-header alert-primary"">
+                <div class="card-header alert-primary">
                     <h3>Flight Details</h3>
                 </div>
                 <div class="card-body">
@@ -52,7 +52,7 @@
                             <h3>Fares</h3>
                         </div>
                         <div class="col-3">
-                            <a href="#" class="btn btn-primary btn-block"><i class="fas fa-cog mr-2"></i>Manage</a>
+                            <a href="<?php echo URLROOT;?>/flightFares/manage_fare/<?php echo $data['flight']->flight_no;?>" class="btn btn-primary btn-block"><i class="fas fa-cog mr-2"></i>Manage</a>
                         </div>
                     </div>
                 </div>
