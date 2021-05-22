@@ -60,28 +60,31 @@
                     <div class="col-4">
                         <h5 class="card-title">Economy</h5>
                         <ul class="list-group">
-                            <li class="list-group-item">Economy Supersaver</li>
-                            <li class="list-group-item">Economy Saver</li>
-                            <li class="list-group-item">Economy </li>
-                            <li class="list-group-item">Economy Flex</li>
+                            <?php foreach($data['flightFares'] as $fare):
+                                    if($fare->class == 'Economy') :   
+                            ?>
+                                <li class="list-group-item"><?php echo $fare->name . " : $" . $fare->price;?></li>
+                            <?php endif; endforeach;?>
                         </ul>
                     </div>
                     <div class="col-4">
-                        <h5 class="card-title">Economy</h5>
+                        <h5 class="card-title">Premium Economy</h5>
                         <ul class="list-group">
-                            <li class="list-group-item">Economy Supersaver</li>
-                            <li class="list-group-item">Economy Saver</li>
-                            <li class="list-group-item">Economy </li>
-                            <li class="list-group-item">Economy Flex</li>
+                        <?php foreach($data['flightFares'] as $fare):
+                                    if($fare->class == 'Premium Economy') :   
+                            ?>
+                                <li class="list-group-item"><?php echo $fare->name . " : $" . $fare->price;?></li>
+                            <?php endif; endforeach;?>
                         </ul>
                     </div>
                     <div class="col-4">
-                        <h5 class="card-title">Economy</h5>
+                        <h5 class="card-title">Business</h5>
                         <ul class="list-group">
-                            <li class="list-group-item">Economy Supersaver</li>
-                            <li class="list-group-item">Economy Saver</li>
-                            <li class="list-group-item">Economy </li>
-                            <li class="list-group-item">Economy Flex</li>
+                            <?php foreach($data['flightFares'] as $fare):
+                                    if($fare->class == 'Business') :   
+                            ?>
+                                <li class="list-group-item"><?php echo $fare->name . " : $" . $fare->price;?></li>
+                            <?php endif; endforeach;?>
                         </ul>
                     </div>
                 </div>
@@ -100,20 +103,24 @@
                             <h4>Baggage</h4>
                         </div>
                         <div class="col-2">
-                            <a href="#" class="btn btn-primary"><i class="fas fa-cog mr-2"></i>Manage</a>
+                            <a href="<?php echo URLROOT . "/flightExtras/addBaggage/" . $data['flight']->flight_no;?>" class="btn btn-primary"><i class="far fa-plus-square mr-2"></i>Add</a>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="col" style="width:fit-content;">
+                    <div class="col d-flex" style="width:fit-content;">
+                        <?php foreach($data['flightExtras'] as $extra):
+                                if($extra->type == "Baggage"):
+                        ?>
                         <div class="card text-center p-4">
-                            <img class="card-img-top m-auto" src="<?php echo URLROOT;?>/public/img/suitcase.png" alt="Card image cap" style="width: 12rem;">
+                            <img class="card-img-top m-auto" src="<?php echo URLROOT;?>/public/img/suitcase.png" alt="Card image cap" style="width: 4rem;">
                             <div class="card-body">
-                                <h5 class="card-title">Prepaid 5kg</h5>
-                                <p class="card-text">Price: $80</p>
-                                
+                                <h5 class="card-title"><?php echo $extra->name;?></h5>
+                                <p class="card-text"><?php echo $extra->price;?></p>
+                                <a href="<?php echo URLROOT . '/flightExtras/delete/' . $extra->id;?>" class="btn btn-outline-danger btn-sm"><i class="fas fa-times mr-2"></i>Remove</a>
                             </div>
                         </div>
+                        <?php endif; endforeach;?>
                     </div>
                 </div>
             </div>
@@ -128,20 +135,24 @@
                             <h4>Meal</h4>
                         </div>
                         <div class="col-2">
-                            <a href="#" class="btn btn-primary"><i class="fas fa-cog mr-2"></i>Manage</a>
+                        <a href="<?php echo URLROOT . "/flightExtras/addMeal/" . $data['flight']->flight_no;?>" class="btn btn-primary"><i class="far fa-plus-square mr-2"></i>Add</a>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="col" style="width:fit-content;">
+                    <div class="col d-flex" style="width:fit-content;">
+                    <?php foreach($data['flightExtras'] as $extra):
+                                if($extra->type == "Meal"):
+                        ?>
                         <div class="card text-center p-4">
-                            <img class="card-img-top m-auto" src="<?php echo URLROOT;?>/public/img/suitcase.png" alt="Card image cap" style="width: 12rem;">
+                            <img class="card-img-top m-auto" src="<?php echo URLROOT;?>/public/img/meal_icon.png" alt="Card image cap" style="width: 4rem;">
                             <div class="card-body">
-                                <h5 class="card-title">Prepaid 5kg</h5>
-                                <p class="card-text">Price: $80</p>
-                                
+                                <h5 class="card-title"><?php echo $extra->name;?></h5>
+                                <p class="card-text"><?php echo $extra->price;?></p>
+                                <a href="<?php echo URLROOT . '/flightExtras/delete/' . $extra->id;?>" class="btn btn-outline-danger btn-sm"><i class="fas fa-times mr-2"></i>Remove</a>
                             </div>
                         </div>
+                        <?php endif; endforeach;?>
                     </div>
                 </div>
             </div>
@@ -156,20 +167,24 @@
                             <h4>Roaming Service</h4>
                         </div>
                         <div class="col-2">
-                            <a href="#" class="btn btn-primary"><i class="fas fa-cog mr-2"></i>Manage</a>
+                            <a href="<?php echo URLROOT . "/flightExtras/addRoaming/" . $data['flight']->flight_no;?>" class="btn btn-primary"><i class="far fa-plus-square mr-2"></i>Add</a>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="col" style="width:fit-content;">
+                <div class="col d-flex" style="width:fit-content;">
+                    <?php foreach($data['flightExtras'] as $extra):
+                                if($extra->type == "Roaming Service"):
+                        ?>
                         <div class="card text-center p-4">
-                            <img class="card-img-top m-auto" src="<?php echo URLROOT;?>/public/img/suitcase.png" alt="Card image cap" style="width: 12rem;">
+                            <img class="card-img-top m-auto" src="<?php echo URLROOT;?>/public/img/wifi_icon.png" alt="Card image cap" style="width: 4rem;">
                             <div class="card-body">
-                                <h5 class="card-title">Prepaid 5kg</h5>
-                                <p class="card-text">Price: $80</p>
-                                
+                                <h5 class="card-title"><?php echo $extra->name;?></h5>
+                                <p class="card-text"><?php echo $extra->price;?></p>
+                                <a href="<?php echo URLROOT . '/flightExtras/delete/' . $extra->id;?>" class="btn btn-outline-danger btn-sm"><i class="fas fa-times mr-2"></i>Remove</a>
                             </div>
                         </div>
+                        <?php endif; endforeach;?>
                     </div>
                 </div>
             </div>

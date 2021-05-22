@@ -151,6 +151,9 @@ class Extras extends Controller{
     }
 
     public function delete($id){
+        if(isLoggedIn()!="employee"){
+            header("location: " . URLROOT . "/employees/login");
+        }
         if($this->extraModel->delete($id)){
             header('location: ' . URLROOT . '/extras');
         }else{

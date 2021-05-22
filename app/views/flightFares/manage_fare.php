@@ -6,7 +6,10 @@
     // echo $data['flight']->flight_no;
 ?>
 <div class="full-h container">
-    <div class="row py-5 ">
+    <div class="row my-5 ">
+        <a href="<?php echo URLROOT . '/flights/manage/' . $data['flight']->flight_no?>" class="btn btn-secondary"><i class="far fa-arrow-alt-circle-left"></i> Back To Flight Management</a>
+    </div>
+    <div class="row mb-5 ">
         <div class="col-12">
             <div class="card">
                 <div class="card-header alert-primary">
@@ -23,7 +26,7 @@
     <div class="row mb-5">
         <a href="<?php echo URLROOT . '/flightFares/create/' . $data['flight']->flight_no?>" class="btn btn-outline-success"><i class="far fa-plus-square mr-2"></i>Add Fare</a>
     </div>
-    <div class="row pb-5">
+    <div class="row mb-5">
         <div class="col-12">
             <div class="card">
                 <div class="card-header alert-primary">
@@ -63,7 +66,7 @@
             </div>
         </div>
     </div>
-    <div class="row pb-5">
+    <div class="row mb-5">
         <div class="col-12">
             <div class="card">
                 <div class="card-header alert-primary">
@@ -104,7 +107,7 @@
             </div>
         </div>
     </div>
-    <div class="row pb-5">
+    <div class="row mb-5">
         <div class="col-12">
             <div class="card">
                 <div class="card-header alert-primary">

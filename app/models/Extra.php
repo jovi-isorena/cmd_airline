@@ -7,12 +7,12 @@ class Extra{
     }
 
     public function getAllActiveExtras(){
-        $this->db->query("SELECT * FROM `extra` WHERE `extra_status` = 'active';");
+        $this->db->query("SELECT * FROM `extra` WHERE `extra_status` = 'active' ORDER BY type, price ASC;");
         return $this->db->resultSet();
 
     }
     public function getAllActiveExtrasByType($type){
-        $this->db->query("SELECT * FROM `extra` WHERE `extra_status` = 'active' && type LIKE :type;");
+        $this->db->query("SELECT * FROM `extra` WHERE `extra_status` = 'active' && type LIKE :type ORDER BY price ASC;");
         $this->db->bind(":type", $type);
         return $this->db->resultSet();
     }

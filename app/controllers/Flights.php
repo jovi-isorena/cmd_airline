@@ -6,6 +6,8 @@ class Flights extends Controller{
         $this->airportModel = $this->model('Airport');
         $this->extraModel = $this->model('Extra');
         $this->fareModel = $this->model('Fare');
+        $this->flightFareModel = $this->model('FlightFare');
+        $this->flightExtraModel = $this->model('FlightExtra');
     }
 
     public function index(){
@@ -191,13 +193,16 @@ class Flights extends Controller{
             header("location: " . URLROOT . "/employees/login");
         }
         $flight = $this->flightModel->getFlightByNumber($num);
-        $extras = $this->extraModel->getAllActiveExtras();
-        $fares = $this->fareModel->getAllActiveFares();
+        // $extras = $this->extraModel->getAllActiveExtras();
+        // $fares = $this->fareModel->getAllActiveFares();
+        $flightFares = $this->flightFareModel->getAllFlightFaresByFlight($num);
+        $flightExtras = $this->flightExtraModel->getFlightExtrasByFlightNo($num);
         $data = [
             'title' => 'Manage Flight',
             'flight' => $flight,
-            'extras' => $extras,
-            'fares' => $fares
+            // 'extras' => $extras,
+            'flightFares' => $flightFares,
+            'flightExtras' => $flightExtras
         ];
 
         $this->view("flights/manage", $data);
