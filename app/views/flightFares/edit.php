@@ -3,7 +3,7 @@
     require APPROOT . '/views/includes/navigation.php';
     
 ?>
-<pre><?php var_dump($data);?></pre>
+<pre><?php //var_dump($data);?></pre>
 
 <div class="container pt-5 full-h">
     <a href="<?php echo URLROOT . '/flightFares/manage_fare/' . $data['flightFare']->flight_no;?>" class="btn btn-secondary"><i class="far fa-arrow-alt-circle-left"></i> Back To Flight Fares</a>

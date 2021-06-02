@@ -1,3 +1,41 @@
 .full-h{
     min-height: 100vh;
 }
+.box{
+    height: 1.5rem;
+    width: 1.5rem;
+    border: 1px solid slategray;
+    /* background-color: slategray; */
+    /* margin: 5px; */
+}
+
+.labelBox{
+    height: 1.5rem;
+    width: 1.5rem;
+    /* border: 1px solid slategray; */
+    color: slategray;
+    text-align: center;
+}
+.economy{
+    background-image: url("../img/icons8-sleeper-chair-96-light.png");
+    background-size: cover;
+    /* color: blue; */
+    background-color: rgb(252, 95, 95);
+}
+.premium{
+    background-image: url("../img/icons8-sleeper-chair-96-light.png");
+    background-size: cover;
+    background-color: rgb(241, 252, 95);
+}
+.business{
+    background-image: url("../img/icons8-sleeper-chair-96-light.png");
+    background-size: cover;
+    background-color: rgb(78, 149, 255);
+}
+.empty{
+    background-image: none;
+}
+
+/* .empty{
+    background-color: white;
+} */

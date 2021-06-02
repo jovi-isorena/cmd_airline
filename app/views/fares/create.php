@@ -1,13 +1,12 @@
 <?php
     require APPROOT . '/views/includes/head.php';
     require APPROOT . '/views/includes/navigation.php';
-    var_dump($data);
 ?>
 
 
 <div class="container pt-5">
     <a href="<?php echo URLROOT;?>/fares" class="btn btn-secondary"><i class="far fa-arrow-alt-circle-left"></i> Back To List</a>
-    <h1>Add Extra</h1>
+    <h1><?php echo $data['title'];?></h1>
     <?php if(!empty($data['successMessage'])):?>
         <span class="alert-success text-success px-2  align-content-center">
             <?php echo $data['successMessage'];?>

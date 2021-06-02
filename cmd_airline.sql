@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 17, 2021 at 04:23 PM
+-- Generation Time: May 24, 2021 at 10:57 AM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.3.9
 
@@ -53,7 +53,9 @@ INSERT INTO `airport` (`airport_code`, `name`, `address`, `type`, `airport_statu
 ('TCO', 'La Florida Airport', 'Tumaco, Colombia', 'International', 'active'),
 ('TCP', 'Taba International Airport', 'Taba, Egypt', 'International', 'active'),
 ('TDW', 'Tradewind Airport', 'Amarillo, Texas, United States', 'International', 'active'),
+('TEL', 'Test Airport modify', 'Test', 'Local', 'inactive'),
 ('tes', 'test', 'test', 'International', 'inactive'),
+('TES1', 'Test Airport mod', 'sample111', 'International', 'inactive'),
 ('THU', 'Thule Air Base', 'Pituffik, Greenland', 'International', 'active');
 
 -- --------------------------------------------------------
@@ -79,7 +81,8 @@ CREATE TABLE `employee` (
 --
 
 INSERT INTO `employee` (`id`, `firstname`, `middlename`, `lastname`, `suffix`, `email`, `password`, `position`, `account_status`) VALUES
-(1, 'jovi', '', 'isorena', '', 'admin@gmail.com', '$2y$10$h6uknYaNX7.Bm/h23SbLl.UD4gjWrREyP92s.bySr7mDOgJ.6oUHa', '1', 'active');
+(1, 'jovi', '', 'isorena', '', 'admin@gmail.com', '$2y$10$h6uknYaNX7.Bm/h23SbLl.UD4gjWrREyP92s.bySr7mDOgJ.6oUHa', '1', 'active'),
+(2, 'testadmi', '', 'adminnn', '', 'admin2@gmail.com', '$2y$10$UznUZRan2C8rtV1aUYy9I.FBjVGUdUsAV3bN6.hhYKXT8cq0Cnn8i', '1', 'active');
 
 -- --------------------------------------------------------
 
@@ -140,10 +143,14 @@ CREATE TABLE `fare` (
 --
 
 INSERT INTO `fare` (`id`, `name`, `class`, `checked_baggage`, `flight_date_change`, `cancellation_before_depart`, `no_show_fee`, `mileage_accrual`, `fare_status`) VALUES
-(1, 'Economy Supersaver', 'Economy', 'with a FEE', '*No Charge', 'No', 'with a FEE', 10, 'active'),
-(2, 'Economy Saver', 'Economy', '10kg', '*No Charge', 'with a FEE', 'with a FEE', 50, 'active'),
-(3, 'Economy Value', 'Economy', '20kg on Jet services or 10kg on Q400 turbo prop aircraft', '*No Charge', 'with a FEE', 'with a FEE', 75, 'active'),
-(4, 'Economy Flex', 'Economy', '20kg on Jet services or 10kg on Q400 turbo prop aircraft', '*No Charge', 'with a FEE', 'with a FEE', 100, 'active');
+(1, 'Economy Supersaver', 'Economy', 'âœ“ with a FEE', '*No charge', 'âœ•', 'âœ“ with a FEE', 10, 'active'),
+(2, 'Economy Saver', 'Economy', '10kg', '*No charge', 'âœ“ with a FEE', 'âœ“ with a FEE', 50, 'active'),
+(3, 'Economy Value', 'Economy', '20kg on Jet services or 10kg on Q400 turbo prop aircraft', '*No charge', 'âœ“ with a FEE', 'âœ“ with a FEE', 75, 'active'),
+(4, 'Economy Flex', 'Economy', '20kg on Jet services or 10kg on Q400 turbo prop aircraft', '*No charge', 'âœ“ with a FEE', 'âœ“ with a FEE', 100, 'active'),
+(5, 'Test fare', 'Economy', 'âœ“ with a FEE', 'âœ“', 'âœ•', 'âœ•', 0, 'active'),
+(6, 'Premium Economy', 'Premium Economy', '25kg', '*No charge', 'âœ“ with a FEE', 'âœ“ with a FEE', 100, 'active'),
+(7, 'Business Value', 'Business', '30kg', '*No charge', 'âœ“ with a FEE', 'âœ“ with a FEE', 125, 'active'),
+(8, 'Business Flex', 'Business', '35kg', 'âœ“', 'âœ“ with a FEE', 'âœ“ with a FEE', 150, 'active');
 
 -- --------------------------------------------------------
 
@@ -166,6 +173,9 @@ CREATE TABLE `flight` (
 
 INSERT INTO `flight` (`flight_no`, `duration_minutes`, `airport_origin`, `airport_destination`, `type`, `flight_status`) VALUES
 ('11111', 125, 'TDW', 'LAM', 'International', 'active'),
+('11114', 140, 'TAK', 'MNL', 'International', 'inactive'),
+('11123', 120, 'LAX', 'MNL', 'International', 'active'),
+('12134', 120, 'LAX', 'MNL', 'International', 'active'),
 ('12222', 170, 'TAK', 'TCO', 'International', 'active'),
 ('12345', 140, 'MNL', 'LAX', 'International', 'active'),
 ('78888', 160, 'MNL', 'MRQ', 'Local', 'active'),
@@ -186,6 +196,24 @@ CREATE TABLE `flight_extra` (
   `status` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `flight_extra`
+--
+
+INSERT INTO `flight_extra` (`id`, `flight_no`, `extra_id`, `status`) VALUES
+(1, '11111', 1, 'active'),
+(2, '11111', 2, 'active'),
+(4, '11111', 3, 'active'),
+(5, '11111', 4, 'active'),
+(7, '11111', 5, 'active'),
+(8, '11111', 6, 'active'),
+(13, '11111', 7, 'active'),
+(14, '11111', 8, 'active'),
+(15, '11111', 9, 'active'),
+(17, '11123', 2, 'active'),
+(18, '11123', 5, 'active'),
+(19, '11123', 10, 'active');
+
 -- --------------------------------------------------------
 
 --
@@ -197,8 +225,24 @@ CREATE TABLE `flight_fare` (
   `flight_no` varchar(10) NOT NULL,
   `fare_id` int(11) NOT NULL,
   `price` decimal(10,2) NOT NULL,
+  `available_slots` int(11) NOT NULL,
   `status` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `flight_fare`
+--
+
+INSERT INTO `flight_fare` (`id`, `flight_no`, `fare_id`, `price`, `available_slots`, `status`) VALUES
+(1, '11111', 5, '900.00', 2, 'inactive'),
+(2, '11111', 6, '2500.00', 20, 'active'),
+(3, '11111', 8, '3700.00', 60, 'active'),
+(4, '11111', 1, '1400.00', 10, 'active'),
+(5, '11111', 3, '1500.00', 20, 'active'),
+(6, '11111', 7, '3300.00', 20, 'active'),
+(7, '11111', 2, '1200.00', 10, 'active'),
+(8, '11123', 2, '1300.00', 20, 'active'),
+(9, '11123', 7, '3000.00', 10, 'active');
 
 -- --------------------------------------------------------
 
@@ -252,7 +296,9 @@ INSERT INTO `flight_schedule` (`schedule_id`, `flight_no`, `monday`, `tuesday`, 
 (6, '12345', 1, 0, 0, 0, 0, 0, 0, '17:42:00', 'A10', '2021-05-18', '0000-00-00', 'Scheduled'),
 (7, '11111', 1, 1, 1, 1, 1, 1, 1, '03:00:00', 'L10', '2021-05-21', '0000-00-00', 'Delayed'),
 (8, '11111', 1, 0, 0, 0, 0, 0, 0, '18:00:00', 'A14', '2021-05-18', '0000-00-00', 'Inactive'),
-(9, '12222', 1, 1, 1, 0, 0, 0, 0, '00:30:00', 'A10', '2021-05-18', '0000-00-00', 'Scheduled');
+(9, '12222', 1, 1, 1, 0, 0, 0, 0, '00:30:00', 'A10', '2021-05-18', '0000-00-00', 'Scheduled'),
+(10, '12345', 1, 1, 1, 0, 0, 0, 0, '22:40:00', 'L1', '2021-06-01', '0000-00-00', 'Inactive'),
+(11, '11111', 1, 0, 0, 0, 0, 0, 1, '17:22:00', 'A18', '2021-05-25', '0000-00-00', 'Inactive');
 
 -- --------------------------------------------------------
 
@@ -344,7 +390,8 @@ INSERT INTO `users` (`id`, `firstname`, `middlename`, `lastname`, `suffix`, `ema
 (3, 'dummy', 'dummy', 'dummy', '', 'dummy@gmail.com', '$2y$10$fepwKIO4puDgT3LOGZ9c6.YpKlnCUTE2A788Liv97HtepeiBNqT4e', '', '0000-00-00', 'active'),
 (4, 'dada', 'briones', 'dsdsd', 'jr', 'dsdsdsds@dd.com', '$2y$10$fCYSttgbHS6DxqnCaNA28uVC0aiXVeMJekULzpPKPLSKaMW3Bf4mS', '09123131', '2002-02-12', 'active'),
 (6, 'dada', 'briones', 'dsdsd', 'jr', 'dsdsdsds2@dd.com', '$2y$10$isUcdWBeFj0v.kfk9oYlmOxpS3VgLH7I/MeAGhxAxNjy3SMLZhhIi', '09123131', '2002-02-12', 'active'),
-(7, 'jovi', 'briones', 'isorena', 'jr', 'jovi.freelance20@gmail.com', '$2y$10$RUrAs.vAuCW9UIaCouvkbu0HhkcHYEcL5eriQfQm1qXGdKSigC2Ty', '09123131', '1992-09-07', 'active');
+(7, 'jovi', 'briones', 'isorena', 'jr', 'jovi.freelance20@gmail.com', '$2y$10$RUrAs.vAuCW9UIaCouvkbu0HhkcHYEcL5eriQfQm1qXGdKSigC2Ty', '09123131', '1992-09-07', 'active'),
+(8, 'jovito', 'briones', 'isorena', '', 'test@gmail.com', '$2y$10$IDLxXDt779tNu6T3XVUgV.4HDys7safStB55iqs9EUOUsLIjIk4rm', '0919233333', '2021-05-18', 'active');
 
 --
 -- Indexes for dumped tables
@@ -460,7 +507,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `extra`
@@ -472,19 +519,19 @@ ALTER TABLE `extra`
 -- AUTO_INCREMENT for table `fare`
 --
 ALTER TABLE `fare`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `flight_extra`
 --
 ALTER TABLE `flight_extra`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `flight_fare`
 --
 ALTER TABLE `flight_fare`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `flight_reservation`
@@ -496,7 +543,7 @@ ALTER TABLE `flight_reservation`
 -- AUTO_INCREMENT for table `flight_schedule`
 --
 ALTER TABLE `flight_schedule`
-  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `passenger`
@@ -526,7 +573,7 @@ ALTER TABLE `seat`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables

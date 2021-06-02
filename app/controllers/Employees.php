@@ -73,6 +73,7 @@ class Employees extends Controller{
             'repeatPasswordError' => '',
             'positionError' => '',
             'email' => '',
+            'position' => '',
             'password' => '',
             'repeatPassword' => '',
             'firstName' => '',

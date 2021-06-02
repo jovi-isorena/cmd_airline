@@ -60,13 +60,21 @@
                 <li class="nav-item">
                     <a class="nav-link" href="about.html">Contact Us<span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
-                    <?php if(isLoggedIn() != false) : ?>
-                            <a href="<?php echo URLROOT;?>/users/logout" class="ml-2 nav-link btn btn-outline-primary" style="font-size:small;">Logout</a>
-                    <?php else: ?>
-                        <a href="<?php echo URLROOT;?>/users/login" class="ml-2 nav-link btn btn-outline-primary" style="font-size:small;">Login</a>
-                    <?php endif; ?>
-                </li>
+                <?php if(isLoggedIn() != false) : ?>
+                    <li class="nav-item">
+                        <a href="<?php echo URLROOT;?>/users/logout" class="nav-link btn btn-outline-primary" style="font-size:small;">Logout</a>
+                    </li>
+                <?php else: ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle btn btn-outline-primary btn-sm" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Login
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a href="<?php echo URLROOT;?>/users/login" class="dropdown-item btn btn-outline-primary" style="font-size:small;">As Traveller</a>
+                            <a href="<?php echo URLROOT;?>/employees/login" class="dropdown-item btn btn-outline-primary" style="font-size:small;">As Employee</a>
+                        </div>
+                    </li>
+                <?php endif; ?>
             <?php endif; ?>
             
         </ul>

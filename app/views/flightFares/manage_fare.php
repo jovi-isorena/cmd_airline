@@ -24,7 +24,7 @@
         </div>
     </div>
     <div class="row mb-5">
-        <a href="<?php echo URLROOT . '/flightFares/create/' . $data['flight']->flight_no?>" class="btn btn-outline-success"><i class="far fa-plus-square mr-2"></i>Add Fare</a>
+        <a href="<?php echo URLROOT . '/flightFares/create/' . $data['flight']->flight_no?>" class="btn btn-outline-success"><i class="far fa-plus-square mr-2"></i>Set Fare</a>
     </div>
     <div class="row mb-5">
         <div class="col-12">

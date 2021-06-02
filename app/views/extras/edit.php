@@ -1,7 +1,6 @@
 <?php
     require APPROOT . '/views/includes/head.php';
     require APPROOT . '/views/includes/navigation.php';
-    var_dump($data);
 ?>
 
 <div class="container pt-5">

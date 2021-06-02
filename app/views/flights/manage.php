@@ -30,7 +30,7 @@
                             <h3>Seat Plan</h3>
                         </div>
                         <div class="col-6 justify-content-right">
-                            <a href="#" class="btn btn-primary btn-block"><i class="fas fa-cog mr-2"></i>Manage</a>
+                            <a href="<?php echo URLROOT . '/seats/manage/' . $data['flight']->flight_no;?>" class="btn btn-primary btn-block"><i class="fas fa-cog mr-2"></i>Manage</a>
                         </div>
                     </div>
                 </div>
