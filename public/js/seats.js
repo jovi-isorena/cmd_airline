@@ -12,6 +12,48 @@ let colCount = 0;
 let divXCoor = document.getElementById("xCoor");
 let divYCoor = document.getElementById("yCoor");
 let mouseIsDown = false;
+let aircraftId = document.getElementById("aircraftId").value;
+let layouts = document.getElementById("layouts");
+// let selectedLayout = document.getElementById("layouts").value;
+function redraw(){
+    gridWrapper.removeChild(gridWrapper.lastChild);
+    gridWrapper.appendChild(createGrid());
+    
+}
+
+layouts.addEventListener("change", async (e)=>{
+    console.log(e.target.value);
+    //fetch layout then generate
+   if( e.target.value != 0){
+        if(window.XMLHttpRequest)
+            var ajax = new XMLHttpRequest();
+        else
+            var ajax = new ActiveXObject("Microsoft.XMLHTTP");
+
+        let method = "GET";
+        let url = "/cmd_airline/seatlayouts/getLayoutById/" + e.target.value;
+        let asynchronous = true;
+        ajax.open(method, url, asynchronous);
+        // ajax.setRequestHeader("Content-Type", "application/json");
+        ajax.send(); //for post method
+        ajax.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                console.log("from ajax: " + (this.responseText));
+                let response =JSON.parse(this.responseText);
+                // console.log(resp.layout);
+                document.getElementById("name").value = response.name;
+                seats = JSON.parse(response.layout);
+                colCount = seats.length;
+                rowCount = seats[0].length;
+                console.table(seats);
+                redraw();
+                renameGrid();
+            }
+        }
+    }
+
+});
+
 document.addEventListener("mousedown", (e)=>{
     mouseIsDown = true;
 });
@@ -53,7 +95,6 @@ countSeats = ()=>{
                     bus_count++;
                     tot_count++;
                     break;
-            
                 default:
                     break;
             }
@@ -73,6 +114,7 @@ renameGrid = ()=>{
 };
 //naming columns
 renameCol = () => {
+    xCoor = [];
     let currentChar = 'A';
     for(let index = 0; index < colCount; index++){
         let hasElement = false;
@@ -105,6 +147,7 @@ renameCol = () => {
 };
 //naming rows
 renameRow = () => {
+    yCoor = [];
     let currentChar = 1;
     for(let index = 0; index < rowCount; index++){
         let hasElement = false;
@@ -163,8 +206,7 @@ function createGrid() {
                         
                     }
                 });
-                gridWrapper.removeChild(gridWrapper.lastChild);
-                gridWrapper.appendChild(createGrid());
+                redraw();
                 renameGrid();
             });
             newCol.addEventListener("mouseup", (e)=>{
@@ -177,8 +219,7 @@ function createGrid() {
                             seats[index][index2] = rad.value;
                         }
                     });
-                    gridWrapper.removeChild(gridWrapper.lastChild);
-                    gridWrapper.appendChild(createGrid());
+                    redraw()
                     renameGrid();
                 }
             });
@@ -212,8 +253,7 @@ generate.addEventListener("click", () =>{
                 seats[i][j] = "empty";
             }
         }
-        gridWrapper.removeChild(gridWrapper.lastChild);
-        gridWrapper.appendChild(createGrid());
+        redraw()
     }
 });
 reset.addEventListener("click", () =>{
@@ -226,15 +266,14 @@ reset.addEventListener("click", () =>{
         }
         
     }
-    gridWrapper.removeChild(gridWrapper.lastChild);
-    gridWrapper.appendChild(createGrid());
+    redraw()
 });
 
 //testing area
 async function testFunction(){
-    
     // let jsoon = JSON.stringify(seats);
-    let jsoon = JSON.stringify("lol");
+    let jsoon = JSON.stringify(seats);
+    let name = document.getElementById("name").value;
     console.log("from js:"+jsoon);
     // console.log(seats);
     if(jsoon != ''){
@@ -243,12 +282,12 @@ async function testFunction(){
         else
             var ajax = new ActiveXObject("Microsoft.XMLHTTP");
 
-        let method = "POST";
-        let url = "../app/controllers/SeatLayoutss";
+        let method = "GET";
+        let url = "/cmd_airline/seatlayouts/save/" + aircraftId + "/" + name + "/" + jsoon;
         let asynchronous = true;
         ajax.open(method, url, asynchronous);
-        ajax.setRequestHeader("Content-Type", "application/json");
-        ajax.send("pass=" + jsoon); //for post method
+        // ajax.setRequestHeader("Content-Type", "application/json");
+        ajax.send(); //for post method
         //receiving response from db.php
         ajax.onreadystatechange = function(){
             //readystate
@@ -266,6 +305,11 @@ async function testFunction(){
                 // let data = JSON.parse(this.responseText);
                 // console.log("from ajax: " + data);
                 console.log("from ajax: " + (this.responseText));
+                if(this.responseText == "Success"){
+                    location.reload();
+                }else if(this.responseText == "Failed"){
+                    alert("Failed to save.");
+                }
             //    if(this.responseText == 1){
                     
                     // getAllAnswer();
@@ -278,52 +322,3 @@ async function testFunction(){
 
 let test = document.getElementById("test");
 test.addEventListener("click", testFunction);
-
-
-
-//ajax
-// async function addAnswer(){
-//     let newAnswer = document.getElementById("new_answer").value;
-    
-//     if(newAnswer != ""){
-//         if(window.XMLHttpRequest)
-//             var ajax = new XMLHttpRequest();
-//         else
-//             var ajax = new ActiveXObject("Microsoft.XMLHTTP");
-//         var method = "GET";
-//         var url = "./includes/maintenanceAnswer.inc.php?add=1&description=" + newAnswer + "&intent_id=" + intent_id;
-//         var asynchronous = true;
-
-//         ajax.open(method, url, asynchronous);
-
-//         //sending ajax request
-//         ajax.send(); //for get method
-//         // ajax.send("answer='ilang taon ka na'"); //for post method
-//         //receiving response from db.php
-//         ajax.onreadystatechange = function(){
-//             //readystate
-//             //0: request not initialized
-//             //1: server connection established
-//             //2: request received
-//             //3: processing request
-//             //4: request finished and response is ready
-//             //status
-//             //200: "OK"
-//             //403: "Forbidden"
-//             //404: "Not Found"
-//             if(this.readyState == 4 && this.status == 200){
-//                 // convert json back to array
-//                 // let data = JSON.parse(this.responseText);
-//                if(this.responseText == 1){
-//                     alert("New Answer Successfully Added!");
-//                     // getAllAnswer();
-//                     location.reload();
-//                }
-//             }
-            
-
-//         }
-        
-//     }
-    
-// }

@@ -14,6 +14,9 @@
                     <a class="nav-link" href="<?php echo URLROOT . "/schedules"?>">Flight Scheduler</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="<?php echo URLROOT?>/aircrafts">Aircrafts</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="<?php echo URLROOT?>/airports">Airports</a>
                 </li>
                 <li class="nav-item">

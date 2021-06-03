@@ -1,9 +1,7 @@
 <?php 
 
 if(isset($_POST['save'])){
-    if(isLoggedIn()!="employee"){
-        header("location: " . URLROOT . "/employees/login");
-    }
+    
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         //sanitize post data
         // $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
@@ -33,5 +31,35 @@ class SeatLayouts extends Controller{
         $this->seatLayoutModel = $this->model('SeatLayout');
     }
 
+    //ajax request
+    public function save($aircraft, $name, $layout){
+        if(isLoggedIn()!="employee"){
+            header("location: " . URLROOT . "/employees/login");
+        }
+        
+        $data = [
+            'aircraft' => $aircraft,
+            'layout' => $layout,
+            'name' => $name,
+            'message' => ''
+        ];
+        
+        if($this->seatLayoutModel->add($data)){
+            $data['message'] = "Success";
+        }else{
+            
+            $data['message'] = "Failed";
+        }
 
+        echo $data['message'];
+        // $this->view("seatlayouts/save", $data);
+    }
+    //ajax request
+    public function getLayoutById($id){
+        if(isLoggedIn()!="employee"){
+            header("location: " . URLROOT . "/employees/login");
+        }
+        $layout = $this->seatLayoutModel->getLayoutById($id);
+        echo json_encode($layout);
+    }
 }

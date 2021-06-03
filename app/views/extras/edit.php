@@ -38,7 +38,7 @@
             <input type="number" class="form-control" id="price" name="price"  value="<?php echo $data['price'];?>">
         </div>
         
-        <button type="submit" class="btn btn-primary btn-block" name="submit">Create</button>
+        <button type="submit" class="btn btn-primary btn-block" name="submit">Update</button>
     </form>
 </div>
 <?php require APPROOT . '/views/includes/foot.php'; ?>

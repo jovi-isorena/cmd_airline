@@ -3,7 +3,10 @@
     require APPROOT . '/views/includes/navigation.php';
     // var_dump($data);
 ?>
-<div class="container">
+<div class="container mt-5">
+    <div class="row mb-5">
+    <a href="<?php echo URLROOT;?>/flights" class="btn btn-secondary"><i class="far fa-arrow-alt-circle-left"></i> Back To List</a>
+    </div>
     <div class="row">
         <h1><?php echo $data['title'];?></h1>
     </div>
