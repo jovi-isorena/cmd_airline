@@ -8,6 +8,8 @@
     <h1><?php echo $data['title'];?></h1>
     <div class="row mt-5">
         <div class="col-6">
+            <div id="responseMessage">
+            </div>
             <div class="row">
                 <div class="form-group">
                     <label for="layouts">Layouts</label>
@@ -40,14 +42,14 @@
             </div>
                                 
             <div class="row d-block mt-5">
-                <input type="radio" name="options" id="emptybox" value="empty" >
+                <input type="radio" name="options" id="emptybox" value="0" >
                 <label for="emptybox"  class="btn btn-secondary">Empty</label><br>
-                <input type="radio" name="options" id="economybox" value="economy" >
+                <input type="radio" name="options" id="economybox" value="1" >
                 <label for="economybox" class="btn btn-danger">Economy <span class="badge badge-light" id="economy_count">0</span></label>
                 <br>
-                <input type="radio" name="options" id="premiumbox" value="premium">
+                <input type="radio" name="options" id="premiumbox" value="2">
                 <label for="premiumbox" class="btn btn-warning">Premium <span class="badge badge-light" id="premium_count">0</span></label><br>
-                <input type="radio" name="options" id="businessbox" value="business">
+                <input type="radio" name="options" id="businessbox" value="3">
                 <label for="businessbox" class="btn btn-primary">Business <span class="badge badge-light" id="business_count">0</span></label><br>
                 <div class="btn btn-succes"></div>
             </div>
@@ -67,8 +69,6 @@
                         </div> -->
                     </div>
                 </div>
-                
-    
             </div>
         </div>
     </div>

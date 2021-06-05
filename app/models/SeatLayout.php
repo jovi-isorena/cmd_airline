@@ -16,7 +16,7 @@ class SeatLayout{
     public function add($data){
         $this->db->query("INSERT INTO `seat_layout`(`name`, `layout`, `aircraft_id`, `status`) VALUES (:name,:layout,:aircraft,'active');");
         $this->db->bind(":layout", $data['layout']);
-        $this->db->bind(":aircraft", $data['aircraft']);
+        $this->db->bind(":aircraft", $data['aircraft']->id);
         $this->db->bind(":name", $data['name']);
         if($this->db->execute()){
             return true;
@@ -29,6 +29,12 @@ class SeatLayout{
     public function getLayoutById($id){
         $this->db->query("SELECT * FROM `seat_layout` WHERE `id` = :id;");
         $this->db->bind(":id", $id);
+        return $this->db->single();
+    }
+
+    public function isExistingName($name){
+        $this->db->query("SELECT * FROM `seat_layout` WHERE `name` = :name AND `status` = 'active';");
+        $this->db->bind(":name", $name);
         return $this->db->single();
     }
 }

@@ -28,7 +28,7 @@
                 <a class="nav-link <?php echo $data['status']=='cancelled'?'active font-weight-bold':'';?>" href="<?php echo URLROOT . '/schedules/index/cancelled';?>">Cancelled</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link <?php echo $data['status']=='cancelled'?'active font-weight-bold':'';?>" href="<?php echo URLROOT . '/schedules/index/inactive';?>">Inactive</a>
+                <a class="nav-link <?php echo $data['status']=='inactive'?'active font-weight-bold':'';?>" href="<?php echo URLROOT . '/schedules/index/inactive';?>">Inactive</a>
             </li>
         </ul>
     </div>
@@ -71,6 +71,7 @@
                 <td><?php echo $schedule->schedule_status;?></td>
                 <td>
                     <div class="btn-group" role="group">
+                        <a href="<?php echo URLROOT . "/schedules/aircraft/" . $schedule->schedule_id?>" class="btn btn-outline-warning"><i class="fas fa-cogs"></i></a>
                         <a href="<?php echo URLROOT . "/schedules/edit/" . $schedule->schedule_id?>" class="btn btn-outline-primary"><i class="far fa-edit"></i></a>
                         
                     </div>

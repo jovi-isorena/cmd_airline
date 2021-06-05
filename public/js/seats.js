@@ -14,11 +14,12 @@ let divYCoor = document.getElementById("yCoor");
 let mouseIsDown = false;
 let aircraftId = document.getElementById("aircraftId").value;
 let layouts = document.getElementById("layouts");
-// let selectedLayout = document.getElementById("layouts").value;
-function redraw(){
-    gridWrapper.removeChild(gridWrapper.lastChild);
-    gridWrapper.appendChild(createGrid());
-    
+
+function redraw(wrapper){
+    wrapper.removeChild(wrapper.lastChild);
+    wrapper.appendChild(createGrid());
+    // toStringArray(toNumberArray(seats));
+    //STOPPED HERE ==============================================================================================
 }
 
 layouts.addEventListener("change", async (e)=>{
@@ -43,10 +44,10 @@ layouts.addEventListener("change", async (e)=>{
                 // console.log(resp.layout);
                 document.getElementById("name").value = response.name;
                 seats = JSON.parse(response.layout);
-                colCount = seats.length;
-                rowCount = seats[0].length;
+                rowCount = seats.length;
+                colCount = seats[0].length;
                 console.table(seats);
-                redraw();
+                redraw(gridWrapper);
                 renameGrid();
             }
         }
@@ -83,15 +84,15 @@ countSeats = ()=>{
     seats.map((seatRow) => {
         seatRow.map(seat => {
             switch (seat) {
-                case "economy":
+                case "1":
                     eco_count++;
                     tot_count++;
                     break;
-                case "premium":
+                case "2":
                     pre_count++;
                     tot_count++;
                     break;
-                case "business":
+                case "3":
                     bus_count++;
                     tot_count++;
                     break;
@@ -119,7 +120,7 @@ renameCol = () => {
     for(let index = 0; index < colCount; index++){
         let hasElement = false;
         for (let index2 = 0; index2 < rowCount; index2++) {
-            if(seats[index2][index] != "empty"){
+            if(seats[index2][index] != "0"){
                 hasElement = true;
                 break;
             }
@@ -152,7 +153,7 @@ renameRow = () => {
     for(let index = 0; index < rowCount; index++){
         let hasElement = false;
         for (let index2 = 0; index2 < colCount; index2++) {
-            if(seats[index][index2] != "empty"){
+            if(seats[index][index2] != "0"){
                 hasElement = true;
                 break;
             }
@@ -182,7 +183,7 @@ getNextCharacter = (c)=>{
 }
 //grid creation
 function createGrid() {
-    
+    let strClass = ["empty","economy","premium","business"]; 
     console.log("redraw");
     console.table(seats);
     let seatGrid = newElement("div",["seatgrid"]);
@@ -192,21 +193,21 @@ function createGrid() {
         let newRow = newElement("div",["row"]);
         for (let index2 = 0; index2 < seats[index].length; index2++) {
             
-            let newCol = newElement("div", ["box", seats[index][index2]]);
+            let newCol = newElement("div", ["box", strClass[seats[index][index2]]]);
            
             newCol.addEventListener("mousedown", (e)=>{
                 mouseIsDown = true;
                 radSeat.forEach(rad => {
                     if(rad.checked){
                         if(seats[index][index2] == rad.value){
-                            seats[index][index2] = "empty";
+                            seats[index][index2] = "0";
                         }else{
                             seats[index][index2] = rad.value;
                         }
                         
                     }
                 });
-                redraw();
+                redraw(gridWrapper);
                 renameGrid();
             });
             newCol.addEventListener("mouseup", (e)=>{
@@ -219,7 +220,7 @@ function createGrid() {
                             seats[index][index2] = rad.value;
                         }
                     });
-                    redraw()
+                    redraw(gridWrapper)
                     renameGrid();
                 }
             });
@@ -250,10 +251,10 @@ generate.addEventListener("click", () =>{
         for (let i = 0; i < rowCount; i++) {
             seats[i] = [];
             for (let j = 0; j < colCount; j++) {
-                seats[i][j] = "empty";
+                seats[i][j] = "0";
             }
         }
-        redraw()
+        redraw(gridWrapper);
     }
 });
 reset.addEventListener("click", () =>{
@@ -261,19 +262,48 @@ reset.addEventListener("click", () =>{
     for (let i = 0; i < rowCount; i++) {
         seats[i] = [];
         for (let j = 0; j < colCount; j++) {
-            seats[i][j] = "empty";
+            seats[i][j] = "0";
             
         }
         
     }
-    redraw()
+    redraw(gridWrapper)
 });
 
 //testing area
+function toNumberArray(strArray){
+    // const doubled = numbers.map(item => item * 2);
+    let arr = [];
+    
+
+    strArray.map(seatRow => {
+        arr[strArray.indexOf(seatRow)] = seatRow.map(seat => {
+            switch (seat) {
+                case "empty":
+                    return 0;
+                case "economy":
+                    return 1;
+                case "premium":
+                    return 2;
+                case "business":
+                    return 3;
+            
+                default:
+                    break;
+            }
+        });
+    });
+    console.table(arr);
+    return arr;
+}
+
+
+
 async function testFunction(){
     // let jsoon = JSON.stringify(seats);
     let jsoon = JSON.stringify(seats);
-    let name = document.getElementById("name").value;
+    // let name = '';
+    let name = document.getElementById("name").value?document.getElementById("name").value:'';
     console.log("from js:"+jsoon);
     // console.log(seats);
     if(jsoon != ''){
@@ -283,7 +313,7 @@ async function testFunction(){
             var ajax = new ActiveXObject("Microsoft.XMLHTTP");
 
         let method = "GET";
-        let url = "/cmd_airline/seatlayouts/save/" + aircraftId + "/" + name + "/" + jsoon;
+        let url = "/cmd_airline/seatlayouts/save/" + aircraftId + "/" + jsoon + "/" + name;
         let asynchronous = true;
         ajax.open(method, url, asynchronous);
         // ajax.setRequestHeader("Content-Type", "application/json");
@@ -305,10 +335,16 @@ async function testFunction(){
                 // let data = JSON.parse(this.responseText);
                 // console.log("from ajax: " + data);
                 console.log("from ajax: " + (this.responseText));
-                if(this.responseText == "Success"){
+                let messageDiv = document.getElementById("responseMessage");
+                while(messageDiv.lastChild) messageDiv.removeChild(messageDiv.lastChild);
+                let resp =JSON.parse(this.responseText);
+
+                if(resp.errorMessage != ""){
+                    messageDiv.append(newElement("div",["alert", "alert-danger", "text-danger"],null,resp.errorMessage));
+
+                }else{
                     location.reload();
-                }else if(this.responseText == "Failed"){
-                    alert("Failed to save.");
+                    messageDiv.innerHTML = (resp.message);
                 }
             //    if(this.responseText == 1){
                     
@@ -316,7 +352,7 @@ async function testFunction(){
                     // location.reload();
             //    }
             }
-        }
+        }  
     }
 }
 

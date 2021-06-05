@@ -4,6 +4,7 @@ class Schedules extends Controller{
     public function __construct(){
         $this->scheduleModel = $this->model('Schedule');
         $this->flightModel = $this->model('Flight');
+        $this->aircraftModel = $this->model('Aircraft');
     }
 
     public function index($status = '%'){
@@ -222,5 +223,21 @@ class Schedules extends Controller{
             ];
         }
         $this->view("schedules/edit", $data);
+    }
+
+    public function aircraft($scheduleId){
+        if(isLoggedIn()!="employee"){
+            header("location: " . URLROOT . "/employees/login");
+        }
+        $schedule = $this->scheduleModel->getScheduleById($scheduleId);
+        $aircrafts = $this->aircraftModel->getAllActiveAircrafts();
+        $flight = $this->flightModel->getFlightByNumber($schedule->flight_no);
+        $data = [
+            'title' => 'Aircraft Schedule',
+            'flight' => $flight,
+            'schedule' => $schedule,
+            'aircrafts' => $aircrafts
+        ];
+        $this->view("schedules/aircraft", $data);
     }
 }
