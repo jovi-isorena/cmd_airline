@@ -44,7 +44,7 @@
                 <form method="post" action="<?php echo URLROOT; ?>/users/login">
                     <div class="form-group">
                         <label for="username">Email address</label>
-                        <input type="email" class="form-control"  id="username" name="username" aria-describedby="emailHelp" placeholder="Enter email" >
+                        <input type="email" class="form-control"  id="username" name="username" aria-describedby="emailHelp" placeholder="Enter email"  autocomplete="off">
                         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                     </div>
                     <div class="form-group">

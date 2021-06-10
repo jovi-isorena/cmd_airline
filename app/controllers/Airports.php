@@ -146,9 +146,10 @@ class Airports extends Controller{
                 }else{
                     die("Something went wrong.");
                 }
-            }else{
-                $this->view("airports/edit/" . $airport->airport_code, $data);
             }
+            // else{
+            //     $this->view("airports/edit/" . $airport->airport_code, $data);
+            // }
         }
         // else{
             

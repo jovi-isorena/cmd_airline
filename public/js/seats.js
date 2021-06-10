@@ -14,6 +14,14 @@ let divYCoor = document.getElementById("yCoor");
 let mouseIsDown = false;
 let aircraftId = document.getElementById("aircraftId").value;
 let layouts = document.getElementById("layouts");
+let isFullSeats = false;
+let selectedClass;
+
+radSeat.forEach(rad => {
+    rad.addEventListener("change", (e)=>{
+        selectedClass = e.target.value;
+    });
+});
 
 function redraw(wrapper){
     wrapper.removeChild(wrapper.lastChild);
@@ -75,11 +83,12 @@ function newElement(elementType, classList = [], innerhtml = '', innertext = '')
     return elem;
 }
 
-//count seats
+//count seats. returns true if full, otherwise returns false 
 countSeats = ()=>{
     let eco = document.getElementById("economy_count");
     let pre = document.getElementById("premium_count");
     let bus = document.getElementById("business_count");
+    let tot = document.getElementById("capacity");
     let eco_count = 0, pre_count = 0, bus_count = 0, tot_count = 0;
     seats.map((seatRow) => {
         seatRow.map(seat => {
@@ -104,8 +113,18 @@ countSeats = ()=>{
     eco.innerText = eco_count;
     pre.innerText = pre_count;
     bus.innerText = bus_count;
+    tot.innerText = tot_count + "/" + tot.innerText.split("/")[1];
+    if(tot_count >= tot.innerText.split("/")[1]){
+        tot.classList.add("text-danger");
+        return true;
+    }
+        
+    else{
+        tot.classList.remove("text-danger");
+        return false;
+    }
+
     
-    console.log(eco_count,pre_count,bus_count);
 
 }
 //naming the columns and rows
@@ -132,7 +151,6 @@ renameCol = () => {
             xCoor[index] = ' ';
         }
     }
-    console.log(xCoor);
     while(divXCoor.lastElementChild){
         divXCoor.removeChild(divXCoor.lastElementChild);
     }
@@ -165,7 +183,6 @@ renameRow = () => {
             yCoor[index] = ' ';
         }
     }
-    console.log(yCoor);
     while(divYCoor.lastElementChild){
         divYCoor.removeChild(divYCoor.lastElementChild);
     }
@@ -184,8 +201,8 @@ getNextCharacter = (c)=>{
 //grid creation
 function createGrid() {
     let strClass = ["empty","economy","premium","business"]; 
-    console.log("redraw");
-    console.table(seats);
+    // console.log("redraw");
+    // console.table(seats);
     let seatGrid = newElement("div",["seatgrid"]);
     
     for (let index = 0; index < seats.length; index++) {
@@ -197,39 +214,47 @@ function createGrid() {
            
             newCol.addEventListener("mousedown", (e)=>{
                 mouseIsDown = true;
-                radSeat.forEach(rad => {
-                    if(rad.checked){
-                        if(seats[index][index2] == rad.value){
-                            seats[index][index2] = "0";
-                        }else{
-                            seats[index][index2] = rad.value;
+                // if(!isFullSeats){
+                    // radSeat.forEach(rad => {
+                        console.log(selectedClass !=0 && seats[index][index2] != selectedClass);
+
+                        if((!isFullSeats || selectedClass == 0) || (selectedClass !=0 && seats[index][index2] != selectedClass)){
+                            if(seats[index][index2] == selectedClass){
+                                seats[index][index2] = "0";
+                            }else{
+                                seats[index][index2] = selectedClass;
+                            }
+                            
                         }
-                        
-                    }
-                });
-                redraw(gridWrapper);
-                renameGrid();
+                    // });
+                    redraw(gridWrapper);
+                    renameGrid();
+                // }
+                
             });
             newCol.addEventListener("mouseup", (e)=>{
                 mouseIsDown = false;
             });
             newCol.addEventListener("mouseenter", (e) =>{
-                if(mouseIsDown){
-                    radSeat.forEach(rad => {
-                        if(rad.checked){
-                            seats[index][index2] = rad.value;
-                        }
-                    });
-                    redraw(gridWrapper)
-                    renameGrid();
-                }
+                // if(!isFullSeats){
+                    if(mouseIsDown){
+                        // radSeat.forEach(rad => {
+                            console.log(selectedClass !=0 && seats[index][index2] != selectedClass);
+                            if((!isFullSeats || selectedClass == 0 || (selectedClass !=0 && seats[index][index2] != selectedClass))){
+                                seats[index][index2] = selectedClass;
+                            }
+                        // });
+                        redraw(gridWrapper)
+                        renameGrid();
+                    }
+                // }
             });
             newRow.appendChild(newCol);
         }
         seatGrid.appendChild(newRow);
     }
     renameGrid();
-    countSeats();
+    isFullSeats = countSeats();
     return seatGrid;
 }
 createRow = () => {
@@ -239,7 +264,8 @@ addRows = (num) => {
 
 }
 
-generate.addEventListener("click", () =>{
+generate.addEventListener("click", (e) =>{
+    e.preventDefault();
     rowCount = parseInt(rows.value);
     colCount = parseInt(cols.value);
     seats = [];
@@ -257,8 +283,8 @@ generate.addEventListener("click", () =>{
         redraw(gridWrapper);
     }
 });
-reset.addEventListener("click", () =>{
-    
+reset.addEventListener("click", (e) =>{
+    e.preventDefault();
     for (let i = 0; i < rowCount; i++) {
         seats[i] = [];
         for (let j = 0; j < colCount; j++) {
@@ -299,7 +325,8 @@ function toNumberArray(strArray){
 
 
 
-async function testFunction(){
+async function testFunction(e){
+    e.preventDefault();
     // let jsoon = JSON.stringify(seats);
     let jsoon = JSON.stringify(seats);
     // let name = '';

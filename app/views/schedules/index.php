@@ -71,7 +71,7 @@
                 <td><?php echo $schedule->schedule_status;?></td>
                 <td>
                     <div class="btn-group" role="group">
-                        <a href="<?php echo URLROOT . "/schedules/aircraft/" . $schedule->schedule_id?>" class="btn btn-outline-warning"><i class="fas fa-cogs"></i></a>
+                        <a href="<?php echo URLROOT . "/scheduledAircrafts/aircraft/" . $schedule->schedule_id?>" class="btn btn-outline-warning"><i class="fas fa-cogs"></i></a>
                         <a href="<?php echo URLROOT . "/schedules/edit/" . $schedule->schedule_id?>" class="btn btn-outline-primary"><i class="far fa-edit"></i></a>
                         
                     </div>

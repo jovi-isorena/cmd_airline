@@ -29,8 +29,10 @@ class Aircraft{
     }
 
     public function add($data){
-        $this->db->query("INSERT INTO `aircraft`(`name`, `status`) VALUES (:name, 'active');");
+        $this->db->query("INSERT INTO `aircraft`(`name`, `model`, `passenger_capacity`, `status`) VALUES (:name, :model, :capacity,'active');");
         $this->db->bind(":name",$data['name']);
+        $this->db->bind(":model",$data['model']);
+        $this->db->bind(":capacity",$data['capacity']);
         if($this->db->execute()){
             return true;
         }else{
@@ -39,8 +41,10 @@ class Aircraft{
     }
 
     public function edit($data){
-        $this->db->query("UPDATE `aircraft` SET `name`= :name WHERE `id`= :id;");
+        $this->db->query("UPDATE `aircraft` SET `name`= :name, `model`=:model, `passenger_capacity`=:capacity WHERE `id`= :id;");
         $this->db->bind(":name",$data['name']);
+        $this->db->bind(":model",$data['model']);
+        $this->db->bind(":capacity",$data['capacity']);
         $this->db->bind(":id",$data['aircraft']->id);
         if($this->db->execute()){
             return true;

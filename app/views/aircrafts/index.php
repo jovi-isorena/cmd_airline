@@ -13,6 +13,8 @@
                 
                 <th scope="col">ID</th>
                 <th scope="col">Name</th>
+                <th scope="col">Model</th>
+                <th scope="col">Passenger Capacity</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -21,6 +23,8 @@
             <tr>
                 <th scope="row"><?php echo $aircraft->id;?></th>
                 <td><?php echo $aircraft->name;?></td>
+                <td><?php echo $aircraft->model;?></td>
+                <td><?php echo $aircraft->passenger_capacity;?></td>
                 
                 <td>   
                     <div class="btn-group" role="group">

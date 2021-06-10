@@ -1,15 +1,56 @@
 let aircraftSelectors = document.querySelectorAll(".aircraftSelector");
 let layoutSelectors = document.querySelectorAll(".layoutSelector");
+let oneForAll = document.getElementById("oneForAll");
+let test = document.getElementById("test");
 // console.log(aircraftSelectors);
 
+test.addEventListener("click", ()=>{
+    console.log(typeof(aircraftSelectors.children));
+    console.log(aircraftSelectors.children.filter(sel=> sel.children.map(opt => opt.value == 1)));
+});
+
+window.addEventListener("load", ()=>{
+    aircraftSelectors[0].selectedIndex = 1;
+    aircraftSelectors[0].dispatchEvent(new Event('change', {bubbles:true}));
+    layoutSelectors[0].selectedIndex = 1;
+    layoutSelectors[0].dispatchEvent(new Event('change', {bubbles:true}));
+});
+//checkbox eventlistener. for enabling and disabling selections
+oneForAll.addEventListener("change", ()=>{
+    aircraftSelectors.forEach(acs=>{
+        // console.log(oneForAll.checked);
+        if(acs != aircraftSelectors[0]){
+            acs.disabled = oneForAll.checked;
+        }
+    });
+    layoutSelectors.forEach(lcs=>{
+        // console.log(oneForAll.checked);
+        if(lcs != layoutSelectors[0]){
+            lcs.disabled = oneForAll.checked;
+        }
+    });
+});
+
+//adding event listener to all aircraft selectors
 aircraftSelectors.forEach( selector => {
     console.log(selector.getAttribute("link-to"));
 
     selector.addEventListener("change", (e)=>{
+        //if oneForAll is checked, apply function to first child selector
+        if( oneForAll.checked && e.target == aircraftSelectors[0]){
+            aircraftSelectors.forEach(sel => {
+                if(sel != e.target){
+                    sel.value = e.target.value;
+                    sel.dispatchEvent(new Event('change'));
+                }
+            });
+        }
+        //adds option elements using ajax
         let layoutSelector = document.getElementById(e.target.getAttribute("link-to"));
-        // layoutSelector.appendChild(newElement("option", [],'','hello'));
         console.log(e.target.value);
         while(layoutSelector.lastElementChild != layoutSelector.children[0]) layoutSelector.removeChild(layoutSelector.lastChild);
+        layoutSelector.dispatchEvent(new Event('change'));
+        
         if(e.target.value != 0){
             if(window.XMLHttpRequest)
                 var ajax = new XMLHttpRequest();
@@ -35,23 +76,34 @@ aircraftSelectors.forEach( selector => {
             }
         }
         else{
-            while(e.target.lastChild != e.target.child[0]){
-                e.target.removeChild(e.target.lastChild);
+            console.log(layoutSelector);
+            while(layoutSelector.lastChild != layoutSelector.children[0]){
+                layoutSelector.removeChild(layoutSelector.lastChild);
             }
+            // e.target.dispatchEvent(new Event('change'));
         }
     });
 
 
 });
 
-
+//adding event listener to all layout selectors
 layoutSelectors.forEach(layoutSelector => {
     layoutSelector.addEventListener("change", async (e)=>{
+        //if oneForAll is checked, apply function to first child selector
+        if( oneForAll.checked && e.target == layoutSelectors[0]){
+            console.log("test");
+            layoutSelectors.forEach(sel => {
+                if(sel != e.target){
+                    sel.value = e.target.value;
+                    sel.dispatchEvent(new Event('change'));
+                }
+            });
+        }
+
         console.log(e.target.value);
         let targetGrid = document.getElementById(e.target.getAttribute("link-to"));
-        console.log(e.target.getAttribute("link-to"));
-        //fetch layout then generate
-       if( e.target.value != 0){
+        if( e.target.value != 0){
             if(window.XMLHttpRequest)
                 var ajax = new XMLHttpRequest();
             else
@@ -61,34 +113,35 @@ layoutSelectors.forEach(layoutSelector => {
             let url = "/cmd_airline/seatlayouts/getLayoutById/" + e.target.value;
             let asynchronous = true;
             ajax.open(method, url, asynchronous);
-            // ajax.setRequestHeader("Content-Type", "application/json");
             ajax.send(); //for post method
             ajax.onreadystatechange = function(){
                 if(this.readyState == 4 && this.status == 200){
-                    console.log("from ajax: " + (this.responseText));
+
                     let response =JSON.parse(this.responseText);
-                    // console.log(resp.layout);
-                    // document.getElementById("name").value = response.name;
                     let seats = JSON.parse(response.layout);
-                    // rowCount = seats.length;
-                    // colCount = seats[0].length;
-                    console.table(seats);
-                    redraw(targetGrid,seats);
-                    // renameGrid(seats);
+                    redraw(targetGrid,seats); //draws the layout
                 }
             }
+        }else{
+            clearGrid(targetGrid); //reset the grid if there is no layout
+            // e.target.dispatchEvent(new Event('change'));
+
         }
     });
 });
+async function clearGrid(wrapper){
+    while(wrapper.children[0].lastChild) wrapper.children[0].removeChild(wrapper.children[0].lastChild); //removes xCoor
+    while(wrapper.children[1].children[0].lastChild) wrapper.children[1].children[0].removeChild(wrapper.children[1].children[0].lastChild); //removes yCoor
+    wrapper.children[1].children[1].removeChild(wrapper.children[1].children[1].lastChild); //removes grid
+}
 
 function createGrid(wrapper, seats) {
     let strClass = ["empty","economy","premium","business"]; 
-    console.log("redraw");
-    console.table(seats);
+    // console.log("redraw");
+    // console.table(seats);
     let seatGrid = newElement("div",["seatgrid"]);
     
     for (let index = 0; index < seats.length; index++) {
-        
         let newRow = newElement("div",["row"]);
         for (let index2 = 0; index2 < seats[index].length; index2++) {
            let newCol = newElement("div", ["box", strClass[seats[index][index2]]]);
@@ -105,12 +158,11 @@ function redraw(wrapper, seats){
     console.log(wrapper);
     console.log(wrapper.children[1]);
     console.log(wrapper.children[1].children[1]);
-
-    wrapper.children[1].children[1].removeChild(wrapper.children[1].children[1].lastChild);
+    
+    while(wrapper.children[1].children[1].lastChild) wrapper.children[1].children[1].removeChild(wrapper.children[1].children[1].lastChild);
     wrapper.children[1].children[1].appendChild(createGrid(wrapper,seats));
-    // toStringArray(toNumberArray(seats));
-    //STOPPED HERE ==============================================================================================
 }
+
 countSeats = (seats)=>{
     let eco = document.getElementById("economy_count");
     let pre = document.getElementById("premium_count");
@@ -136,12 +188,6 @@ countSeats = (seats)=>{
             }
         })
     });
-    // eco.innerText = eco_count;
-    // pre.innerText = pre_count;
-    // bus.innerText = bus_count;
-    
-    console.log(eco_count,pre_count,bus_count);
-
 }
 //naming the columns and rows
 renameGrid = (wrapper,seats)=>{
@@ -169,7 +215,7 @@ renameCol = (wrapper, seats) => {
             xCoor[index] = ' ';
         }
     }
-    console.log(xCoor);
+    // console.log(xCoor);
     divXCoor = wrapper.children[0];
     while(divXCoor.lastElementChild){
         divXCoor.removeChild(divXCoor.lastElementChild);
@@ -187,7 +233,7 @@ renameCol = (wrapper, seats) => {
 //naming rows
 renameRow = (wrapper, seats) => {
     yCoor = [];
-    console.log(seats); 
+    // console.log(seats); 
     rowCount = seats.length;
     colCount = seats[0].length;
     let currentChar = 1;
@@ -206,7 +252,7 @@ renameRow = (wrapper, seats) => {
             yCoor[index] = ' ';
         }
     }
-    console.log(yCoor);
+    // console.log(yCoor);
     divYCoor = wrapper.children[1].children[0];
     while(divYCoor.lastElementChild){
         divYCoor.removeChild(divYCoor.lastElementChild);

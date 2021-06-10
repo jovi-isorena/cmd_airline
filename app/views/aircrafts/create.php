@@ -18,6 +18,16 @@
             <span style="color: red;">* <?php echo $data['nameError'];?></span>
             <input type="text" class="form-control" id="name" name="name"  value="<?php echo $data['name'];?>">
         </div>
+        <div class="form-group">
+            <label for="model">Model</label>
+            <span style="color: red;">* <?php echo $data['modelError'];?></span>
+            <input type="text" class="form-control" id="model" name="model"  value="<?php echo $data['model'];?>">
+        </div>
+        <div class="form-group">
+            <label for="capacity">Capacity</label>
+            <span style="color: red;">* <?php echo $data['capacityError'];?></span>
+            <input type="number" class="form-control" id="capacity" name="capacity"  value="<?php echo $data['capacity'];?>">
+        </div>
         
         
         <button type="submit" class="btn btn-primary btn-block" name="submit">Add</button>

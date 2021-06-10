@@ -19,7 +19,7 @@
                 <form method="post" action="<?php echo URLROOT; ?>/employees/login">
                     <div class="form-group">
                         <label for="username">Email address</label>
-                        <input type="email" class="form-control"  id="username" name="username" aria-describedby="emailHelp" placeholder="Enter email" value=<?php echo isset($_GET['username'])?$_GET['username']:"";?>>
+                        <input type="email" class="form-control"  id="username" name="username" aria-describedby="emailHelp" placeholder="Enter email" value="<?php echo isset($_GET['username'])?$_GET['username']:"";?>"  autocomplete="off">
                         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                     </div>
                     <div class="form-group">

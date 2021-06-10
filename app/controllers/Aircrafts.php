@@ -30,7 +30,11 @@ class Aircrafts extends Controller{
             $data = [
                 'title' => 'Add Aircraft',
                 'name' => trim($_POST['name']),
+                'model' => trim($_POST['model']),
+                'capacity' => ($_POST['capacity']),
                 'nameError' => '',
+                'modelError' => '',
+                'capacityError' => '',
                 'successMessage' => ''
             ];
             //validate inputs
@@ -39,14 +43,23 @@ class Aircrafts extends Controller{
             }elseif($this->aircraftModel->isExisting($data['name'])){
                 $data['nameError'] = 'Aircraft already exist';
             }
+            if(empty($data['model'])){
+                $data['modelError'] = 'Pleaes enter a model.';
+            }
+            if($data['capacity'] <= 0){
+                $data['capacityError'] = 'Capacity cannot be less than 1.';
+            }elseif($data['capacity'] > 9999){
+                $data['capacityError'] = 'Capacity value cannot exceed 9999';
+            }
             
 
             //check all errors
-            if(empty($data['nameError']) ){
+            if(empty($data['nameError']) && empty($data['modelError']) && empty($data['capacityError'])){
                 if($this->aircraftModel->add($data)){
-                    $data['successMessage'] = "Fare successfully added.";
+                    $data['successMessage'] = "Aircraft successfully added.";
                     $data['name'] ='';
-                   
+                    $data['model'] ='';
+                    $data['capacity'] ='';
                 }else{
                     die('Something went wrong.');
                 }
@@ -55,7 +68,11 @@ class Aircrafts extends Controller{
             $data = [
                 'title' => 'Add Aircraft',
                 'name' => '',
+                'model' => '',
+                'capacity' => '',
                 'nameError' => '',
+                'modelError' => '',
+                'capacityError' => '',
                 'successMessage' => ''
             ];
         }
@@ -76,20 +93,28 @@ class Aircrafts extends Controller{
                 'title' => 'Edit Aircraft',
                 'aircraft' => $aircraft,
                 'name' => trim($_POST['name']),
+                'model' => trim($_POST['model']),
+                'capacity' => ($_POST['capacity']),
                 'nameError' => '',
+                'modelError' => '',
+                'capacityError' => '',
                 'successMessage' => ''
             ];
             //validate inputs
             if(empty($data['name'])){
                 $data['nameError'] = 'Please enter a name.';
-            }elseif($data['name'] == $aircraft->name){
-                $data['nameError'] = 'No change made';
-            }elseif($this->aircraftModel->isExisting($data['name'])){
-                $data['nameError'] = 'Aircraft already exist';
+            }
+            if(empty($data['model'])){
+                $data['modelError'] = 'Pleaes enter a model.';
+            }
+            if($data['capacity'] <= 0){
+                $data['capacityError'] = 'Capacity cannot be less than 1.';
+            }elseif($data['capacity'] > 9999){
+                $data['capacityError'] = 'Capacity value cannot exceed 9999';
             }
 
             //check all errors
-            if(empty($data['nameError'])){
+            if(empty($data['nameError']) && empty($data['modelError']) && empty($data['capacityError'])){
                 if($this->aircraftModel->edit($data)){
                     header("location: " . URLROOT . "/aircrafts");
                 }else{
@@ -101,7 +126,11 @@ class Aircrafts extends Controller{
                 'title' => 'Edit Fare',
                 'aircraft' => $aircraft,
                 'name' => $aircraft->name,
+                'model' => $aircraft->model,
+                'capacity' => $aircraft->passenger_capacity,
                 'nameError' => '',
+                'modelError' => '',
+                'capacityError' => '',
                 'successMessage' => ''
             ];
         }

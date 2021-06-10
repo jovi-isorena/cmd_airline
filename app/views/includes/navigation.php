@@ -1,11 +1,11 @@
-<nav class=" justify-content-between navbar navbar-expand-md navbar-dark" style="background-color: #001e60;position:sticky;top:0px;z-index:1020;">
+<nav class="navbar navbar-expand-md navbar-dark justify-content-between w-100" style="background-color: #001e60;position:sticky;top:0px;z-index:1020;">
     <!-- <a class="navbar-brand m-auto brand-sm " href="./index.php"> <img src="../resources/PAL LOGO_8.png" alt="PAL LOGO" class="img-fluid" style="height:40px;"></a> -->
     <a class="navbar-brand  brand-sm " href="<?php echo URLROOT;?>"> <img src="<?php echo URLROOT;?>/public/img/PAL LOGO_8.png" alt="PAL LOGO" class="img-fluid" style="height:40px;" ></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse  justify-content-around" id="navbarNavDropdown">
-        <ul class="navbar-nav w-100 ml-auto" style="font-size:small;">
+    <div class="collapse navbar-collapse  " id="navbarNavDropdown"> <!--justify-content-end -->
+        <ul class="navbar-nav" style="font-size:small;">
             <?php if(isLoggedIn()=="employee"):?>
                 <li class="nav-item">
                     <a class="nav-link" href="<?php echo URLROOT . "/flights"?>">Flight Maintenance</a>
@@ -72,7 +72,7 @@
                         <a class="nav-link dropdown-toggle btn btn-outline-primary btn-sm" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Login
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <div class="dropdown-menu justify-content-right" aria-labelledby="navbarDropdownMenuLink">
                             <a href="<?php echo URLROOT;?>/users/login" class="dropdown-item btn btn-outline-primary" style="font-size:small;">As Traveller</a>
                             <a href="<?php echo URLROOT;?>/employees/login" class="dropdown-item btn btn-outline-primary" style="font-size:small;">As Employee</a>
                         </div>

@@ -5,7 +5,7 @@
 ?>
 <div class="container mt-5">
     <div class="row mb-5">
-    <a href="<?php echo URLROOT;?>/flights" class="btn btn-secondary"><i class="far fa-arrow-alt-circle-left"></i> Back To List</a>
+        <a href="<?php echo URLROOT;?>/flights" class="btn btn-secondary"><i class="far fa-arrow-alt-circle-left"></i> Back To List</a>
     </div>
     <div class="row">
         <h1><?php echo $data['title'];?></h1>
@@ -25,36 +25,15 @@
         </div>
     </div>
     <div class="row pb-5">
-        <div class="col-4">
-            <div class="card">
-                <div class="card-header alert-primary">
-                    <div class="row ">
-                        <div class="col-6 justify-content-left">
-                            <h3>Seat Plan</h3>
-                        </div>
-                        <div class="col-6 justify-content-right">
-                            <a href="<?php echo URLROOT . '/seats/manage/' . $data['flight']->flight_no;?>" class="btn btn-primary btn-block"><i class="fas fa-cog mr-2"></i>Manage</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Total Seats: 140</h5>
-                    <ul class="list-group">
-                        <li class="list-group-item">Economy: 80</li>
-                        <li class="list-group-item">Premium: 40</li>
-                        <li class="list-group-item">Business: 20</li>
-                    </ul> 
-                </div>
-            </div>
-        </div>
-        <div class="col-8">
+        
+        <div class="col-12">
             <div class="card">
                 <div class="card-header alert-primary">
                     <div class="row justify-content-between">
                         <div class="col-6">
                             <h3>Fares</h3>
                         </div>
-                        <div class="col-3">
+                        <div class="col-2">
                             <a href="<?php echo URLROOT;?>/flightFares/manage_fare/<?php echo $data['flight']->flight_no;?>" class="btn btn-primary btn-block"><i class="fas fa-cog mr-2"></i>Manage</a>
                         </div>
                     </div>
@@ -66,7 +45,7 @@
                             <?php foreach($data['flightFares'] as $fare):
                                     if($fare->class == 'Economy') :   
                             ?>
-                                <li class="list-group-item"><?php echo $fare->name . " : $" . $fare->price;?></li>
+                                <li class="list-group-item justify-content-between"><div><?php echo $fare->name . " : $" . $fare->price;?></div> <div class="badge badge-success"><?php echo $fare->available_slots;?> slots</div></li>
                             <?php endif; endforeach;?>
                         </ul>
                     </div>
@@ -76,7 +55,7 @@
                         <?php foreach($data['flightFares'] as $fare):
                                     if($fare->class == 'Premium Economy') :   
                             ?>
-                                <li class="list-group-item"><?php echo $fare->name . " : $" . $fare->price;?></li>
+                                <li class="list-group-item justify-content-between"><div><?php echo $fare->name . " : $" . $fare->price;?></div> <div class="badge badge-success"><?php echo $fare->available_slots;?> slots</div></li>
                             <?php endif; endforeach;?>
                         </ul>
                     </div>
@@ -86,7 +65,7 @@
                             <?php foreach($data['flightFares'] as $fare):
                                     if($fare->class == 'Business') :   
                             ?>
-                                <li class="list-group-item"><?php echo $fare->name . " : $" . $fare->price;?></li>
+                                <li class="list-group-item justify-content-between"><div><?php echo $fare->name . " : $" . $fare->price;?></div> <div class="badge badge-success"><?php echo $fare->available_slots;?> slots</div></li>
                             <?php endif; endforeach;?>
                         </ul>
                     </div>
@@ -106,7 +85,7 @@
                             <h4>Baggage</h4>
                         </div>
                         <div class="col-2">
-                            <a href="<?php echo URLROOT . "/flightExtras/addBaggage/" . $data['flight']->flight_no;?>" class="btn btn-primary"><i class="far fa-plus-square mr-2"></i>Add</a>
+                            <a href="<?php echo URLROOT . "/flightExtras/addBaggage/" . $data['flight']->flight_no;?>" class="btn btn-success btn-block"><i class="far fa-plus-square mr-2"></i>Add</a>
                         </div>
                     </div>
                 </div>
@@ -138,7 +117,7 @@
                             <h4>Meal</h4>
                         </div>
                         <div class="col-2">
-                        <a href="<?php echo URLROOT . "/flightExtras/addMeal/" . $data['flight']->flight_no;?>" class="btn btn-primary"><i class="far fa-plus-square mr-2"></i>Add</a>
+                        <a href="<?php echo URLROOT . "/flightExtras/addMeal/" . $data['flight']->flight_no;?>" class="btn btn-success btn-block"><i class="far fa-plus-square mr-2"></i>Add</a>
                         </div>
                     </div>
                 </div>
@@ -170,7 +149,7 @@
                             <h4>Roaming Service</h4>
                         </div>
                         <div class="col-2">
-                            <a href="<?php echo URLROOT . "/flightExtras/addRoaming/" . $data['flight']->flight_no;?>" class="btn btn-primary"><i class="far fa-plus-square mr-2"></i>Add</a>
+                            <a href="<?php echo URLROOT . "/flightExtras/addRoaming/" . $data['flight']->flight_no;?>" class="btn btn-success btn-block"><i class="far fa-plus-square mr-2"></i>Add</a>
                         </div>
                     </div>
                 </div>
