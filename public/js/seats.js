@@ -1,5 +1,9 @@
 let rows = document.getElementById("rows");
 let cols = document.getElementById("cols");
+let newLayout = document.getElementById("btnNew");
+let modLayout = document.getElementById("btnMod");
+let copyLayout = document.getElementById("btnCopy");
+let cancelNew = document.getElementById("btnCancel");
 let generate = document.getElementById("generate");
 let reset = document.getElementById("resetgrid");
 let gridWrapper = document.getElementById("seatgrid-wrapper");
@@ -15,13 +19,89 @@ let mouseIsDown = false;
 let aircraftId = document.getElementById("aircraftId").value;
 let layouts = document.getElementById("layouts");
 let isFullSeats = false;
-let selectedClass;
+let selectedClass = "0";
+let editMode = false;
+let modify = false;
+
+window.addEventListener("load", ()=>{
+    console.log("hey");
+    radSeat.forEach(rad=>{
+        rad.disabled = true;
+    })
+    modLayout.disabled = true;
+    copyLayout.disabled = true;
+});
+
+checkSeat = ()=>{
+    if(radSeat[0].checked) return radSeat[0].value; 
+    if(radSeat[1].checked) return radSeat[1].value; 
+    if(radSeat[2].checked) return radSeat[2].value; 
+    if(radSeat[3].checked) return radSeat[3].value; 
+};
 
 radSeat.forEach(rad => {
     rad.addEventListener("change", (e)=>{
         selectedClass = e.target.value;
     });
 });
+
+edit = ()=>{
+    const divNewLayout = document.getElementById("newLayout");
+    const divExistingLayouts = document.getElementById("existingLayouts");
+    divNewLayout.classList.toggle("d-block", true);
+    divNewLayout.classList.toggle("d-none", false);
+    divExistingLayouts.classList.toggle("d-block", false);
+    divExistingLayouts.classList.toggle("d-none", true);
+    editMode = true;
+    radSeat.forEach(rad=>{
+        rad.disabled = false;
+        rad.classList.toggle("d-none");
+    })
+    
+}
+
+newLayout.addEventListener("click", ()=>{
+    edit();
+    resetAll(gridWrapper);
+    modify = false;
+});
+copyLayout.addEventListener("click", ()=>{
+    edit();
+    modify = false;
+    document.getElementById("name").value = '';
+    document.getElementById("newLayout").getElementsByTagName("legend")[0].innerText = "Copy Layout";
+    
+});
+modLayout.addEventListener("click", ()=>{
+    edit();
+    modify = true;
+    document.getElementById("newLayout").getElementsByTagName("legend")[0].innerText = "Modify Layout";
+    
+});
+
+cancelNew.addEventListener("click", ()=>{
+    // const divNewLayout = document.getElementById("newLayout");
+    // const divExistingLayouts = document.getElementById("existingLayouts");
+    // divNewLayout.classList.toggle("d-block", false);
+    // divNewLayout.classList.toggle("d-none", true);
+    // divExistingLayouts.classList.toggle("d-block", true);
+    // divExistingLayouts.classList.toggle("d-none", false);
+    location.reload();
+})
+
+function resetAll(wrapper){
+    // if(wrapper.lastChild)wrapper.removeChild(wrapper.lastChild);
+    document.getElementById("name").value = '';
+    seats = []
+    rows.value = undefined;
+    cols.value = undefined;
+    xCoor = [];
+    yCoor = [];
+    rowCount = 0;
+    colCount = 0;
+    countSeats();
+    redraw(wrapper);
+}
 
 function redraw(wrapper){
     wrapper.removeChild(wrapper.lastChild);
@@ -34,6 +114,11 @@ layouts.addEventListener("change", async (e)=>{
     console.log(e.target.value);
     //fetch layout then generate
    if( e.target.value != 0){
+        modLayout.disabled = false;
+        modLayout.classList.toggle("disabled", false);
+        copyLayout.disabled = false;
+        copyLayout.classList.toggle("disabled", false);
+
         if(window.XMLHttpRequest)
             var ajax = new XMLHttpRequest();
         else
@@ -52,13 +137,20 @@ layouts.addEventListener("change", async (e)=>{
                 // console.log(resp.layout);
                 document.getElementById("name").value = response.name;
                 seats = JSON.parse(response.layout);
-                rowCount = seats.length;
-                colCount = seats[0].length;
+
+                rows.value = rowCount = seats.length;
+                cols.value = colCount = seats[0].length;
                 console.table(seats);
                 redraw(gridWrapper);
                 renameGrid();
             }
         }
+    }else{
+        resetAll(gridWrapper);
+        copyLayout.disabled = true;
+        copyLayout.classList.toggle("disabled", true);
+        modLayout.disabled = true;
+        modLayout.classList.toggle("disabled", true);
     }
 
 });
@@ -216,9 +308,9 @@ function createGrid() {
                 mouseIsDown = true;
                 // if(!isFullSeats){
                     // radSeat.forEach(rad => {
-                        console.log(selectedClass !=0 && seats[index][index2] != selectedClass);
+                        console.log(selectedClass !=0 && seats[index][index2] != selectedClass && seats[index][index2] != 0);
 
-                        if((!isFullSeats || selectedClass == 0) || (selectedClass !=0 && seats[index][index2] != selectedClass)){
+                        if( editMode && ((!isFullSeats || selectedClass == 0) || (selectedClass !=0 && seats[index][index2] != selectedClass && seats[index][index2] != 0))){
                             if(seats[index][index2] == selectedClass){
                                 seats[index][index2] = "0";
                             }else{
@@ -229,6 +321,7 @@ function createGrid() {
                     // });
                     redraw(gridWrapper);
                     renameGrid();
+                    console.table(seats);
                 // }
                 
             });
@@ -240,7 +333,7 @@ function createGrid() {
                     if(mouseIsDown){
                         // radSeat.forEach(rad => {
                             console.log(selectedClass !=0 && seats[index][index2] != selectedClass);
-                            if((!isFullSeats || selectedClass == 0 || (selectedClass !=0 && seats[index][index2] != selectedClass))){
+                            if(!isFullSeats || selectedClass == 0 || (selectedClass !=0 && seats[index][index2] != selectedClass && seats[index][index2] != 0)){
                                 seats[index][index2] = selectedClass;
                             }
                         // });

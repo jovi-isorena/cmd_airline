@@ -10,10 +10,10 @@ test.addEventListener("click", ()=>{
 });
 
 window.addEventListener("load", ()=>{
-    aircraftSelectors[0].selectedIndex = 1;
-    aircraftSelectors[0].dispatchEvent(new Event('change', {bubbles:true}));
-    layoutSelectors[0].selectedIndex = 1;
-    layoutSelectors[0].dispatchEvent(new Event('change', {bubbles:true}));
+    // aircraftSelectors[0].selectedIndex = 1;
+    // aircraftSelectors[0].dispatchEvent(new Event('change', {bubbles:true}));
+    // layoutSelectors[0].selectedIndex = 1;
+    // layoutSelectors[0].dispatchEvent(new Event('change', {bubbles:true}));
 });
 //checkbox eventlistener. for enabling and disabling selections
 oneForAll.addEventListener("change", ()=>{

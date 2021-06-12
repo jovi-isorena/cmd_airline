@@ -123,7 +123,7 @@ class Aircrafts extends Controller{
             }
         }else{
             $data = [
-                'title' => 'Edit Fare',
+                'title' => 'Edit Aircraft',
                 'aircraft' => $aircraft,
                 'name' => $aircraft->name,
                 'model' => $aircraft->model,

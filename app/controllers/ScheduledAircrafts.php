@@ -2,7 +2,7 @@
 
 class ScheduledAircrafts extends Controller{
     public function __construct(){
-        $this->scheduledAircraft = $this->model('ScheduledAircraft');
+        $this->scheduledAircraftModel = $this->model('ScheduledAircraft');
         $this->scheduleModel = $this->model('Schedule');
         $this->flightModel = $this->model('Flight');
         $this->aircraftModel = $this->model('Aircraft');
@@ -15,7 +15,12 @@ class ScheduledAircrafts extends Controller{
         $schedule = $this->scheduleModel->getScheduleById($scheduleId);
         $aircrafts = $this->aircraftModel->getAllActiveAircrafts();
         $flight = $this->flightModel->getFlightByNumber($schedule->flight_no);
-        
+        $insertData = [
+            'schedule' => '',
+            'day' => '',
+            'aircraft' => '',
+            'layout' => ''
+        ];
 
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             //sanitize post
@@ -158,12 +163,91 @@ class ScheduledAircrafts extends Controller{
 
             //check all errors
             if(empty($data['ac-mon-err']) && empty($data['ac-tue-err']) && empty($data['ac-wed-err']) && empty($data['ac-thu-err']) && empty($data['ac-fri-err']) && empty($data['ac-sat-err']) && empty($data['ac-sun-err'])){
-                // if($this->fareModel->add($data)){
-                    $data['successMessage'] = "Schedule successfully saved.";
-                    
-                // }else{
-                //     die('Something went wrong.');
-                // }
+                if($data['schedule']->monday){
+                    $insertData['schedule'] = $data['schedule']->schedule_id;
+                    $insertData['day'] = "Monday";
+                    $insertData['aircraft'] = $data['aircrafts-monday'];
+                    $insertData['layout'] = $data['layouts-monday'];
+                    if($this->scheduledAircraftModel->add($insertData)){
+                        $data['successMessage'] = "Schedule successfully saved.";
+                        
+                    }else{
+                        die('Something went wrong.');
+                    }
+                }
+                if($data['schedule']->tuesday){
+                    $insertData['schedule'] = $data['schedule']->schedule_id;
+                    $insertData['day'] = "Tuesday";
+                    $insertData['aircraft'] = $data['aircrafts-tuesday'];
+                    $insertData['layout'] = $data['layouts-tuesday'];
+                    if($this->scheduledAircraftModel->add($insertData)){
+                        $data['successMessage'] = "Schedule successfully saved.";
+                        
+                    }else{
+                        die('Something went wrong.');
+                    }
+                }
+                if($data['schedule']->wednesday){
+                    $insertData['schedule'] = $data['schedule']->schedule_id;
+                    $insertData['day'] = "Wednesday";
+                    $insertData['aircraft'] = $data['aircrafts-wednesday'];
+                    $insertData['layout'] = $data['layouts-wednesday'];
+                    if($this->scheduledAircraftModel->add($insertData)){
+                        $data['successMessage'] = "Schedule successfully saved.";
+                        
+                    }else{
+                        die('Something went wrong.');
+                    }
+                }
+                if($data['schedule']->thursday){
+                    $insertData['schedule'] = $data['schedule']->schedule_id;
+                    $insertData['day'] = "Thursday";
+                    $insertData['aircraft'] = $data['aircrafts-thursday'];
+                    $insertData['layout'] = $data['layouts-thursday'];
+                    if($this->scheduledAircraftModel->add($insertData)){
+                        $data['successMessage'] = "Schedule successfully saved.";
+                        
+                    }else{
+                        die('Something went wrong.');
+                    }
+                }
+                if($data['schedule']->friday){
+                    $insertData['schedule'] = $data['schedule']->schedule_id;
+                    $insertData['day'] = "Friday";
+                    $insertData['aircraft'] = $data['aircrafts-friday'];
+                    $insertData['layout'] = $data['layouts-friday'];
+                    if($this->scheduledAircraftModel->add($insertData)){
+                        $data['successMessage'] = "Schedule successfully saved.";
+                        
+                    }else{
+                        die('Something went wrong.');
+                    }
+                }
+                if($data['schedule']->saturday){
+                    $insertData['schedule'] = $data['schedule']->schedule_id;
+                    $insertData['day'] = "Saturday";
+                    $insertData['aircraft'] = $data['aircrafts-saturday'];
+                    $insertData['layout'] = $data['layouts-saturday'];
+                    if($this->scheduledAircraftModel->add($insertData)){
+                        $data['successMessage'] = "Schedule successfully saved.";
+                        
+                    }else{
+                        die('Something went wrong.');
+                    }
+                }
+                if($data['schedule']->sunday){
+                    $insertData['schedule'] = $data['schedule']->schedule_id;
+                    $insertData['day'] = "Sunday";
+                    $insertData['aircraft'] = $data['aircrafts-sunday'];
+                    $insertData['layout'] = $data['layouts-sunday'];
+                    if($this->scheduledAircraftModel->add($insertData)){
+                        $data['successMessage'] = "Schedule successfully saved.";
+                        
+                    }else{
+                        die('Something went wrong.');
+                    }
+                }
+                
             }
         }else{
             $data = [
