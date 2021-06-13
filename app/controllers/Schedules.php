@@ -24,7 +24,6 @@ class Schedules extends Controller{
         if(isLoggedIn()!="employee"){
             header("location: " . URLROOT . "/employees/login");
         }
-        var_dump($_POST);
         $flights = $this->flightModel->getAllActiveFlights();
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             //sanitize post data

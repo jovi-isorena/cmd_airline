@@ -32,8 +32,21 @@
                     <input type="date" name="departure" id="departure" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="arrival">Arrival</label>
-                    <input type="date" name="arrival" id="arrival" class="form-control">
+                    <label for="return">Return</label>
+                    <input type="date" name="return" id="return" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="passenger">Passenger</label>
+                    <input type="number" name="passenger" id="passenger" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="cabinClass">Cabin Class</label>
+                    <select name="cabinClass" id="cabinClass" class="form-control custom-select">
+                        <option value="0">Select a Class</option>
+                        <option value="economy">Economy</option>
+                        <option value="premium economy">Premium Economy</option>
+                        <option value="business">Business</option>
+                    </select>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">SEARCH FLIGHT</button>
             </form>
