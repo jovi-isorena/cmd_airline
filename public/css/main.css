@@ -36,6 +36,26 @@
     background-image: none;
 }
 
-/* .empty{
-    background-color: white;
-} */
+
+/* ========= SEARCH ============ */
+.dateResult{
+    /* border: 2px  solid; */
+    cursor: pointer;
+}
+.dateResult:hover{
+    outline: blue 5px solid;
+}
+
+.dateResult:hover>.card-header{
+    background-color: gray;
+}
+
+.selectedDate{
+    background-color: blue;
+    color: white;
+}
+
+.selectedDate .col-4::before{
+    content:  url("../img/baseline_check_circle_outline_white_24dp.png");
+    /* url("/img/icons8-sleeper-chair-96-dark.png"); */
+}

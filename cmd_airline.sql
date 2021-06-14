@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 12, 2021 at 12:06 PM
+-- Generation Time: Jun 14, 2021 at 03:15 PM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.3.9
 
@@ -47,7 +47,8 @@ INSERT INTO `aircraft` (`id`, `name`, `model`, `passenger_capacity`, `status`) V
 (3, 'Airbus321', 'Boeing 747', 85, 'active'),
 (4, 'Airbus322', 'Boeing 777', 90, 'active'),
 (5, 'test', '', 0, 'inactive'),
-(7, 'test', 'Boeing 747', 85, 'active');
+(7, 'test', 'Boeing 747', 85, 'active'),
+(8, 'Boeing 777-300', 'Boeing 777', 40, 'active');
 
 -- --------------------------------------------------------
 
@@ -213,7 +214,10 @@ INSERT INTO `flight` (`flight_no`, `duration_minutes`, `airport_origin`, `airpor
 ('85654', 1, 'LAM', 'LAX', 'International', 'active'),
 ('87667', 360, 'LAX', 'MNL', 'International', 'active'),
 ('PR1332', 300, 'MNL', 'MRQ', 'Local', 'active'),
-('test', 69, 'CVC', 'LAM', 'International', 'inactive');
+('test', 69, 'CVC', 'LAM', 'International', 'inactive'),
+('test1', 190, 'MNL', 'LAX', 'International', 'active'),
+('test2', 190, 'MNL', 'LAX', 'International', 'active'),
+('test3', 190, 'MNL', 'LAX', 'International', 'active');
 
 -- --------------------------------------------------------
 
@@ -285,7 +289,20 @@ INSERT INTO `flight_fare` (`id`, `flight_no`, `fare_id`, `price`, `available_slo
 (12, 'PR1332', 2, '1600.00', 20, 'active'),
 (13, 'PR1332', 3, '2000.00', 25, 'active'),
 (14, 'PR1332', 6, '2500.00', 10, 'active'),
-(15, 'PR1332', 8, '3000.00', 10, 'active');
+(15, 'PR1332', 8, '3000.00', 10, 'active'),
+(16, 'test1', 2, '1000.00', 10, 'active'),
+(17, 'test1', 3, '1200.00', 10, 'active'),
+(18, 'test1', 6, '1400.00', 10, 'active'),
+(19, 'test1', 7, '2000.00', 10, 'active'),
+(20, 'test1', 8, '2500.00', 10, 'active'),
+(21, 'test2', 1, '900.00', 10, 'active'),
+(22, 'test2', 3, '1200.00', 10, 'active'),
+(23, 'test2', 6, '1300.00', 10, 'active'),
+(24, 'test2', 7, '2000.00', 10, 'active'),
+(25, 'test2', 8, '2500.00', 10, 'active'),
+(26, 'test3', 2, '1000.00', 10, 'active'),
+(27, 'test3', 6, '1350.00', 10, 'active'),
+(28, 'test3', 7, '1900.00', 10, 'active');
 
 -- --------------------------------------------------------
 
@@ -331,18 +348,21 @@ CREATE TABLE `flight_schedule` (
 --
 
 INSERT INTO `flight_schedule` (`schedule_id`, `flight_no`, `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, `sunday`, `departure_time`, `gate`, `effective_start_date`, `effective_end_date`, `schedule_status`) VALUES
-(1, '12345', 1, 1, 1, 1, 1, 1, 0, '05:30:00', 'A2', '2021-05-20', '2021-07-01', 'Scheduled'),
-(2, '12222', 1, 0, 0, 0, 0, 0, 0, '18:00:00', 'A4', '2021-05-18', '2024-01-01', 'Scheduled'),
-(3, '12345', 1, 1, 0, 0, 0, 0, 0, '08:00:00', 'L3', '2021-05-18', '2024-01-01', 'Scheduled'),
-(4, '78888', 1, 0, 0, 0, 0, 0, 0, '12:00:00', 'L1', '2021-05-18', '2024-01-01', 'Scheduled'),
-(5, '87667', 1, 1, 0, 0, 0, 0, 0, '09:00:00', 'J2', '2021-05-18', '2024-01-01', 'Scheduled'),
-(6, '12345', 1, 0, 0, 0, 0, 0, 0, '17:42:00', 'A10', '2021-05-18', '2024-01-01', 'Scheduled'),
-(7, '11111', 1, 1, 1, 1, 1, 1, 1, '03:00:00', 'L10', '2021-05-21', '2024-01-01', 'Delayed'),
-(8, '11111', 1, 0, 0, 0, 0, 0, 0, '18:00:00', 'A14', '2021-05-18', '2024-01-01', 'Inactive'),
-(9, '12222', 1, 1, 1, 0, 0, 0, 0, '00:30:00', 'A10', '2021-05-18', '2024-01-01', 'Scheduled'),
-(10, '12345', 1, 1, 1, 0, 0, 0, 0, '22:40:00', 'L1', '2021-06-01', '2024-01-01', 'Inactive'),
-(11, '11111', 1, 0, 0, 0, 0, 0, 1, '17:22:00', 'A18', '2021-05-25', '2024-01-01', 'Inactive'),
-(12, '78888', 0, 0, 1, 0, 1, 0, 0, '11:25:00', 'A12', '2021-05-27', '2024-01-01', 'Scheduled');
+(1, '12345', 1, 1, 1, 1, 1, 1, 0, '05:30:00', 'A2', '2021-05-20', '2021-07-01', 'inactive'),
+(2, '12222', 1, 0, 0, 0, 0, 0, 0, '18:00:00', 'A4', '2021-05-18', '2024-01-01', 'inactive'),
+(3, '12345', 1, 1, 0, 0, 0, 0, 0, '08:00:00', 'L3', '2021-05-18', '2024-01-01', 'inactive'),
+(4, '78888', 1, 0, 0, 0, 0, 0, 0, '12:00:00', 'L1', '2021-05-18', '2024-01-01', 'inactive'),
+(5, '87667', 1, 1, 0, 0, 0, 0, 0, '09:00:00', 'J2', '2021-05-18', '2024-01-01', 'inactive'),
+(6, '12345', 1, 0, 0, 0, 0, 0, 0, '17:42:00', 'A10', '2021-05-18', '2024-01-01', 'inactive'),
+(7, '11111', 1, 1, 1, 1, 1, 1, 1, '03:00:00', 'L10', '2021-05-21', '2024-01-01', 'inactive'),
+(8, '11111', 1, 0, 0, 0, 0, 0, 0, '18:00:00', 'A14', '2021-05-18', '2024-01-01', 'inactive'),
+(9, '12222', 1, 1, 1, 0, 0, 0, 0, '00:30:00', 'A10', '2021-05-18', '2024-01-01', 'inactive'),
+(10, '12345', 1, 1, 1, 0, 0, 0, 0, '22:40:00', 'L1', '2021-06-01', '2024-01-01', 'inactive'),
+(11, '11111', 1, 0, 0, 0, 0, 0, 1, '17:22:00', 'A18', '2021-05-25', '2024-01-01', 'inactive'),
+(12, '78888', 0, 0, 1, 0, 1, 0, 0, '11:25:00', 'A12', '2021-05-27', '2024-01-01', 'inactive'),
+(13, 'test1', 1, 0, 1, 0, 1, 0, 1, '09:00:00', 'L10', '2021-06-13', '2022-12-12', 'Scheduled'),
+(14, 'test2', 1, 0, 1, 0, 0, 1, 0, '12:00:00', 'A10', '2021-06-13', '2022-06-12', 'Scheduled'),
+(15, 'test3', 0, 0, 1, 0, 1, 1, 0, '07:52:00', 'L10', '2021-06-13', '2022-06-12', 'Scheduled');
 
 -- --------------------------------------------------------
 
@@ -399,7 +419,22 @@ INSERT INTO `scheduled_aircraft` (`id`, `schedule_id`, `day`, `aircraft_id`, `la
 (1, 2, 'Monday', 2, 1),
 (2, 9, 'Monday', 2, 1),
 (3, 9, 'Tuesday', 2, 1),
-(4, 9, 'Wednesday', 2, 2);
+(4, 9, 'Wednesday', 2, 2),
+(5, 13, 'Monday', 2, 2),
+(6, 13, 'Wednesday', 2, 2),
+(7, 13, 'Friday', 2, 2),
+(8, 13, 'Sunday', 2, 2),
+(9, 14, 'Monday', 2, 2),
+(11, 14, 'Monday', 2, 2),
+(12, 14, 'Wednesday', 2, 2),
+(13, 14, 'Saturday', 2, 2),
+(14, 15, 'Wednesday', 2, 1),
+(15, 15, 'Friday', 2, 1),
+(16, 15, 'Saturday', 2, 1),
+(17, 13, 'Monday', 2, 1),
+(18, 13, 'Wednesday', 2, 2),
+(19, 13, 'Friday', 2, 13),
+(20, 13, 'Sunday', 2, 2);
 
 -- --------------------------------------------------------
 
@@ -455,7 +490,9 @@ INSERT INTO `seat_layout` (`id`, `name`, `layout`, `aircraft_id`, `status`) VALU
 (5, 'f', '[[\"0\",\"3\",\"0\"],[\"0\",\"3\",\"0\"],[\"0\",\"3\",\"0\"]]', 2, 'active'),
 (9, 'hehehe', '[[\"0\",\"1\",\"0\",\"0\"],[\"0\",\"1\",\"0\",\"0\"],[\"0\",\"1\",\"0\",\"0\"],[\"0\",\"1\",\"0\",\"0\"]]', 2, 'active'),
 (10, 'Test2', '[[\"1\",\"0\",\"0\",\"0\",\"0\",\"1\"],[\"1\",\"0\",\"0\",\"0\",\"0\",\"1\"],[\"1\",\"0\",\"0\",\"0\",\"0\",\"1\"],[\"1\",\"0\",\"0\",\"0\",\"0\",\"1\"],[\"1\",\"0\",\"0\",\"0\",\"0\",\"1\"],[\"1\",\"0\",\"0\",\"0\",\"0\",\"1\"],[\"1\",\"0\",\"0\",\"0\",\"0\",\"1\"],[\"1\",\"0\",\"0\",\"0\",\"0\",\"1\"],[\"1\",\"0\",\"0\",\"0\",\"0\",\"1\"],[\"1\",\"0\",\"0\",\"0\",\"0\",\"1\"]]', 3, 'active'),
-(11, 'SampleLayout1', '[[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"0\",\"3\",\"0\",\"0\",\"3\",\"0\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"0\",\"3\",\"0\",\"0\",\"3\",\"0\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"2\",\"0\",\"2\",\"2\",\"0\",\"2\"],[\"2\",\"0\",\"2\",\"2\",\"0\",\"2\"],[\"2\",\"0\",\"2\",\"2\",\"0\",\"2\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"]]', 4, 'active');
+(11, 'SampleLayout1', '[[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"0\",\"3\",\"0\",\"0\",\"3\",\"0\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"0\",\"3\",\"0\",\"0\",\"3\",\"0\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"2\",\"0\",\"2\",\"2\",\"0\",\"2\"],[\"2\",\"0\",\"2\",\"2\",\"0\",\"2\"],[\"2\",\"0\",\"2\",\"2\",\"0\",\"2\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"]]', 4, 'active'),
+(12, 'newlayout', '[[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"]]', 2, 'active'),
+(13, 'newlayout2', '[[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"]]', 2, 'active');
 
 -- --------------------------------------------------------
 
@@ -525,11 +562,59 @@ CREATE TABLE `vw_flight_info` (
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `vw_flight_prices`
+-- (See below for the actual view)
+--
+CREATE TABLE `vw_flight_prices` (
+`schedule_id` int(11)
+,`flight_no` varchar(10)
+,`monday` tinyint(1)
+,`tuesday` tinyint(1)
+,`wednesday` tinyint(1)
+,`thursday` tinyint(1)
+,`friday` tinyint(1)
+,`saturday` tinyint(1)
+,`sunday` tinyint(1)
+,`departure_time` time
+,`gate` varchar(10)
+,`effective_start_date` date
+,`effective_end_date` date
+,`schedule_status` varchar(10)
+,`duration_minutes` int(11)
+,`airport_origin` varchar(10)
+,`origin_name` varchar(100)
+,`origin_address` varchar(200)
+,`airport_destination` varchar(10)
+,`destination_name` varchar(100)
+,`destination_address` varchar(200)
+,`type` varchar(20)
+,`flight_status` varchar(10)
+,`id` int(11)
+,`fare_id` int(11)
+,`price` decimal(10,2)
+,`available_slots` int(11)
+,`status` varchar(10)
+,`name` varchar(50)
+,`class` varchar(50)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Structure for view `vw_flight_info`
 --
 DROP TABLE IF EXISTS `vw_flight_info`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_flight_info`  AS  select `s`.`schedule_id` AS `schedule_id`,`s`.`flight_no` AS `flight_no`,`s`.`monday` AS `monday`,`s`.`tuesday` AS `tuesday`,`s`.`wednesday` AS `wednesday`,`s`.`thursday` AS `thursday`,`s`.`friday` AS `friday`,`s`.`saturday` AS `saturday`,`s`.`sunday` AS `sunday`,`s`.`departure_time` AS `departure_time`,`s`.`gate` AS `gate`,`s`.`effective_start_date` AS `effective_start_date`,`s`.`effective_end_date` AS `effective_end_date`,`s`.`schedule_status` AS `schedule_status`,`f`.`duration_minutes` AS `duration_minutes`,`f`.`airport_origin` AS `airport_origin`,(select `a`.`name` from `airport` `a` where `a`.`airport_code` = `f`.`airport_origin`) AS `origin_name`,(select `a`.`address` from `airport` `a` where `a`.`airport_code` = `f`.`airport_origin`) AS `origin_address`,`f`.`airport_destination` AS `airport_destination`,(select `a`.`name` from `airport` `a` where `a`.`airport_code` = `f`.`airport_destination`) AS `destination_name`,(select `a`.`address` from `airport` `a` where `a`.`airport_code` = `f`.`airport_destination`) AS `destination_address`,`f`.`type` AS `type`,`f`.`flight_status` AS `flight_status` from (`flight_schedule` `s` left join `flight` `f` on(`s`.`flight_no` = `f`.`flight_no`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `vw_flight_prices`
+--
+DROP TABLE IF EXISTS `vw_flight_prices`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_flight_prices`  AS  select `s`.`schedule_id` AS `schedule_id`,`s`.`flight_no` AS `flight_no`,`s`.`monday` AS `monday`,`s`.`tuesday` AS `tuesday`,`s`.`wednesday` AS `wednesday`,`s`.`thursday` AS `thursday`,`s`.`friday` AS `friday`,`s`.`saturday` AS `saturday`,`s`.`sunday` AS `sunday`,`s`.`departure_time` AS `departure_time`,`s`.`gate` AS `gate`,`s`.`effective_start_date` AS `effective_start_date`,`s`.`effective_end_date` AS `effective_end_date`,`s`.`schedule_status` AS `schedule_status`,`f`.`duration_minutes` AS `duration_minutes`,`f`.`airport_origin` AS `airport_origin`,(select `a`.`name` from `airport` `a` where `a`.`airport_code` = `f`.`airport_origin`) AS `origin_name`,(select `a`.`address` from `airport` `a` where `a`.`airport_code` = `f`.`airport_origin`) AS `origin_address`,`f`.`airport_destination` AS `airport_destination`,(select `a`.`name` from `airport` `a` where `a`.`airport_code` = `f`.`airport_destination`) AS `destination_name`,(select `a`.`address` from `airport` `a` where `a`.`airport_code` = `f`.`airport_destination`) AS `destination_address`,`f`.`type` AS `type`,`f`.`flight_status` AS `flight_status`,`ff`.`id` AS `id`,`ff`.`fare_id` AS `fare_id`,`ff`.`price` AS `price`,`ff`.`available_slots` AS `available_slots`,`ff`.`status` AS `status`,`fr`.`name` AS `name`,`fr`.`class` AS `class` from (((`flight_schedule` `s` join `flight` `f`) join `flight_fare` `ff`) join `fare` `fr`) where `s`.`schedule_status` <> 'inactive' and `f`.`flight_status` <> 'inactive' and `ff`.`status` <> 'inactive' and `fr`.`fare_status` <> 'inactive' and `s`.`wednesday` <> 0 and 1 and `s`.`flight_no` = `f`.`flight_no` and `f`.`flight_no` = `ff`.`flight_no` and `ff`.`fare_id` = `fr`.`id` ;
 
 --
 -- Indexes for dumped tables
@@ -668,7 +753,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `aircraft`
 --
 ALTER TABLE `aircraft`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `employee`
@@ -698,7 +783,7 @@ ALTER TABLE `flight_extra`
 -- AUTO_INCREMENT for table `flight_fare`
 --
 ALTER TABLE `flight_fare`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `flight_reservation`
@@ -710,7 +795,7 @@ ALTER TABLE `flight_reservation`
 -- AUTO_INCREMENT for table `flight_schedule`
 --
 ALTER TABLE `flight_schedule`
-  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `passenger`
@@ -728,7 +813,7 @@ ALTER TABLE `purchased_extra`
 -- AUTO_INCREMENT for table `scheduled_aircraft`
 --
 ALTER TABLE `scheduled_aircraft`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `scheduled_seat`
@@ -746,7 +831,7 @@ ALTER TABLE `seat`
 -- AUTO_INCREMENT for table `seat_layout`
 --
 ALTER TABLE `seat_layout`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `users`
