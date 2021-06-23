@@ -1,15 +1,27 @@
 // let dateResults = document.getElementsByClassName("dateResult");
-let dateResults = document.getElementsByName("selectedDeptDate");
-console.log(dateResults);
-
-for (const date of dateResults){
-    date.onchange = ()=>{
-        for (const otherDate of dateResults){
-            if(date != otherDate)
+const deptResults = document.getElementsByName("selectedDeptDate");
+const retResults = document.getElementsByName("selectedRetDate");
+const myForm = document.getElementById("myForm");
+for (const dept of deptResults){
+    dept.onchange = ()=>{
+        for (const otherDate of deptResults){
+            if(dept != otherDate)
                 otherDate.parentElement.classList.remove("selectedDate");
         }
-        date.parentElement.classList.toggle("selectedDate", date.checked);
+        dept.parentElement.classList.toggle("selectedDate", dept.checked);
 
     };
     // date.addEventListener("")
+}
+
+
+for (const ret of retResults){
+    ret.onchange = ()=>{
+        for (const otherDate of retResults){
+            if(ret != otherDate)
+                otherDate.parentElement.classList.remove("selectedDate");
+        }
+        ret.parentElement.classList.toggle("selectedDate", ret.checked);
+
+    };
 }

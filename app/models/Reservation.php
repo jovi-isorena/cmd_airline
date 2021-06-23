@@ -35,15 +35,24 @@ class Reservation{
         $this->db->bind(":saturday", $data['saturday']);
         $this->db->bind(":sunday", $data['sunday']);
         $this->db->bind(":dept_date", $data['dept']->format('Y-m-d'));
-        $this->db->bind(":origin", "%".$data['origin']."%");
-        $this->db->bind(":originName", "%".$data['origin']."%");
-        $this->db->bind(":originAdd", "%".$data['origin']."%");
-        $this->db->bind(":destination", "%".$data['destination']."%");
-        $this->db->bind(":destinationName", "%".$data['destination']."%");
-        $this->db->bind(":destinationAdd", "%".$data['destination']."%");
+        $this->db->bind(":origin", "%".$data['targetOrigin']->airport_code."%");
+        $this->db->bind(":originName", "%".$data['targetOrigin']->name."%");
+        $this->db->bind(":originAdd", "%".$data['targetOrigin']->address."%");
+        $this->db->bind(":destination", "%".$data['targetDestination']->airport_code."%");
+        $this->db->bind(":destinationName", "%".$data['targetDestination']->name."%");
+        $this->db->bind(":destinationAdd", "%".$data['targetDestination']->address."%");
         // print_r($this->db->stmt());
         return $this->db->resultSet();
     }
+
+    function getFaresByFlightClass($sched, $class){
+        $this->db->query("SELECT * FROM vw_flight_prices WHERE schedule_id = :sched AND class=:class");
+        $this->db->bind(":sched", $sched);
+        $this->db->bind(":class", $class);
+        return $this->db->resultSet();
+    }
+
+    
 
     function searchMinimumPrice($data){
         $this->db->query("SELECT schedule_id, flight_no, MIN(price) as 'minimum_price'
@@ -60,10 +69,13 @@ class Reservation{
                 OR (saturday AND :saturday)
                 OR (sunday AND :sunday))         
             ");
+        // echo '<pre>';    
+        // var_dump($data);
+        // echo '</pre>';    
         $this->db->bind(":date", $data['targetDate']);
         $this->db->bind(":class", $data['cabinClass']);
-        $this->db->bind(":origin", $data['origin']->airport_code);
-        $this->db->bind(":destination", $data['destination']->airport_code);
+        $this->db->bind(":origin", $data['targetOrigin']->airport_code);
+        $this->db->bind(":destination", $data['targetDestination']->airport_code);
         $this->db->bind(":monday", $data['monday']);
         $this->db->bind(":tuesday", $data['tuesday']);
         $this->db->bind(":wednesday", $data['wednesday']);

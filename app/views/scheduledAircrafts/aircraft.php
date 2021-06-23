@@ -18,7 +18,7 @@
                     <p class="card-text">Origin: <?php echo $data['flight']->airport_origin?></p>
                     <p class="card-text">Destination: <?php echo $data['flight']->airport_destination?></p>
                     <p class="card-text">Departure Time: <?php echo $data['schedule']->departure_time?></p>
-                    <div class="btn btn-secondary" id="test">Test</div>
+                    <!-- <div class="btn btn-secondary" id="test">Test</div> -->
                 </div>
             </div>
         </div>

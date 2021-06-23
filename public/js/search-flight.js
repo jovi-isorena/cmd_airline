@@ -9,3 +9,16 @@ roundTrip.onchange = ()=>{
     returnDate.classList.toggle("d-none", false);
     returnDate.classList.toggle("d-block", true);
 };
+
+window.onload = ()=>{
+    if(roundTrip.checked){
+        returnDate.classList.toggle("d-block", true);
+        returnDate.classList.toggle("d-none", false);
+
+    }
+    else if(oneWay.checked){
+        returnDate.classList.toggle("d-block", false);
+        returnDate.classList.toggle("d-none", true);
+
+    }
+};

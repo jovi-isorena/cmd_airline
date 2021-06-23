@@ -10,25 +10,25 @@
             <div class="row">
 
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="flightType" id="oneWay" >
-                    <label class="form-check-label" for="oneWay">One Way</label>
+                    <input class="form-check-input" type="radio" name="flightType" id="roundTrip" value="roundTrip" checked>
+                    <label class="form-check-label" for="roundTrip">Round Trip</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="flightType" id="roundTrip">
-                    <label class="form-check-label" for="roundTrip">Round Trip</label>
+                    <input class="form-check-input" type="radio" name="flightType" id="oneWay" value="oneWay">
+                    <label class="form-check-label" for="oneWay">One Way</label>
                 </div>
             </div>
             <div class="row">
                 <div class="col-6">
                     <div class="form-group">
                         <label for="origin">Origin</label>
-                        <input type="text" name="origin" id="origin" class="form-control" autocomplete="off">
+                        <input type="text" name="origin" id="origin" class="form-control" autocomplete="off" value="mnl">
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-group">
                         <label for="destination">Destination</label>
-                        <input type="text" name="destination" id="destination" class="form-control" autocomplete="off">
+                        <input type="text" name="destination" id="destination" class="form-control" autocomplete="off" value="lax">
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label for="departure">Departure</label>
-                        <input type="date" name="departure" id="departure" class="form-control">
+                        <input type="date" name="departure" id="departure" class="form-control" value="<?php echo getDate();?>">
                     </div>
                 </div>
                 <div class="col-6">

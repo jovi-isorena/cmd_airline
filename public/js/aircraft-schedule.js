@@ -4,10 +4,10 @@ let oneForAll = document.getElementById("oneForAll");
 let test = document.getElementById("test");
 // console.log(aircraftSelectors);
 
-test.addEventListener("click", ()=>{
-    console.log(typeof(aircraftSelectors.children));
-    console.log(aircraftSelectors.children.filter(sel=> sel.children.map(opt => opt.value == 1)));
-});
+// test.addEventListener("click", ()=>{
+//     console.log(typeof(aircraftSelectors.children));
+//     console.log(aircraftSelectors.children.filter(sel=> sel.children.map(opt => opt.value == 1)));
+// });
 
 window.addEventListener("load", ()=>{
     // aircraftSelectors[0].selectedIndex = 1;
