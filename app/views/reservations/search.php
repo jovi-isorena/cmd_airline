@@ -33,21 +33,18 @@
                         </span>
                     </div>
                     <div class="row">
-                        <div class="col-5">
+                        <div class="col-7">
                             <span>
                                 Please select departure date
                             </span>
                         </div>
                         
-                        <div class="col-7">
-                            <span class="col-4">
+                        <div class="col-5">
+                            <span class="col-6">
                                 <i class="fas fa-tag text-danger" style="transform: rotate(90deg); "></i> Lowest Fares
                             </span>
-                            <span class="col-4">
+                            <span class="col-6">
                                 <img src="<?php echo URLROOT . '/public/img/baseline_check_circle_outline_black_18dp.png'?>"/> Selection
-                            </span>
-                            <span class="col-4">
-                                Overlapping Date
                             </span>
                         </div>
                     </div>
@@ -121,21 +118,18 @@
                             </span>
                         </div>
                         <div class="row">
-                            <div class="col-5">
+                            <div class="col-7">
                                 <span>
                                     Please select return date
                                 </span>
                             </div>
                             
-                            <div class="col-7">
-                                <span class="col-4">
+                            <div class="col-5">
+                                <span class="col-6">
                                     <i class="fas fa-tag text-danger" style="transform: rotate(90deg); "></i> Lowest Fares
                                 </span>
-                                <span class="col-4">
+                                <span class="col-6">
                                     <img src="<?php echo URLROOT . '/public/img/baseline_check_circle_outline_black_18dp.png'?>"/> Selection
-                                </span>
-                                <span class="col-4">
-                                    Overlapping Date
                                 </span>
                             </div>
                         </div>
@@ -156,7 +150,7 @@
                                         </div>
                                         <div class="card-body p-2">
                                             <div class="row justify-content-between">
-                                                <div class="col-6">
+                                                <div class="col-8">
                                                     <p class="card-title mb-1 font-weight-bold"><?php echo $date->format('d'); ?></p>
                                                     <p class="card-title text-uppercase font-weight-bold"><?php echo $date->format('M'); ?></p>
                     

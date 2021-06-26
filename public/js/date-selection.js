@@ -1,7 +1,6 @@
 // let dateResults = document.getElementsByClassName("dateResult");
 const deptResults = document.getElementsByName("selectedDeptDate");
 const retResults = document.getElementsByName("selectedRetDate");
-const myForm = document.getElementById("myForm");
 for (const dept of deptResults){
     dept.onchange = ()=>{
         for (const otherDate of deptResults){

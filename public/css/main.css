@@ -1,3 +1,4 @@
+/* primary color: #001e60 */
 .full-h{
     min-height: 100vh;
 }
@@ -51,7 +52,7 @@
 }
 
 .selectedDate{
-    background-color: blue;
+    background-color: #001e60;
     color: white;
 }
 
@@ -59,3 +60,47 @@
     content:  url("../img/baseline_check_circle_outline_white_24dp.png");
     /* url("/img/icons8-sleeper-chair-96-dark.png"); */
 }
+
+/* ========= SELECT ============ */
+.date-row>ul>li{
+    
+    border-bottom: solid black 1px;
+}
+.date-row>ul>:nth-child(4){
+    /* box-sizing: content-box; */
+    border-top: 2px black solid;
+    border-right: 2px black solid;
+    border-left: 2px black solid;
+    border-bottom: solid white 1px;
+    /* background-color: brown ; */
+    /* border-bottom: 2px white solid; */
+    /* outline: 2px black solid; */
+    
+
+}
+
+/* .date-row>ul>li{
+    padding: 0;
+    margin: 0;
+} */
+.date-row>ul{
+    border-bottom: solid black 1px;
+}
+
+.fareBox{
+    box-shadow: 5px 5px 2px gray;
+    background-color: lightgray;
+}
+.disabledFareBox{
+    /* box-shadow: 5px 2px 2px gray; */
+    background-color: lightgray;
+}
+.selectedFareBox{
+    box-shadow: 5px 5px 2px gray;
+    background-color: #001e60;
+    color: white;
+}
+.selectedFareBox::after{
+    content:  url("../img/baseline_check_circle_outline_white_24dp.png");
+}
+
