@@ -107,7 +107,7 @@
 
                 </div>
                 <div class="row">
-                    <div class="" style="width: 1.5rem;" id="yCoor" style="width:fit-content">
+                    <div class="" style="width: 2rem;" id="yCoor" style="width:fit-content">
                         
                     </div>
                     <div class="ml-3" id="seatgrid-wrapper">

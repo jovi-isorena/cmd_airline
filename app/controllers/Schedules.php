@@ -224,5 +224,4 @@ class Schedules extends Controller{
         $this->view("schedules/edit", $data);
     }
 
-    
 }

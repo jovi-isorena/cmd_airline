@@ -5,9 +5,14 @@
 .box{
     height: 1.5rem;
     width: 1.5rem;
-    border: 1px solid slategray;
+    border: 1px solid rgb(97, 104, 112);
     /* background-color: slategray; */
     /* margin: 5px; */
+}
+
+.custom-primary{
+    background-color: #001e60;
+    color:white;
 }
 
 .labelBox{
@@ -36,6 +41,7 @@
 .empty{
     background-image: none;
 }
+
 
 
 /* ========= SEARCH ============ */
@@ -75,14 +81,14 @@
     /* background-color: brown ; */
     /* border-bottom: 2px white solid; */
     /* outline: 2px black solid; */
-    
-
+}
+.flightDetail:hover{
+    background-color: lightblue;
+}
+.selectedFlightDetail{
+    border-left: red 5px solid;
 }
 
-/* .date-row>ul>li{
-    padding: 0;
-    margin: 0;
-} */
 .date-row>ul{
     border-bottom: solid black 1px;
 }
@@ -104,3 +110,42 @@
     content:  url("../img/baseline_check_circle_outline_white_24dp.png");
 }
 
+/* ========= SEAT SELECTION ============ */
+
+
+.box2{
+    height: 2rem;
+    width: 2rem;
+    margin: 2px;
+    /* border: 1px solid rgb(97, 104, 112); */
+    /* background-color: slategray; */
+    /* margin: 5px; */
+}
+
+.labelBox2{
+    height: 2rem;
+    width: 2rem;
+    margin: 2px;
+    /* border: 1px solid slategray; */
+    color: slategray;
+    text-align: center;
+}
+
+.seat{
+    background-image: url("../img/icons8-sleeper-chair-96-light.png");
+    background-size: cover;
+    background-color: lightgray;
+    
+}
+.taken{
+    background-image: url("../img/cross-black.png");
+    background-size: cover;
+    background-color: lightgray;
+}
+.selectedSeat{
+    background-color: #1b62fd;
+}
+
+.flightTab{
+    cursor: pointer;
+}

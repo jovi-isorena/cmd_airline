@@ -2,10 +2,20 @@
     require APPROOT . '/views/includes/head.php';
     require APPROOT . '/views/includes/navigation.php';
 ?>
-<pre><?php //var_dump($data['fareMatrix']); var_dump(min(min($data['fareMatrix']['departureFlights'])));var_dump(min(min($data['fareMatrix']['returnFlights'])));?></pre>
+<pre><?php //var_dump($data);?></pre>
 <?php
-    $minDeptFare = (min(min($data['fareMatrix']['departureFlights'])));
-    $minRetFare = (min(min($data['fareMatrix']['returnFlights'])));
+    $deptFares = [];
+    $retFares = [];
+    foreach($data['fareMatrix']['departureFlights'] as $fl){
+        $deptFares = array_merge($deptFares, array_values($fl));
+    }
+    $minDeptFare = min($deptFares);
+    if($data['flightType'] == "roundTrip"){
+        foreach($data['fareMatrix']['returnFlights'] as $fl){
+            $retFares = array_merge($retFares, array_values($fl));
+        }
+        $minRetFare = min($retFares);
+    }
 ?> 
 <div class="container full-h">
 
@@ -85,7 +95,7 @@
             </div>
             <div class="row p-0 m-0 justify-content-center" id="deptFlightResult">
                 <?php foreach($data['deptFlights'] as $flight):?>
-                    <div class="flightDetail row w-100 justify-content-center  my-3">
+                    <div class="flightDetail row w-100 justify-content-center p-3 my-3">
                         <div class="col-4 p-0">
                             <div>
                                 <span class="font-weight-bold">
@@ -106,7 +116,7 @@
                                     <?php 
                                         $arrivalTime = new DateTime($flight->departure_time);
                                         $arrivalTime->add(new DateInterval("PT".$flight->duration_minutes."M"));
-                                        echo $arrivalTime->format('H:i A');
+                                        echo $arrivalTime->format('h:i A');
                                     ?>
                                 </span>
                                 <span><?php echo $flight->destination_name;?></span>
@@ -199,14 +209,14 @@
             </div>
             <div class="row p-0 m-0 justify-content-center" id="retFlightResult">
                 <?php foreach($data['retFlights'] as $flight):?>
-                    <div class="flightDetail row w-100 justify-content-center  my-3">
-                    <div class="col-4 p-0">
+                    <div class="flightDetail row w-100 justify-content-center p-3 my-3">
+                        <div class="col-4 p-0">
                             <div>
                                 <span class="font-weight-bold">
                                     <?php 
                                         $departureTime = new DateTime($flight->departure_time);
 
-                                        echo $departureTime->format('H:i A');
+                                        echo $departureTime->format('h:i A');
                                     ?>
                                 </span>
                                 <span><?php echo $flight->origin_name;?></span>
@@ -241,7 +251,7 @@
                                     <input class="d-none" type="radio" <?php echo $data['fareMatrix']["returnFlights"][$flight->schedule_id][$fare] === "Not Available"?'':'name="retFareMatrix"';?> id="<?php echo $flight->schedule_id.$fare;?>" data-flight="<?php echo $flight->schedule_id;?>" data-fare="<?php echo $fare;?>" <?php echo $data['fareMatrix']["returnFlights"][$flight->schedule_id][$fare] === "Not Available"?'disabled':'';?>>
                                     
                                     <div class="col pt-5">
-                                        <?php if($data['fareMatrix']["returnFlights"][$flight->schedule_id][$fare] === $minRetFare):?>
+                                        <?php if($data['fareMatrix']["returnFlights"][$flight->schedule_id][$fare] == $minRetFare):?>
                                             <i class="fas fa-tag text-danger justify-self-start" style="transform: rotate(90deg); "></i>
                                         <?php endif;?>
                                         <?php echo $data['fareMatrix']["returnFlights"][$flight->schedule_id][$fare];?>

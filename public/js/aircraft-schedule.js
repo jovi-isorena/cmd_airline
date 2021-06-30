@@ -20,13 +20,18 @@ oneForAll.addEventListener("change", ()=>{
     aircraftSelectors.forEach(acs=>{
         // console.log(oneForAll.checked);
         if(acs != aircraftSelectors[0]){
-            acs.disabled = oneForAll.checked;
+            if(oneForAll.checked){
+                acs.style.pointerEvents = "none";
+            }
+                
         }
     });
     layoutSelectors.forEach(lcs=>{
         // console.log(oneForAll.checked);
         if(lcs != layoutSelectors[0]){
-            lcs.disabled = oneForAll.checked;
+            if(oneForAll.checked){
+                lcs.style.pointerEvents = "none";
+            }
         }
     });
 });
@@ -132,7 +137,7 @@ layoutSelectors.forEach(layoutSelector => {
 async function clearGrid(wrapper){
     while(wrapper.children[0].lastChild) wrapper.children[0].removeChild(wrapper.children[0].lastChild); //removes xCoor
     while(wrapper.children[1].children[0].lastChild) wrapper.children[1].children[0].removeChild(wrapper.children[1].children[0].lastChild); //removes yCoor
-    wrapper.children[1].children[1].removeChild(wrapper.children[1].children[1].lastChild); //removes grid
+    while(wrapper.children[1].children[1].lastChild) wrapper.children[1].children[1].removeChild(wrapper.children[1].children[1].lastChild); //removes grid
 }
 
 function createGrid(wrapper, seats) {

@@ -8,41 +8,6 @@ class ScheduledAircraft{
     }
 
     public function add($data){
-        // $data = [
-        //     'title' => 'Aircraft Schedule',
-        //     'flight' => $flight,
-        //     'schedule' => $schedule,
-        //     'aircrafts' => $aircrafts,
-        //     'aircrafts-monday' => '',
-        //     'aircrafts-tuesday' => '',
-        //     'aircrafts-wednesday' => '',
-        //     'aircrafts-thursday' => '',
-        //     'aircrafts-friday' => '',
-        //     'aircrafts-saturday' => '',
-        //     'aircrafts-sunday' => '',
-        //     'layouts-monday' => '',
-        //     'layouts-tuesday' => '',
-        //     'layouts-wednesday' => '',
-        //     'layouts-thursday' => '',
-        //     'layouts-friday' => '',
-        //     'layouts-saturday' => '',
-        //     'layouts-sunday' => '',
-        //     'ac-mon-err' => '',
-        //     'ac-tue-err' => '',
-        //     'ac-wed-err' => '',
-        //     'ac-thu-err' => '',
-        //     'ac-fri-err' => '',
-        //     'ac-sat-err' => '',
-        //     'ac-sun-err' => '',
-        //     'lay-mon-err' => '',
-        //     'lay-tue-err' => '',
-        //     'lay-wed-err' => '',
-        //     'lay-thu-err' => '',
-        //     'lay-fri-err' => '',
-        //     'lay-sat-err' => '',
-        //     'lay-sun-err' => '',
-        //     'successMessage' => ''
-        // ];
         $this->db->query("INSERT INTO `scheduled_aircraft`(`schedule_id`, `day`, `aircraft_id`, `layout_id`) VALUES (:schedule,:day,:aircraft,:layout)");
         $this->db->bind(":schedule",$data['schedule']);
         $this->db->bind(":day",$data['day']);
@@ -67,7 +32,11 @@ class ScheduledAircraft{
 
     }
 
-    public function getScheduledAircraft($data){
-        
+    public function getScheduledAircraft($sched_id, $day){
+        $this->db->query("SELECT * FROM `scheduled_aircraft` WHERE `schedule_id` = :sched AND `day` = :day;");
+        $this->db->bind(":sched", $sched_id);
+        $this->db->bind(":day", $day);
+        return $this->db->single();
     }
+    
 }

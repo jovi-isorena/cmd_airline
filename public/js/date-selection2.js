@@ -34,13 +34,13 @@ for (const dept of deptFares){
             if(dept != otherFare)
                 otherFare.parentElement.classList.remove("selectedFareBox");
                 otherFare.parentElement.classList.add("fareBox");
+                otherFare.parentElement.parentElement.parentElement.classList.remove("selectedFlightDetail");
         }
         dept.parentElement.classList.toggle("selectedFareBox", dept.checked);
+        dept.parentElement.parentElement.parentElement.classList.toggle("selectedFlightDetail",true);
+        
         document.getElementById("selectedDeptFlight").value = dept.getAttribute("data-flight");
         document.getElementById("selectedDeptFare").value = dept.getAttribute("data-fare");
-    };
-    dept.onload = ()=>{
-        
     };
 }
 for (const ret of retFares){
@@ -49,8 +49,12 @@ for (const ret of retFares){
             if(ret != otherFare)
                 otherFare.parentElement.classList.remove("selectedFareBox");
                 otherFare.parentElement.classList.add("fareBox");
+                otherFare.parentElement.parentElement.parentElement.classList.remove("selectedFlightDetail");
+
         }
         ret.parentElement.classList.toggle("selectedFareBox", ret.checked);
+        ret.parentElement.parentElement.parentElement.classList.toggle("selectedFlightDetail",true);
+
         document.getElementById("selectedRetFlight").value = ret.getAttribute("data-flight");
         document.getElementById("selectedRetFare").value = ret.getAttribute("data-fare");
     };

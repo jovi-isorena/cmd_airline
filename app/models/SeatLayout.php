@@ -7,6 +7,7 @@ class SeatLayout{
         $this->db = new Database();
     }
 
+    
     public function getLayoutsByAircraft($aircraftId){
         $this->db->query("SELECT * FROM `seat_layout` WHERE `aircraft_id` = :id AND `status` = 'active';");
         $this->db->bind(":id", $aircraftId);

@@ -23,6 +23,12 @@ class Schedule{
         return $this->db->single();
     }
 
+    public function getScheduleDetails($id){
+        $this->db->query("SELECT * FROM `vw_flight_info` WHERE schedule_id = :id");
+        $this->db->bind(":id", $id);
+        return $this->db->single();
+    }
+
     public function add($data){
         $this->db->query("INSERT INTO `flight_schedule`(`flight_no`, `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, `sunday`, `departure_time`, `gate`, `effective_start_date`, `effective_end_date`, `schedule_status`) VALUES (:num,:mon,:tue,:wed,:thu,:fri,:sat,:sun,:time,:gate,:start,:end,'Scheduled')");
         // INSERT INTO `flight_schedule` (`schedule_id`, `flight_no`, `departure_time`, `departure_date`, `gate`, `schedule_status`) VALUES (NULL, '11111', '05:30:00', '2021-05-18', 'A2', 'Scheduled');
