@@ -7,13 +7,19 @@ class FlightExtra{
     }
 
     public function getBaggageByFlightNo($flight_no){
-
+        $this->db->query("SELECT a.`id`, `flight_no`, `extra_id`, b.`type`, b.`name`, b.`description`, b.`price`, a.`status` FROM `flight_extra` a, `extra` b WHERE a.`extra_id` = b.`id` AND `flight_no` = :flight AND b.`type` = 'Baggage' AND `status` = 'active';");
+        $this->db->bind(":flight", $flight_no);
+        return $this->db->resultSet();
     }
     public function getMealByFlightNo($flight_no){
-        
+        $this->db->query("SELECT a.`id`, `flight_no`, `extra_id`, b.`type`, b.`name`, b.`description`, b.`price`, a.`status` FROM `flight_extra` a, `extra` b WHERE a.`extra_id` = b.`id` AND `flight_no` = :flight AND b.`type` = 'Meal' AND `status` = 'active';");
+        $this->db->bind(":flight", $flight_no);
+        return $this->db->resultSet();
     }
     public function getRoamingByFlightNo($flight_no){
-        
+        $this->db->query("SELECT a.`id`, `flight_no`, `extra_id`, b.`type`, b.`name`, b.`description`, b.`price`, a.`status` FROM `flight_extra` a, `extra` b WHERE a.`extra_id` = b.`id` AND `flight_no` = :flight AND b.`type` = 'Roaming Service' AND `status` = 'active';");
+        $this->db->bind(":flight", $flight_no);
+        return $this->db->resultSet();
     }
     public function getFlightExtraById($id){
         $this->db->query("SELECT * FROM `flight_extra` WHERE id = :id;");

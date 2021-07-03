@@ -42,7 +42,9 @@
     background-image: none;
 }
 
-
+.shadow-sm{
+    box-shadow: 0px 3px 10px 3px lightgray;
+}
 
 /* ========= SEARCH ============ */
 .dateResult{

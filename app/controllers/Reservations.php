@@ -9,6 +9,10 @@ class Reservations extends Controller{
         $this->scheduledAircraftModel = $this->model('ScheduledAircraft');
         $this->seatLayoutModel = $this->model('SeatLayout');
         $this->aircraftModel = $this->model('Aircraft');
+        $this->flightExtraModel = $this->model('FlightExtra');
+        $this->extraModel = $this->model('Extra');
+        $this->flightFareModel = $this->model('FlightFare');
+
     }
 
     public function search(){
@@ -289,10 +293,6 @@ class Reservations extends Controller{
             if(isset($_POST['continue']) && ($data['flightType']=="roundTrip") && (empty($data['retFlight']) || empty($data['retFare']))){
                 $data['retFlightError'] = "Please select a flight.";
             }
-            
-
-
-
             $enteredDate = clone $data['dept'];
             $data['targetOrigin'] = $data['deptOrigin'];
             $data['targetDestination'] = $data['deptDestination'];
@@ -366,11 +366,12 @@ class Reservations extends Controller{
             foreach($data['deptFlights'] as $flight){
                 $flight->fares = $this->reservationModel->getFaresByFlightClass($flight->schedule_id, $data['cabinClass']);
                 //GETS ALL FARE AVAILABLE FROM DEPARTING FLIGHTS
-                $data['deptFareList'] = array_unique(array_merge($data['deptFareList'], $this->extractFareNames($flight->fares)));
+                // $data['deptFareList'] = array_unique(array_merge($data['deptFareList'], $this->extractFareNames($flight->fares)));
+                $data['deptFareList'] = array_unique(array_merge($data['deptFareList'], array_column($flight->fares, 'name')));
                 //COMBINES THE FARE NAME AND FLIGHT FARE PRICES TO MAKE FARE MATRIX
             };
             $data['fareMatrix']["departureFlights"] =  $this->createFareMatrix($data['deptFareList'], $data['deptFlights']);
-            // $data['deptFareList'] = $this->extractFareNames($data['deptFlights']);
+            
             
             if($data['flightType'] == "roundTrip"){
                 $enteredDate = clone $data['ret']; 
@@ -445,7 +446,9 @@ class Reservations extends Controller{
             foreach($data['retFlights'] as $flight){
                 $flight->fares = $this->reservationModel->getFaresByFlightClass($flight->schedule_id, $data['cabinClass']);
                 //GETS ALL FARE AVAILABLE FROM DEPARTING FLIGHTS
-                $data['retFareList'] = array_unique(array_merge($data['retFareList'], $this->extractFareNames($flight->fares)));
+                // $data['retFareList'] = array_unique(array_merge($data['retFareList'], $this->extractFareNames($flight->fares)));
+                $data['retFareList'] = array_unique(array_merge($data['retFareList'], array_column($flight->fares, 'name')));
+
                 //COMBINES THE FARE NAME AND FLIGHT FARE PRICES TO MAKE FARE MATRIX
             };
             $data['fareMatrix']["returnFlights"] = $this->createFareMatrix($data['retFareList'], $data['retFlights']);
@@ -480,16 +483,7 @@ class Reservations extends Controller{
             $this->view('reservations/select', $data);
         }
     }
-
-    private function extractFareNames($fares){
-        $list = [];
-        foreach($fares as $fare){
-            $list[] = $fare->name;
-        }
-        return $list;
-    }
-    
-     
+ 
     public function passengers(){
         // $data = json_decode($_COOKIE['reservationData'], true);
         if(isLoggedIn() !== "user"){
@@ -527,10 +521,12 @@ class Reservations extends Controller{
             $adetails = $this->aircraftModel->getAircraftById($deptAircraft->aircraft_id);
             $deptAircraft->name = $adetails->name;
             $deptAircraft->model = $adetails->model;
+            $selectedDeptFare = $_SESSION['reservationData']['deptFare'];
             $departureDate = $_SESSION['reservationData']['dept'];
             $retFlightDetail = new \stdClass;
             $retAircraft = new \stdClass;
             $retAircraft->layout = '';
+            $selectedRetFare = '';
             $returnDate = '';
             if($_SESSION['reservationData']['flightType'] == "roundTrip"){
                 $retFlightDetail = $this->scheduleModel->getScheduleDetails($_SESSION['reservationData']['retFlight']);
@@ -542,6 +538,7 @@ class Reservations extends Controller{
                 $retAircraft->rowHeader = $this->getRowHeader($retAircraft->layout);
                 $retAircraft->colHeader = $this->getColHeader($retAircraft->layout);
                 $returnDate = $_SESSION['reservationData']['ret'];
+                $selectedRetFare = $_SESSION['reservationData']['retFare'];
             }
 
             $data = [
@@ -550,17 +547,15 @@ class Reservations extends Controller{
                 'returnDate' => $returnDate,
                 'selectedDepartureFlight' => $deptFlightDetail,
                 'departureAircraft' => $deptAircraft,
+                'selectedDepartureFare' => $selectedDeptFare,
                 'selectedReturnFlight' => $retFlightDetail,
                 'returnAircraft' => $retAircraft,
+                'selectedReturnFare' => $selectedRetFare,
                 'passenger' => $_SESSION['reservationData']['passenger'],
                 'flightType' => $_SESSION['reservationData']['flightType'],
                 'cabinClass' => $_SESSION['reservationData']['cabinClass'],
                 'passengers' => []
             ];
-            // $data['passengers'] = [];
-            // //get data ng schedule
-            
-
             
             for ($i=0; $i < $data['passenger']; $i++) { 
                 $passenger = [];
@@ -574,6 +569,7 @@ class Reservations extends Controller{
                 $passenger['expiration'] = $_POST['expiration'][$i];
                 array_push($data['passengers'], $passenger);
             }
+            $_SESSION['reservationData'] = $data;
         }
         $this->view('reservations/seats', $data);
     }
@@ -633,10 +629,173 @@ class Reservations extends Controller{
         }
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            $data = [
-                'title' => 'Select Extras'
+            $reservationData = $_SESSION['reservationData'];
+            // $b = array_map(fn($n) => $n * $n * $n, $a);
+            
+            for($i=0; $i < intval($reservationData['passenger']); $i++){
+                $reservationData['passengers'][$i]['departureSeat'] = $_POST['deptSeat'][$i];
+                if($reservationData['flightType'] == "roundTrip"){
+                    $reservationData['passengers'][$i]['returnSeat'] = $_POST['retSeat'][$i];
+                }
+            }
+            $_SESSION['reservationData'] = $reservationData;
+
+            $deptBaggage = $this->flightExtraModel->getBaggageByFlightNo($reservationData['selectedDepartureFlight']->flight_no);
+            $deptMeal = $this->flightExtraModel->getMealByFlightNo($reservationData['selectedDepartureFlight']->flight_no);
+            $deptRoaming = $this->flightExtraModel->getRoamingByFlightNo($reservationData['selectedDepartureFlight']->flight_no);
+            $deptExtras = [
+                'baggage' => $deptBaggage,
+                'meal' => $deptMeal,
+                'roaming' => $deptRoaming
             ];
+            $retExtras = [];
+            if($reservationData['flightType'] == 'roundTrip'){
+                $retBaggage = $this->flightExtraModel->getBaggageByFlightNo($reservationData['selectedReturnFlight']->flight_no);
+                $retMeal = $this->flightExtraModel->getMealByFlightNo($reservationData['selectedReturnFlight']->flight_no);
+                $retRoaming = $this->flightExtraModel->getRoamingByFlightNo($reservationData['selectedReturnFlight']->flight_no);
+                $retExtras = [
+                    'baggage' => $retBaggage,
+                    'meal' => $retMeal,
+                    'roaming' => $retRoaming
+                ];
+            }
+            $data = [
+                'title' => 'Select Extras',
+                'reservationData' => $reservationData,
+                'post' => $_POST,
+                'selectedDepartureFlight' => $reservationData['selectedDepartureFlight'],
+                'selectedReturnFlight' => $reservationData['selectedReturnFlight'],
+                'flightType' => $reservationData['flightType'],
+                'deptExtras' => $deptExtras, 
+                'retExtras' => $retExtras
+            ];
+
         }
+        $this->view("reservations/extras", $data);
     }
 
+    public function payment(){
+        if(isLoggedIn() !== "user"){
+            header("location: " . URLROOT);
+            exit(1);
+        }
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            // deptBaggage[]
+            // deptMeal[]
+            // deptRoaming[]
+            $reservationData = $_SESSION['reservationData'];
+            for($i=0; $i < $reservationData['passenger']; $i++){
+                $deptExtras = [];
+                $deptExtras[] = $_POST['deptBaggage'][$i];
+                $deptExtras[] = $_POST['deptMeal'][$i];
+                $deptExtras[] = $_POST['deptRoaming'][$i];
+                $reservationData['passengers'][$i]['deptExtras'] = $deptExtras;
+            }
+            if($reservationData['flightType'] == 'roundTrip'){
+                for($i=0; $i < $reservationData['passenger']; $i++){
+                    $retExtras = [];
+                    $retExtras[] = $_POST['retBaggage'][$i];
+                    $retExtras[] = $_POST['retMeal'][$i];
+                    $retExtras[] = $_POST['retRoaming'][$i];
+                    $reservationData['passengers'][$i]['retExtras'] = $retExtras;
+                }
+            }
+
+            $data = [
+                'title' => 'Payment Method',
+                'flights' => [],
+                // 'reservationData' => $reservationData 
+
+            ];
+            $flightDetail = [
+                'flightDetail' => $reservationData['selectedDepartureFlight'],
+                'flightFare' => $this->flightFareModel->getFlightFareById($reservationData['selectedDepartureFare']),
+                'flightDate' => $reservationData['departureDate'],
+                'passengers' => []
+            ];
+            foreach($reservationData['passengers'] as $key=>$passenger){
+                $flightDetail['passengers'][$key] = $passenger;
+                $extras = array_filter($passenger['deptExtras']);
+                foreach($extras as $extra){
+                    if($extra != 0){
+                        $flightDetail['passengers'][$key]['extras'][] = $this->extraModel->getExtraById($extra);
+                        // echo "<h1>HEYYYYYY ".$extra->name."</h1>";
+                    }
+                }
+                $flightDetail['passengers'][$key]['seat'] = $passenger['departureSeat'];
+                unset($flightDetail['passengers'][$key]['deptExtras']);
+                unset($flightDetail['passengers'][$key]['retExtras']);
+                unset($flightDetail['passengers'][$key]['departureSeat']);
+                unset($flightDetail['passengers'][$key]['returnSeat']);
+            }
+            $data['flights'][] = $flightDetail;
+
+            if($reservationData['flightType'] == 'roundTrip'){
+                $flightDetail = [
+                    'flightDetail' => $reservationData['selectedReturnFlight'],
+                    'flightFare' => $this->flightFareModel->getFlightFareById($reservationData['selectedReturnFare']),
+                    'flightDate' => $reservationData['returnDate'],
+                    'passengers' => []
+                ];
+                foreach($reservationData['passengers'] as $key=>$passenger){
+                    $flightDetail['passengers'][$key] = $passenger;
+                    $extras = array_filter($passenger['retExtras']);
+                    
+                    foreach($extras as $extra){
+                        if($extra != 0){
+                            $flightDetail['passengers'][$key]['extras'][] = $this->extraModel->getExtraById($extra);
+                            // echo "<h1>".$extra->name."</h1>";
+                        }
+                    }
+                    $flightDetail['passengers'][$key]['seat'] = $passenger['returnSeat'];
+                    unset($flightDetail['passengers'][$key]['deptExtras']);
+                    unset($flightDetail['passengers'][$key]['retExtras']);
+                    unset($flightDetail['passengers'][$key]['departureSeat']);
+                    unset($flightDetail['passengers'][$key]['returnSeat']);
+                }
+                $data['flights'][] = $flightDetail;
+            }
+            $subtotal = $this->computeTotalAmount($data['flights']);
+            // echo $subtotal . "<br>";
+            $data['fees'] = $subtotal * 0.12;
+            // echo $data['flights']['fees'] . "<br>";
+            $data['total'] = $data['fees'] + $subtotal;
+            // echo $data['flights']['total'] . "<br>";
+
+        }
+
+        $this->view("reservations/payment", $data);
+            //get data from post
+            //add to reservation data
+            //accept payment data
+            //add to reservation data
+            //execute reservation
+    }
+
+    private function computeTotalAmount($flights){
+        $amount = 0;
+        foreach($flights as $flight){
+            // echo $amount . "+" . $flight['flightFare']->price;
+            $amount += $flight['flightFare']->price;
+            // echo "=".$amount . "<br>";
+            // var_dump($flight['passengers']);
+            // echo '<pre>';
+
+            foreach($flight['passengers'] as $passenger){
+                if(array_key_exists('extras', $passenger)){
+                    foreach($passenger['extras'] as $extra){
+                        // echo $amount . "+" . $extra->price;
+                        $amount += $extra->price;
+                        // echo "=".$amount . "<br>";
+
+                    }
+
+                }
+            }
+            // echo '</pre>';
+        }
+        // echo $amount;
+        return $amount;
+    }
 }

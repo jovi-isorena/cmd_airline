@@ -36,7 +36,9 @@ for(const seat of seats){
                 // document.getElementsByName(seat.getAttribute("data-source-for"));
             }
             activePassenger.parentElement.nextElementSibling.children[0].value = seat.getAttribute("data-value");
-            activePassenger.parentElement.nextElementSibling.children[1].innerText = seat.getAttribute("data-value");
+            activePassenger.parentElement.nextElementSibling.children[1].children[0].innerText = seat.getAttribute("data-value");
+            activePassenger.parentElement.nextElementSibling.children[1].children[0].classList.remove("badge-danger");
+            activePassenger.parentElement.nextElementSibling.children[1].children[0].classList.add("badge-success");
             seat.classList.add("selectedSeat");
         }
     }

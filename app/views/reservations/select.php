@@ -133,8 +133,9 @@
                         </div>
                         <?php foreach($data['deptFareList'] as $fare):?>
                             <div class="col px-2">
-                                <label for="<?php echo $flight->schedule_id.$fare;?>" class="text-center rounded w-100 h-100 fare <?php echo ($data['deptFlight']==$flight->schedule_id) && ($data['deptFare']==$fare)?'selectedFareBox ' :''; echo $data['fareMatrix']["departureFlights"][$flight->schedule_id][$fare] === "Not Available"?' disabledFareBox':'fareBox';?>">
-                                    <input class="d-none" type="radio" <?php echo $data['fareMatrix']["departureFlights"][$flight->schedule_id][$fare] === "Not Available"?'':'name="deptFareMatrix"';?> id="<?php echo $flight->schedule_id.$fare;?>" data-flight="<?php echo $flight->schedule_id;?>" data-fare="<?php echo $fare;?>" <?php echo $data['fareMatrix']["departureFlights"][$flight->schedule_id][$fare] === "Not Available"?'disabled':'';?>>
+                                <label for="<?php echo $flight->schedule_id.$fare;?>" 
+                                class="text-center rounded w-100 h-100 fare <?php echo ($data['deptFlight']==$flight->schedule_id) && ($data['deptFare']==$fare)?'selectedFareBox ' :''; echo $data['fareMatrix']["departureFlights"][$flight->schedule_id][$fare] === "Not Available"?' disabledFareBox':'fareBox';?>">
+                                    <input class="d-none" type="radio" <?php echo $data['fareMatrix']["departureFlights"][$flight->schedule_id][$fare] === "Not Available"?'':'name="deptFareMatrix"';?> id="<?php echo $flight->schedule_id.$fare;?>" data-flight="<?php echo $flight->schedule_id;?>" data-fare="<?php echo $flight->fares[array_search($fare, array_column($flight->fares, "name"))]->id;?>" <?php echo $data['fareMatrix']["departureFlights"][$flight->schedule_id][$fare] === "Not Available"?'disabled':'';?>>
                                     
                                     <div class="col pt-5">
                                         <?php if($data['fareMatrix']["departureFlights"][$flight->schedule_id][$fare] === $minDeptFare):?>
@@ -248,7 +249,7 @@
                         <?php foreach($data['retFareList'] as $fare):?>
                             <div class="col px-2">
                                 <label for="<?php echo $flight->schedule_id.$fare;?>" class="text-center rounded w-100 h-100 fare <?php echo ($data['retFlight']==$flight->schedule_id) && ($data['retFare']==$fare)?'selectedFareBox ':'';echo $data['fareMatrix']["returnFlights"][$flight->schedule_id][$fare] === "Not Available"?' disabledFareBox':'fareBox';?>">
-                                    <input class="d-none" type="radio" <?php echo $data['fareMatrix']["returnFlights"][$flight->schedule_id][$fare] === "Not Available"?'':'name="retFareMatrix"';?> id="<?php echo $flight->schedule_id.$fare;?>" data-flight="<?php echo $flight->schedule_id;?>" data-fare="<?php echo $fare;?>" <?php echo $data['fareMatrix']["returnFlights"][$flight->schedule_id][$fare] === "Not Available"?'disabled':'';?>>
+                                    <input class="d-none" type="radio" <?php echo $data['fareMatrix']["returnFlights"][$flight->schedule_id][$fare] === "Not Available"?'':'name="retFareMatrix"';?> id="<?php echo $flight->schedule_id.$fare;?>" data-flight="<?php echo $flight->schedule_id;?>" data-fare="<?php echo $flight->fares[array_search($fare, array_column($flight->fares, "name"))]->id;;?>" <?php echo $data['fareMatrix']["returnFlights"][$flight->schedule_id][$fare] === "Not Available"?'disabled':'';?>>
                                     
                                     <div class="col pt-5">
                                         <?php if($data['fareMatrix']["returnFlights"][$flight->schedule_id][$fare] == $minRetFare):?>
