@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 26, 2021 at 10:12 AM
+-- Generation Time: Jul 04, 2021 at 02:48 PM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.3.9
 
@@ -154,7 +154,6 @@ CREATE TABLE `flight_fare` (
 
 CREATE TABLE `flight_reservation` (
   `reservation_id` int(11) NOT NULL,
-  `schedule_id` int(11) NOT NULL,
   `creation_date` datetime NOT NULL,
   `total_fare` decimal(10,2) NOT NULL,
   `cabin_class` varchar(30) NOT NULL,
@@ -195,12 +194,14 @@ CREATE TABLE `passenger` (
   `id` int(11) NOT NULL,
   `firstname` varchar(50) NOT NULL,
   `lastname` varchar(50) NOT NULL,
-  `suffix` varchar(10) NOT NULL,
+  `gender` varchar(20) NOT NULL,
   `birthdate` date NOT NULL,
   `valid_id` varchar(50) NOT NULL,
   `valid_id_no` varchar(50) NOT NULL,
+  `issuing_country` varchar(25) NOT NULL,
+  `expiration_date` date NOT NULL,
   `reservation_id` int(11) NOT NULL,
-  `seat_id` int(11) NOT NULL,
+  `reserved_flight_id` int(11) NOT NULL,
   `passenger_status` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -221,6 +222,34 @@ CREATE TABLE `purchased_extra` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `reserved_flight`
+--
+
+CREATE TABLE `reserved_flight` (
+  `id` int(11) NOT NULL,
+  `reservation_id` int(11) NOT NULL,
+  `schedule_id` int(11) NOT NULL,
+  `flight_date` date NOT NULL,
+  `status` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reserved_seat`
+--
+
+CREATE TABLE `reserved_seat` (
+  `reserved_seat_id` int(11) NOT NULL,
+  `reserved_flight_id` int(11) NOT NULL,
+  `passenger_id` int(11) NOT NULL,
+  `seat_number` varchar(5) DEFAULT NULL,
+  `status` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `scheduled_aircraft`
 --
 
@@ -230,34 +259,6 @@ CREATE TABLE `scheduled_aircraft` (
   `day` varchar(10) NOT NULL,
   `aircraft_id` int(11) NOT NULL,
   `layout_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `scheduled_seat`
---
-
-CREATE TABLE `scheduled_seat` (
-  `scheduled_seat_id` int(11) NOT NULL,
-  `schedule_id` int(11) NOT NULL,
-  `seat_id` int(11) NOT NULL,
-  `price` decimal(10,2) NOT NULL,
-  `seat_status` varchar(10) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `seat`
---
-
-CREATE TABLE `seat` (
-  `id` int(11) NOT NULL,
-  `seat_no` varchar(10) NOT NULL,
-  `flight_no` varchar(10) NOT NULL,
-  `class` varchar(30) NOT NULL,
-  `seat_status` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -445,7 +446,6 @@ ALTER TABLE `flight_fare`
 --
 ALTER TABLE `flight_reservation`
   ADD PRIMARY KEY (`reservation_id`),
-  ADD KEY `schedule_id` (`schedule_id`),
   ADD KEY `creator_account_id` (`creator_account_id`);
 
 --
@@ -461,7 +461,7 @@ ALTER TABLE `flight_schedule`
 ALTER TABLE `passenger`
   ADD PRIMARY KEY (`id`),
   ADD KEY `reservation_id` (`reservation_id`),
-  ADD KEY `seat_id` (`seat_id`);
+  ADD KEY `pass_res_flight_ibfk_1` (`reserved_flight_id`);
 
 --
 -- Indexes for table `purchased_extra`
@@ -473,6 +473,22 @@ ALTER TABLE `purchased_extra`
   ADD KEY `reservation_id` (`reservation_id`);
 
 --
+-- Indexes for table `reserved_flight`
+--
+ALTER TABLE `reserved_flight`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `reservation_id` (`reservation_id`),
+  ADD KEY `schedule_id` (`schedule_id`);
+
+--
+-- Indexes for table `reserved_seat`
+--
+ALTER TABLE `reserved_seat`
+  ADD PRIMARY KEY (`reserved_seat_id`),
+  ADD KEY `passenger_id` (`passenger_id`),
+  ADD KEY `reserved_seat_ibfk_1` (`reserved_flight_id`);
+
+--
 -- Indexes for table `scheduled_aircraft`
 --
 ALTER TABLE `scheduled_aircraft`
@@ -480,21 +496,6 @@ ALTER TABLE `scheduled_aircraft`
   ADD KEY `schedule_id` (`schedule_id`),
   ADD KEY `aircraft_id` (`aircraft_id`),
   ADD KEY `layout_id` (`layout_id`);
-
---
--- Indexes for table `scheduled_seat`
---
-ALTER TABLE `scheduled_seat`
-  ADD PRIMARY KEY (`scheduled_seat_id`),
-  ADD KEY `schedule_id` (`schedule_id`),
-  ADD KEY `seat_id` (`seat_id`);
-
---
--- Indexes for table `seat`
---
-ALTER TABLE `seat`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `flight_no` (`flight_no`);
 
 --
 -- Indexes for table `seat_layout`
@@ -576,21 +577,21 @@ ALTER TABLE `purchased_extra`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `scheduled_aircraft`
+-- AUTO_INCREMENT for table `reserved_flight`
 --
-ALTER TABLE `scheduled_aircraft`
+ALTER TABLE `reserved_flight`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `scheduled_seat`
+-- AUTO_INCREMENT for table `reserved_seat`
 --
-ALTER TABLE `scheduled_seat`
-  MODIFY `scheduled_seat_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `reserved_seat`
+  MODIFY `reserved_seat_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `seat`
+-- AUTO_INCREMENT for table `scheduled_aircraft`
 --
-ALTER TABLE `seat`
+ALTER TABLE `scheduled_aircraft`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -634,7 +635,6 @@ ALTER TABLE `flight_fare`
 -- Constraints for table `flight_reservation`
 --
 ALTER TABLE `flight_reservation`
-  ADD CONSTRAINT `flight_reservation_ibfk_1` FOREIGN KEY (`schedule_id`) REFERENCES `flight_schedule` (`schedule_id`),
   ADD CONSTRAINT `flight_reservation_ibfk_2` FOREIGN KEY (`creator_account_id`) REFERENCES `users` (`id`);
 
 --
@@ -647,8 +647,8 @@ ALTER TABLE `flight_schedule`
 -- Constraints for table `passenger`
 --
 ALTER TABLE `passenger`
-  ADD CONSTRAINT `passenger_ibfk_1` FOREIGN KEY (`reservation_id`) REFERENCES `flight_reservation` (`reservation_id`),
-  ADD CONSTRAINT `passenger_ibfk_2` FOREIGN KEY (`seat_id`) REFERENCES `scheduled_seat` (`scheduled_seat_id`);
+  ADD CONSTRAINT `pass_res_flight_ibfk_1` FOREIGN KEY (`reserved_flight_id`) REFERENCES `reserved_flight` (`id`),
+  ADD CONSTRAINT `passenger_ibfk_1` FOREIGN KEY (`reservation_id`) REFERENCES `flight_reservation` (`reservation_id`);
 
 --
 -- Constraints for table `purchased_extra`
@@ -659,25 +659,26 @@ ALTER TABLE `purchased_extra`
   ADD CONSTRAINT `purchased_extra_ibfk_3` FOREIGN KEY (`reservation_id`) REFERENCES `flight_reservation` (`reservation_id`);
 
 --
+-- Constraints for table `reserved_flight`
+--
+ALTER TABLE `reserved_flight`
+  ADD CONSTRAINT `reserved_flight_ibfk_1` FOREIGN KEY (`reservation_id`) REFERENCES `flight_reservation` (`reservation_id`),
+  ADD CONSTRAINT `reserved_flight_ibfk_2` FOREIGN KEY (`schedule_id`) REFERENCES `flight_schedule` (`schedule_id`);
+
+--
+-- Constraints for table `reserved_seat`
+--
+ALTER TABLE `reserved_seat`
+  ADD CONSTRAINT `reserved_seat_ibfk_1` FOREIGN KEY (`reserved_flight_id`) REFERENCES `reserved_flight` (`id`),
+  ADD CONSTRAINT `reserved_seat_ibfk_2` FOREIGN KEY (`passenger_id`) REFERENCES `passenger` (`id`);
+
+--
 -- Constraints for table `scheduled_aircraft`
 --
 ALTER TABLE `scheduled_aircraft`
   ADD CONSTRAINT `scheduled_aircraft_ibfk_1` FOREIGN KEY (`schedule_id`) REFERENCES `flight_schedule` (`schedule_id`),
   ADD CONSTRAINT `scheduled_aircraft_ibfk_2` FOREIGN KEY (`aircraft_id`) REFERENCES `aircraft` (`id`),
   ADD CONSTRAINT `scheduled_aircraft_ibfk_3` FOREIGN KEY (`layout_id`) REFERENCES `seat_layout` (`id`);
-
---
--- Constraints for table `scheduled_seat`
---
-ALTER TABLE `scheduled_seat`
-  ADD CONSTRAINT `scheduled_seat_ibfk_1` FOREIGN KEY (`schedule_id`) REFERENCES `flight_schedule` (`schedule_id`),
-  ADD CONSTRAINT `scheduled_seat_ibfk_2` FOREIGN KEY (`seat_id`) REFERENCES `seat` (`id`);
-
---
--- Constraints for table `seat`
---
-ALTER TABLE `seat`
-  ADD CONSTRAINT `seat_ibfk_1` FOREIGN KEY (`flight_no`) REFERENCES `flight` (`flight_no`);
 
 --
 -- Constraints for table `seat_layout`

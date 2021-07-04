@@ -851,6 +851,7 @@ class Reservations extends Controller{
                         $insertData['issuingcountry'] = $passenger['issuingcountry'];
                         $insertData['expiration'] = $passenger['expiration'];
                         $insertData['reservationId'] = $intID;
+                        $insertData['flightId'] = $reservedFlightId;
                         if(!$this->passengerModel->add($insertData)){
                             die("Something went wrong in reserving the flight. Error: 2");
                         }

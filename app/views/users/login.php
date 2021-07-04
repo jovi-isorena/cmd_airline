@@ -1,29 +1,21 @@
 <?php
     require APPROOT . '/views/includes/head.php';
     require APPROOT . '/views/includes/navigation.php';
-
-    if(isLoggedIn()){
-        if(isset($_SESSION['redirectTo'])){
-            header($_SESSION['redirectTo']);
-            unset($_SESSION['redirectTo']);
-        }else{
-            header("location: " . URLROOT );
-        }
-    }
 ?>
 
     <div class="container full-h" >
     <!-- <div style='background-color: red; height: 100%; width: 100%'> -->
         <div class="container" >
             <div class="row justify-content-center">
-                <span class="alert-warning p-2 border border-warning rounded">
                     <?php if(isset($_SESSION['redirectMessage'])){
+                        echo '<span class="alert-warning p-2 border border-warning rounded">';
                         echo $_SESSION['redirectMessage'];
+                        echo "</span>";
                         unset($_SESSION['redirectMessage']);
                     }
                     
                     ?>
-                </span>
+                
             </div>
             <div class="mt-5 p-4 col-md-4 offset-md-4 rounded text-white" style="background-color: #001e60;">
                 <h1 class=" text-center ">Login</h1>

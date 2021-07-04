@@ -3,9 +3,25 @@
 class Users extends Controller{
     public function __construct(){
         $this->userModel = $this->model('User');
+        $this->reservationModel = $this->model('Reservation');
+        $this->reservedFlightModel = $this->model('ReservedFlight');
+        $this->passengerModel = $this->model('Passenger');
+        $this->reservedSeatModel = $this->model('ReservedSeat');
+        $this->purchasedExtraModel = $this->model('PurchasedExtra');
+        $this->extraModel = $this->model('Extra');
+        $this->scheduleModel = $this->model('Schedule');
+        $this->flightModel = $this->model('Flight');
     }
 
     public function login(){
+        if(isLoggedIn()){
+            if(isset($_SESSION['redirectTo'])){
+                header($_SESSION['redirectTo']);
+                unset($_SESSION['redirectTo']);
+            }else{
+                header("location: " . URLROOT );
+            }
+        }
         $data = [
             'title' => 'User Login',
             'usernameError' => '',
@@ -212,5 +228,38 @@ class Users extends Controller{
         unset($_SESSION['birthdate']);
         unset($_SESSION['mobile_no']);
         header("location: " . URLROOT . "/users/login");
+    }
+
+    public function mybookings(){
+        if(isLoggedIn() !== "user"){
+            header("location: " . URLROOT);
+            exit(1);
+        }
+        $data = [
+            'title' => 'My Bookings',
+            'bookings' => []
+        ];
+
+        $data['bookings'] = $this->reservationModel->getAllBookingsByUser($_SESSION['user_id']);
+        foreach($data['bookings'] as $booking){
+            $booking->creation_date = new DateTime($booking->creation_date);
+            $booking->flights = $this->reservedFlightModel->getFlightByReservationId($booking->reservation_id);
+            foreach($booking->flights as $flight){
+                $flight->flight_date = new DateTime($flight->flight_date);
+                $flight->schedule_detail = $this->scheduleModel->getScheduleById($flight->schedule_id);
+                $flight->schedule_detail->departure_time = new DateTime($flight->schedule_detail->departure_time);
+                $flight->flight_detail = $this->flightModel->getFlightByNumber($flight->schedule_detail->flight_no);
+                $flight->passengers = $this->passengerModel->getAllPassengersByReservationId($booking->reservation_id,$flight->id);
+                foreach($flight->passengers as $passenger){
+                    $passenger->extras = $this->purchasedExtraModel->getPurchasedExtraByPassengerId($passenger->id);
+                    $passenger->seat = $this->reservedSeatModel->getReservedSeatByPassengerId($passenger->id);
+                    foreach($passenger->extras as $extra){
+                        $extra = $this->extraModel->getExtraById($extra->extra_id);
+                    }
+                }
+            }
+        }
+
+        $this->view("users/mybookings", $data);
     }
 }

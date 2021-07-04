@@ -20,4 +20,10 @@ class ReservedFlight{
         $result = $this->db->single();
         return $result->id;
     }
+
+    public function getFlightByReservationId($id){
+        $this->db->query("SELECT * FROM `reserved_flight` WHERE `reservation_id` = :id;");
+        $this->db->bind(":id", $id);
+        return $this->db->resultSet();
+    }
 }

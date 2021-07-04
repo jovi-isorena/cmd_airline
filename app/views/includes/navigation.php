@@ -63,7 +63,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="about.html">Contact Us<span class="sr-only">(current)</span></a>
                 </li>
-                <?php if(isLoggedIn() != false) : ?>
+                
+                <?php if(isLoggedIn() == 'user') : ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo URLROOT;?>/users/mybookings">My Bookings<span class="sr-only">(current)</span></a>
+                    </li>   
                     <li class="nav-item">
                         <a href="<?php echo URLROOT;?>/users/logout" class="nav-link btn btn-outline-primary" style="font-size:small;">Logout</a>
                     </li>

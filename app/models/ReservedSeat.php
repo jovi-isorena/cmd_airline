@@ -15,4 +15,9 @@ class ReservedSeat{
         return $this->db->execute();
     }
     
+    public function getReservedSeatByPassengerId($id){
+        $this->db->query("SELECT * FROM `reserved_seat` WHERE `passenger_id` = :id;");
+        $this->db->bind(":id", $id);
+        return $this->db->resultSet();
+    }
 }

@@ -40,7 +40,7 @@
                                                                         <span class="ml-2"><?php echo $extra->name;?></span>
                                                                     <!-- </div> -->
                                                                     <!-- <div class="col-2 p-0 text-right"> -->
-                                                                        <span><?php echo $extra->price;?></span>
+                                                                        <span class="font-weight-bold"><?php echo $extra->price;?></span>
                                                                     <!-- </div> -->
                                                                 </div>
                                                             </li>        
@@ -67,7 +67,7 @@
                                         <h5>Fees, Surcharges and Tax</h5>
                                     <!-- </div> -->
                                     <!-- <div class="col-2 p-0 text-left"> -->
-                                        <h5><?php echo $data['fees'];?></h5>
+                                        <h5><?php echo number_format($data['fees'],2);?></h5>
                                     <!-- </div> -->
                                 </div>
                             </li>
@@ -77,7 +77,7 @@
                                     <h4>Total</h4>
                                 <!-- </div> -->
                                 <!-- <div class="col-2 p-0 text-left"> -->
-                                    <h4><?php echo $data['total'];?></h4>
+                                    <h4><?php echo number_format($data['total'],2);?></h4>
                                 <!-- </div> -->
                                 </div>
                             </li>

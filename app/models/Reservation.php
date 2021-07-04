@@ -101,4 +101,10 @@ class Reservation{
         
         return $this->db->single();
     }
+
+    public function getAllBookingsByUser($id){
+        $this->db->query("SELECT * FROM `flight_reservation` WHERE `creator_account_id`=:id;");
+        $this->db->bind(":id", $id);
+        return $this->db->resultSet();
+    }
 }

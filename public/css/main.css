@@ -151,3 +151,8 @@
 .flightTab{
     cursor: pointer;
 }
+
+/* ==================mybookings==================== */
+.hover-lightblue:hover{
+    background-color: lightblue;
+}

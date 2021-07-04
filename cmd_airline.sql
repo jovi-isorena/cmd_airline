@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 26, 2021 at 10:12 AM
+-- Generation Time: Jul 04, 2021 at 02:47 PM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.3.9
 
@@ -114,7 +114,8 @@ CREATE TABLE `employee` (
 INSERT INTO `employee` (`id`, `firstname`, `middlename`, `lastname`, `suffix`, `email`, `password`, `position`, `account_status`) VALUES
 (1, 'jovi', '', 'isorena', '', 'admin@gmail.com', '$2y$10$h6uknYaNX7.Bm/h23SbLl.UD4gjWrREyP92s.bySr7mDOgJ.6oUHa', '1', 'active'),
 (2, 'testadmi', '', 'adminnn', '', 'admin2@gmail.com', '$2y$10$UznUZRan2C8rtV1aUYy9I.FBjVGUdUsAV3bN6.hhYKXT8cq0Cnn8i', '1', 'active'),
-(3, 'admin', 'admin', 'adminlast', '', 'admin3@gmail.com', '$2y$10$R9FQrZljcBW8JFI0lxiqTeL/tlYTS1M1LBeCxL1X1.klNE2ShyO2q', '1', 'active');
+(3, 'admin', 'admin', 'adminlast', '', 'admin3@gmail.com', '$2y$10$R9FQrZljcBW8JFI0lxiqTeL/tlYTS1M1LBeCxL1X1.klNE2ShyO2q', '1', 'active'),
+(4, 'aaa', 'aa', 'aa', '', 'testadmin@gmail.com', '$2y$10$mcAPIbfo1xK5BlAhyqYJWON9t/Ch3WnrhYcB5MBGQUVwxqrODrsp.', '1', 'active');
 
 -- --------------------------------------------------------
 
@@ -278,7 +279,61 @@ INSERT INTO `flight_extra` (`id`, `flight_no`, `extra_id`, `status`) VALUES
 (41, 'test6', 2, 'active'),
 (42, 'test6', 3, 'active'),
 (43, 'test6', 6, 'active'),
-(44, 'test6', 8, 'active');
+(44, 'test6', 8, 'active'),
+(45, 'test1', 1, 'active'),
+(46, 'test1', 2, 'active'),
+(47, 'test1', 3, 'active'),
+(48, 'test1', 5, 'active'),
+(49, 'test1', 6, 'active'),
+(50, 'test1', 7, 'active'),
+(51, 'test1', 8, 'active'),
+(52, 'test1', 9, 'active'),
+(53, 'test1', 10, 'active'),
+(54, 'test2', 1, 'active'),
+(55, 'test2', 2, 'active'),
+(56, 'test2', 3, 'active'),
+(57, 'test2', 5, 'active'),
+(58, 'test2', 6, 'active'),
+(59, 'test2', 7, 'active'),
+(60, 'test2', 8, 'active'),
+(61, 'test2', 9, 'active'),
+(62, 'test2', 10, 'active'),
+(63, 'test3', 1, 'active'),
+(64, 'test3', 2, 'active'),
+(65, 'test3', 3, 'active'),
+(66, 'test3', 5, 'active'),
+(67, 'test3', 6, 'active'),
+(68, 'test3', 7, 'active'),
+(69, 'test3', 8, 'active'),
+(70, 'test3', 9, 'active'),
+(71, 'test3', 10, 'active'),
+(72, 'test4', 1, 'active'),
+(73, 'test4', 2, 'active'),
+(74, 'test4', 3, 'active'),
+(75, 'test4', 5, 'active'),
+(76, 'test4', 6, 'active'),
+(77, 'test4', 7, 'active'),
+(78, 'test4', 8, 'active'),
+(79, 'test4', 9, 'active'),
+(80, 'test4', 10, 'active'),
+(81, 'test5', 1, 'active'),
+(82, 'test5', 2, 'active'),
+(83, 'test5', 3, 'active'),
+(84, 'test5', 5, 'active'),
+(85, 'test5', 6, 'active'),
+(86, 'test5', 7, 'active'),
+(87, 'test5', 8, 'active'),
+(88, 'test5', 9, 'active'),
+(89, 'test5', 10, 'active'),
+(90, 'test6', 1, 'active'),
+(91, 'test6', 2, 'active'),
+(92, 'test6', 3, 'active'),
+(93, 'test6', 5, 'active'),
+(94, 'test6', 6, 'active'),
+(95, 'test6', 7, 'active'),
+(96, 'test6', 8, 'active'),
+(97, 'test6', 9, 'active'),
+(98, 'test6', 10, 'active');
 
 -- --------------------------------------------------------
 
@@ -350,13 +405,21 @@ INSERT INTO `flight_fare` (`id`, `flight_no`, `fare_id`, `price`, `available_slo
 
 CREATE TABLE `flight_reservation` (
   `reservation_id` int(11) NOT NULL,
-  `schedule_id` int(11) NOT NULL,
   `creation_date` datetime NOT NULL,
   `total_fare` decimal(10,2) NOT NULL,
   `cabin_class` varchar(30) NOT NULL,
   `creator_account_id` int(11) NOT NULL,
   `reservation_status` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `flight_reservation`
+--
+
+INSERT INTO `flight_reservation` (`reservation_id`, `creation_date`, `total_fare`, `cabin_class`, `creator_account_id`, `reservation_status`) VALUES
+(9, '2021-07-04 12:15:08', '2298.24', 'economy', 1, 'active'),
+(10, '2021-07-04 12:25:34', '2262.40', 'economy', 1, 'active'),
+(11, '2021-07-04 13:27:33', '2320.64', 'economy', 1, 'active');
 
 -- --------------------------------------------------------
 
@@ -404,8 +467,8 @@ INSERT INTO `flight_schedule` (`schedule_id`, `flight_no`, `monday`, `tuesday`, 
 (16, 'test4', 1, 1, 0, 1, 0, 1, 0, '09:00:00', 'A3', '2021-06-16', '2022-06-15', 'Scheduled'),
 (17, 'test5', 0, 1, 0, 1, 0, 0, 1, '19:00:00', 'J3', '2021-06-16', '2022-06-15', 'Scheduled'),
 (18, 'test6', 0, 0, 0, 1, 0, 1, 1, '06:40:00', 'J10', '2021-06-16', '2022-06-15', 'Scheduled'),
-(19, '78888', 1, 1, 1, 0, 0, 0, 0, '19:04:00', 'L10', '2021-06-24', '2023-02-23', 'Scheduled'),
-(20, 'PR204', 1, 0, 0, 0, 1, 0, 1, '13:30:00', 'A1', '2021-06-24', '2022-06-23', 'Scheduled');
+(19, '78888', 1, 1, 1, 0, 0, 0, 0, '19:04:00', 'L10', '2021-06-29', '2023-02-23', 'Inactive'),
+(20, 'PR204', 1, 0, 0, 0, 1, 0, 1, '13:30:00', 'A1', '2021-06-29', '2022-06-23', 'Inactive');
 
 -- --------------------------------------------------------
 
@@ -417,14 +480,32 @@ CREATE TABLE `passenger` (
   `id` int(11) NOT NULL,
   `firstname` varchar(50) NOT NULL,
   `lastname` varchar(50) NOT NULL,
-  `suffix` varchar(10) NOT NULL,
+  `gender` varchar(20) NOT NULL,
   `birthdate` date NOT NULL,
   `valid_id` varchar(50) NOT NULL,
   `valid_id_no` varchar(50) NOT NULL,
+  `issuing_country` varchar(25) NOT NULL,
+  `expiration_date` date NOT NULL,
   `reservation_id` int(11) NOT NULL,
-  `seat_id` int(11) NOT NULL,
+  `reserved_flight_id` int(11) NOT NULL,
   `passenger_status` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `passenger`
+--
+
+INSERT INTO `passenger` (`id`, `firstname`, `lastname`, `gender`, `birthdate`, `valid_id`, `valid_id_no`, `issuing_country`, `expiration_date`, `reservation_id`, `reserved_flight_id`, `passenger_status`) VALUES
+(13, 'Jovi', 'Isorena', 'MALE', '1992-09-07', 'PASSPORT', '1111', 'PHILIPPINES', '2022-01-01', 9, 8, 'active'),
+(14, 'Star', 'Mores', 'FEMALE', '1994-12-09', 'PASSPORT', '22222', 'PHILIPPINES', '2022-01-01', 9, 8, 'active'),
+(15, 'Jovi', 'Isorena', 'MALE', '1992-09-07', 'PASSPORT', '1111', 'PHILIPPINES', '2022-01-01', 9, 9, 'active'),
+(16, 'Star', 'Mores', 'FEMALE', '1994-12-09', 'PASSPORT', '22222', 'PHILIPPINES', '2022-01-01', 9, 9, 'active'),
+(17, 'Juan', 'Dela Cruz', 'MALE', '1996-11-01', 'PASSPORT', '1234', 'PHILIPPINES', '2023-01-01', 10, 10, 'active'),
+(18, 'Maria', 'Clara', 'MALE', '2001-07-09', 'PASSPORT', '4321', 'PHILIPPINES', '2022-01-01', 10, 10, 'active'),
+(19, 'Juan', 'Dela Cruz', 'MALE', '1996-11-01', 'PASSPORT', '1234', 'PHILIPPINES', '2023-01-01', 10, 11, 'active'),
+(20, 'Maria', 'Clara', 'MALE', '2001-07-09', 'PASSPORT', '4321', 'PHILIPPINES', '2022-01-01', 10, 11, 'active'),
+(21, 'Jovi', 'Isorena', 'MALE', '1992-07-09', 'PASSPORT', '1234', 'PHILIPPINES', '2022-01-01', 11, 12, 'active'),
+(22, 'Jovi', 'Isorena', 'MALE', '1992-07-09', 'PASSPORT', '1234', 'PHILIPPINES', '2022-01-01', 11, 13, 'active');
 
 -- --------------------------------------------------------
 
@@ -439,6 +520,81 @@ CREATE TABLE `purchased_extra` (
   `reservation_id` int(11) NOT NULL,
   `purchased_status` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `purchased_extra`
+--
+
+INSERT INTO `purchased_extra` (`id`, `passenger_id`, `extra_id`, `reservation_id`, `purchased_status`) VALUES
+(13, 13, 1, 9, 'active'),
+(14, 13, 7, 9, 'active'),
+(15, 14, 5, 9, 'active'),
+(16, 14, 8, 9, 'active'),
+(17, 15, 1, 9, 'active'),
+(18, 17, 1, 10, 'active'),
+(19, 18, 1, 10, 'active'),
+(20, 19, 6, 10, 'active'),
+(21, 20, 6, 10, 'active'),
+(22, 20, 7, 10, 'active'),
+(23, 21, 1, 11, 'active'),
+(24, 21, 5, 11, 'active'),
+(25, 21, 7, 11, 'active');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reserved_flight`
+--
+
+CREATE TABLE `reserved_flight` (
+  `id` int(11) NOT NULL,
+  `reservation_id` int(11) NOT NULL,
+  `schedule_id` int(11) NOT NULL,
+  `flight_date` date NOT NULL,
+  `status` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `reserved_flight`
+--
+
+INSERT INTO `reserved_flight` (`id`, `reservation_id`, `schedule_id`, `flight_date`, `status`) VALUES
+(8, 9, 14, '2021-07-05', 'active'),
+(9, 9, 17, '2021-07-15', 'active'),
+(10, 10, 14, '2021-07-05', 'active'),
+(11, 10, 17, '2021-07-13', 'active'),
+(12, 11, 14, '2021-07-05', 'active'),
+(13, 11, 16, '2021-07-12', 'active');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reserved_seat`
+--
+
+CREATE TABLE `reserved_seat` (
+  `reserved_seat_id` int(11) NOT NULL,
+  `reserved_flight_id` int(11) NOT NULL,
+  `passenger_id` int(11) NOT NULL,
+  `seat_number` varchar(5) DEFAULT NULL,
+  `status` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `reserved_seat`
+--
+
+INSERT INTO `reserved_seat` (`reserved_seat_id`, `reserved_flight_id`, `passenger_id`, `seat_number`, `status`) VALUES
+(10, 8, 13, 'B4', 'active'),
+(11, 8, 14, 'C4', 'active'),
+(12, 9, 15, 'B5', 'active'),
+(13, 9, 16, 'C5', 'active'),
+(14, 10, 17, 'B9', 'active'),
+(15, 10, 18, 'C9', 'active'),
+(16, 11, 19, 'D9', 'active'),
+(17, 11, 20, 'D8', 'active'),
+(18, 12, 21, 'A4', 'active'),
+(19, 13, 22, 'A7', 'active');
 
 -- --------------------------------------------------------
 
@@ -459,10 +615,6 @@ CREATE TABLE `scheduled_aircraft` (
 --
 
 INSERT INTO `scheduled_aircraft` (`id`, `schedule_id`, `day`, `aircraft_id`, `layout_id`) VALUES
-(1, 2, 'Monday', 2, 1),
-(2, 9, 'Monday', 2, 1),
-(3, 9, 'Tuesday', 2, 1),
-(4, 9, 'Wednesday', 2, 2),
 (5, 13, 'Monday', 2, 2),
 (6, 13, 'Wednesday', 2, 2),
 (7, 13, 'Friday', 2, 2),
@@ -471,46 +623,19 @@ INSERT INTO `scheduled_aircraft` (`id`, `schedule_id`, `day`, `aircraft_id`, `la
 (11, 14, 'Monday', 2, 2),
 (12, 14, 'Wednesday', 2, 2),
 (13, 14, 'Saturday', 2, 2),
-(14, 15, 'Wednesday', 2, 1),
-(15, 15, 'Friday', 2, 1),
-(16, 15, 'Saturday', 2, 1),
-(17, 13, 'Monday', 2, 1),
-(18, 13, 'Wednesday', 2, 2),
-(19, 13, 'Friday', 2, 13),
-(20, 13, 'Sunday', 2, 2),
-(22, 4, 'Monday', 2, 3),
-(23, 11, 'Monday', 3, 10),
-(26, 19, 'Monday', 2, 4),
-(27, 19, 'Tuesday', 2, 2),
-(28, 19, 'Wednesday', 2, 4);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `scheduled_seat`
---
-
-CREATE TABLE `scheduled_seat` (
-  `scheduled_seat_id` int(11) NOT NULL,
-  `schedule_id` int(11) NOT NULL,
-  `seat_id` int(11) NOT NULL,
-  `price` decimal(10,2) NOT NULL,
-  `seat_status` varchar(10) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `seat`
---
-
-CREATE TABLE `seat` (
-  `id` int(11) NOT NULL,
-  `seat_no` varchar(10) NOT NULL,
-  `flight_no` varchar(10) NOT NULL,
-  `class` varchar(30) NOT NULL,
-  `seat_status` varchar(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+(14, 15, 'Wednesday', 2, 2),
+(15, 15, 'Friday', 2, 2),
+(16, 15, 'Saturday', 2, 2),
+(45, 17, 'Tuesday', 2, 2),
+(46, 17, 'Thursday', 2, 2),
+(47, 17, 'Sunday', 2, 2),
+(57, 16, 'Monday', 2, 2),
+(58, 16, 'Tuesday', 2, 2),
+(59, 16, 'Thursday', 2, 2),
+(60, 16, 'Saturday', 2, 2),
+(65, 18, 'Thursday', 2, 2),
+(66, 18, 'Saturday', 2, 2),
+(67, 18, 'Sunday', 2, 2);
 
 -- --------------------------------------------------------
 
@@ -547,7 +672,8 @@ INSERT INTO `seat_layout` (`id`, `name`, `layout`, `aircraft_id`, `status`) VALU
 (17, 'sample_layout11', '[[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"],[\"1\",\"0\",\"1\",\"1\",\"0\",\"1\"]]', 7, 'active'),
 (18, 'new_layout1', '[[\"2\",\"0\",\"2\",\"0\",\"2\"],[\"2\",\"0\",\"2\",\"0\",\"2\"],[\"2\",\"0\",\"2\",\"0\",\"2\"],[\"2\",\"0\",\"2\",\"0\",\"2\"],[\"2\",\"0\",\"2\",\"0\",\"2\"],[\"2\",\"0\",\"2\",\"0\",\"2\"],[\"2\",\"0\",\"2\",\"0\",\"2\"],[\"2\",\"0\",\"2\",\"0\",\"2\"],[\"2\",\"0\",\"2\",\"0\",\"2\"],[\"2\",\"0\",\"2\",\"0\",\"2\"]]', 7, 'active'),
 (19, 'modified_layout', '[[\"1\",\"0\",\"1\",\"0\",\"1\"],[\"2\",\"0\",\"2\",\"0\",\"2\"],[\"2\",\"0\",\"2\",\"0\",\"2\"],[\"2\",\"0\",\"2\",\"0\",\"2\"],[\"2\",\"0\",\"2\",\"0\",\"2\"],[\"2\",\"0\",\"2\",\"0\",\"2\"],[\"2\",\"0\",\"2\",\"0\",\"2\"],[\"2\",\"0\",\"2\",\"0\",\"2\"],[\"2\",\"0\",\"2\",\"0\",\"2\"],[\"2\",\"0\",\"2\",\"0\",\"2\"]]', 7, 'active'),
-(20, 'Layout1', '[[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"2\",\"0\",\"2\",\"0\",\"2\",\"0\",\"2\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"2\",\"0\",\"2\",\"0\",\"2\",\"0\",\"2\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"1\",\"1\",\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"0\",\"0\",\"0\",\"0\"],[\"1\",\"1\",\"1\",\"0\",\"0\",\"0\",\"0\"],[\"1\",\"1\",\"1\",\"0\",\"0\",\"0\",\"0\"],[\"1\",\"1\",\"1\",\"0\",\"0\",\"0\",\"0\"]]', 10, 'active');
+(20, 'Layout1', '[[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"2\",\"0\",\"2\",\"0\",\"2\",\"0\",\"2\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"2\",\"0\",\"2\",\"0\",\"2\",\"0\",\"2\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"1\",\"1\",\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"0\",\"0\",\"0\",\"0\"],[\"1\",\"1\",\"1\",\"0\",\"0\",\"0\",\"0\"],[\"1\",\"1\",\"1\",\"0\",\"0\",\"0\",\"0\"],[\"1\",\"1\",\"1\",\"0\",\"0\",\"0\",\"0\"]]', 10, 'active'),
+(21, 'Layout1-a330', '[[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"2\",\"0\",\"2\",\"0\",\"2\",\"0\",\"2\",\"0\",\"2\",\"0\",\"2\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"2\",\"0\",\"2\",\"0\",\"2\",\"0\",\"2\",\"0\",\"2\",\"0\",\"2\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"3\",\"3\",\"3\",\"0\",\"3\",\"3\",\"3\",\"0\",\"3\",\"3\",\"3\"],[\"3\",\"3\",\"3\",\"0\",\"3\",\"3\",\"3\",\"0\",\"3\",\"3\",\"3\"],[\"3\",\"3\",\"3\",\"0\",\"3\",\"3\",\"3\",\"0\",\"3\",\"3\",\"3\"],[\"3\",\"3\",\"3\",\"0\",\"3\",\"3\",\"3\",\"0\",\"3\",\"3\",\"3\"],[\"3\",\"3\",\"3\",\"0\",\"3\",\"3\",\"3\",\"0\",\"3\",\"3\",\"3\"],[\"3\",\"3\",\"3\",\"0\",\"3\",\"3\",\"3\",\"0\",\"3\",\"3\",\"3\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"1\",\"1\",\"1\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"1\",\"1\",\"1\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"1\",\"1\",\"1\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"1\",\"1\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"1\",\"1\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"1\",\"1\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"1\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"1\",\"1\",\"1\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\"]]', 7, 'active');
 
 -- --------------------------------------------------------
 
@@ -734,7 +860,6 @@ ALTER TABLE `flight_fare`
 --
 ALTER TABLE `flight_reservation`
   ADD PRIMARY KEY (`reservation_id`),
-  ADD KEY `schedule_id` (`schedule_id`),
   ADD KEY `creator_account_id` (`creator_account_id`);
 
 --
@@ -750,7 +875,7 @@ ALTER TABLE `flight_schedule`
 ALTER TABLE `passenger`
   ADD PRIMARY KEY (`id`),
   ADD KEY `reservation_id` (`reservation_id`),
-  ADD KEY `seat_id` (`seat_id`);
+  ADD KEY `pass_res_flight_ibfk_1` (`reserved_flight_id`);
 
 --
 -- Indexes for table `purchased_extra`
@@ -762,6 +887,22 @@ ALTER TABLE `purchased_extra`
   ADD KEY `reservation_id` (`reservation_id`);
 
 --
+-- Indexes for table `reserved_flight`
+--
+ALTER TABLE `reserved_flight`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `reservation_id` (`reservation_id`),
+  ADD KEY `schedule_id` (`schedule_id`);
+
+--
+-- Indexes for table `reserved_seat`
+--
+ALTER TABLE `reserved_seat`
+  ADD PRIMARY KEY (`reserved_seat_id`),
+  ADD KEY `passenger_id` (`passenger_id`),
+  ADD KEY `reserved_seat_ibfk_1` (`reserved_flight_id`);
+
+--
 -- Indexes for table `scheduled_aircraft`
 --
 ALTER TABLE `scheduled_aircraft`
@@ -769,21 +910,6 @@ ALTER TABLE `scheduled_aircraft`
   ADD KEY `schedule_id` (`schedule_id`),
   ADD KEY `aircraft_id` (`aircraft_id`),
   ADD KEY `layout_id` (`layout_id`);
-
---
--- Indexes for table `scheduled_seat`
---
-ALTER TABLE `scheduled_seat`
-  ADD PRIMARY KEY (`scheduled_seat_id`),
-  ADD KEY `schedule_id` (`schedule_id`),
-  ADD KEY `seat_id` (`seat_id`);
-
---
--- Indexes for table `seat`
---
-ALTER TABLE `seat`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `flight_no` (`flight_no`);
 
 --
 -- Indexes for table `seat_layout`
@@ -814,7 +940,7 @@ ALTER TABLE `aircraft`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `extra`
@@ -832,7 +958,7 @@ ALTER TABLE `fare`
 -- AUTO_INCREMENT for table `flight_extra`
 --
 ALTER TABLE `flight_extra`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
 
 --
 -- AUTO_INCREMENT for table `flight_fare`
@@ -844,7 +970,7 @@ ALTER TABLE `flight_fare`
 -- AUTO_INCREMENT for table `flight_reservation`
 --
 ALTER TABLE `flight_reservation`
-  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `flight_schedule`
@@ -856,37 +982,37 @@ ALTER TABLE `flight_schedule`
 -- AUTO_INCREMENT for table `passenger`
 --
 ALTER TABLE `passenger`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `purchased_extra`
 --
 ALTER TABLE `purchased_extra`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT for table `reserved_flight`
+--
+ALTER TABLE `reserved_flight`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `reserved_seat`
+--
+ALTER TABLE `reserved_seat`
+  MODIFY `reserved_seat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `scheduled_aircraft`
 --
 ALTER TABLE `scheduled_aircraft`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
-
---
--- AUTO_INCREMENT for table `scheduled_seat`
---
-ALTER TABLE `scheduled_seat`
-  MODIFY `scheduled_seat_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `seat`
---
-ALTER TABLE `seat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT for table `seat_layout`
 --
 ALTER TABLE `seat_layout`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -923,7 +1049,6 @@ ALTER TABLE `flight_fare`
 -- Constraints for table `flight_reservation`
 --
 ALTER TABLE `flight_reservation`
-  ADD CONSTRAINT `flight_reservation_ibfk_1` FOREIGN KEY (`schedule_id`) REFERENCES `flight_schedule` (`schedule_id`),
   ADD CONSTRAINT `flight_reservation_ibfk_2` FOREIGN KEY (`creator_account_id`) REFERENCES `users` (`id`);
 
 --
@@ -936,8 +1061,8 @@ ALTER TABLE `flight_schedule`
 -- Constraints for table `passenger`
 --
 ALTER TABLE `passenger`
-  ADD CONSTRAINT `passenger_ibfk_1` FOREIGN KEY (`reservation_id`) REFERENCES `flight_reservation` (`reservation_id`),
-  ADD CONSTRAINT `passenger_ibfk_2` FOREIGN KEY (`seat_id`) REFERENCES `scheduled_seat` (`scheduled_seat_id`);
+  ADD CONSTRAINT `pass_res_flight_ibfk_1` FOREIGN KEY (`reserved_flight_id`) REFERENCES `reserved_flight` (`id`),
+  ADD CONSTRAINT `passenger_ibfk_1` FOREIGN KEY (`reservation_id`) REFERENCES `flight_reservation` (`reservation_id`);
 
 --
 -- Constraints for table `purchased_extra`
@@ -948,25 +1073,26 @@ ALTER TABLE `purchased_extra`
   ADD CONSTRAINT `purchased_extra_ibfk_3` FOREIGN KEY (`reservation_id`) REFERENCES `flight_reservation` (`reservation_id`);
 
 --
+-- Constraints for table `reserved_flight`
+--
+ALTER TABLE `reserved_flight`
+  ADD CONSTRAINT `reserved_flight_ibfk_1` FOREIGN KEY (`reservation_id`) REFERENCES `flight_reservation` (`reservation_id`),
+  ADD CONSTRAINT `reserved_flight_ibfk_2` FOREIGN KEY (`schedule_id`) REFERENCES `flight_schedule` (`schedule_id`);
+
+--
+-- Constraints for table `reserved_seat`
+--
+ALTER TABLE `reserved_seat`
+  ADD CONSTRAINT `reserved_seat_ibfk_1` FOREIGN KEY (`reserved_flight_id`) REFERENCES `reserved_flight` (`id`),
+  ADD CONSTRAINT `reserved_seat_ibfk_2` FOREIGN KEY (`passenger_id`) REFERENCES `passenger` (`id`);
+
+--
 -- Constraints for table `scheduled_aircraft`
 --
 ALTER TABLE `scheduled_aircraft`
   ADD CONSTRAINT `scheduled_aircraft_ibfk_1` FOREIGN KEY (`schedule_id`) REFERENCES `flight_schedule` (`schedule_id`),
   ADD CONSTRAINT `scheduled_aircraft_ibfk_2` FOREIGN KEY (`aircraft_id`) REFERENCES `aircraft` (`id`),
   ADD CONSTRAINT `scheduled_aircraft_ibfk_3` FOREIGN KEY (`layout_id`) REFERENCES `seat_layout` (`id`);
-
---
--- Constraints for table `scheduled_seat`
---
-ALTER TABLE `scheduled_seat`
-  ADD CONSTRAINT `scheduled_seat_ibfk_1` FOREIGN KEY (`schedule_id`) REFERENCES `flight_schedule` (`schedule_id`),
-  ADD CONSTRAINT `scheduled_seat_ibfk_2` FOREIGN KEY (`seat_id`) REFERENCES `seat` (`id`);
-
---
--- Constraints for table `seat`
---
-ALTER TABLE `seat`
-  ADD CONSTRAINT `seat_ibfk_1` FOREIGN KEY (`flight_no`) REFERENCES `flight` (`flight_no`);
 
 --
 -- Constraints for table `seat_layout`
