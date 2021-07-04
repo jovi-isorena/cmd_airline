@@ -12,7 +12,10 @@ class Reservations extends Controller{
         $this->flightExtraModel = $this->model('FlightExtra');
         $this->extraModel = $this->model('Extra');
         $this->flightFareModel = $this->model('FlightFare');
-
+        $this->reservedFlightModel = $this->model('ReservedFlight');
+        $this->passengerModel = $this->model('Passenger');
+        $this->reservedSeatModel = $this->model('ReservedSeat');
+        $this->purchasedExtraModel = $this->model('PurchasedExtra');
     }
 
     public function search(){
@@ -703,7 +706,7 @@ class Reservations extends Controller{
             }
 
             $data = [
-                'title' => 'Payment Method',
+                'title' => 'Payment',
                 'flights' => [],
                 // 'reservationData' => $reservationData 
 
@@ -762,9 +765,10 @@ class Reservations extends Controller{
             // echo $data['flights']['fees'] . "<br>";
             $data['total'] = $data['fees'] + $subtotal;
             // echo $data['flights']['total'] . "<br>";
+            $_SESSION['reservationData']['payment'] = $data;
 
         }
-
+        
         $this->view("reservations/payment", $data);
             //get data from post
             //add to reservation data
@@ -797,5 +801,89 @@ class Reservations extends Controller{
         }
         // echo $amount;
         return $amount;
+    }
+
+    public function reserve(){
+        if(isLoggedIn() !== "user"){
+            header("location: " . URLROOT);
+            exit(1);
+        }
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            $reservationData = $_SESSION['reservationData']['payment'];
+
+            $data = [
+                'title' => 'Reservation Complete',
+                'reservation' =>[]
+            ];
+            // $newId = "0000" . $intID;
+            // $newId = "PR".substr($newId, strlen($newId) - 5, 5);
+            // echo "ID: ".$newId;
+            //create array to inser for reservation table
+            
+            $data['reservation']['creationDate'] = new DateTime(); 
+            $data['reservation']['creationDate'] = $data['reservation']['creationDate']->format('Y-m-d H:i:s');
+            $data['reservation']['totalFare'] = $reservationData['total'];
+            $data['reservation']['cabinClass'] = $_SESSION['reservationData']['cabinClass'];
+            $data['reservation']['creator'] = $_SESSION['user_id'];
+            
+            if($this->reservationModel->add($data)){
+                $intID = $this->reservationModel->getMaxId();
+                //insert to reserved_flight
+                foreach($reservationData['flights'] as $flight){
+                    $insertData = [];
+                    $insertData['reservationId'] = $intID;
+                    $insertData['scheduleId'] = $flight['flightDetail']->schedule_id;
+                    $insertData['flightDate'] = $flight['flightDate']->format('Y-m-d');
+                    if(!$this->reservedFlightModel->add($insertData)){
+                        die("Something went wrong in reserving the flight. Error: 1");
+                    }
+                    $reservedFlightId = $this->reservedFlightModel->getMaxId();
+                    //insert passenger
+                    foreach($flight['passengers'] as $passenger){
+                        $insertData = [];
+                        $insertData['firstname'] = $passenger['firstname'];
+                        $insertData['lastname'] = $passenger['lastname'];
+                        $insertData['gender'] = $passenger['gender'];
+                        $insertData['dob'] = $passenger['dob'];
+                        $insertData['doctype'] = $passenger['doctype'];
+                        $insertData['docnumber'] = $passenger['docnumber'];
+                        $insertData['issuingcountry'] = $passenger['issuingcountry'];
+                        $insertData['expiration'] = $passenger['expiration'];
+                        $insertData['reservationId'] = $intID;
+                        if(!$this->passengerModel->add($insertData)){
+                            die("Something went wrong in reserving the flight. Error: 2");
+                        }
+                        $passengerId = $this->passengerModel->getMaxId();
+                        //add seat
+                        $insertData = [];
+                        $insertData['resFlight'] = $reservedFlightId;
+                        $insertData['passenger'] = $passengerId;
+                        $insertData['seatNumber'] = $passenger['seat'];
+                        if(!$this->reservedSeatModel->add($insertData)){
+                            die("Something went wrong in reserving the flight. Error: 3");
+                        }
+                        //add extra
+                        foreach($passenger['extras'] as $extra){
+                            $insertData = [];
+                            $insertData['passenger'] = $passengerId;
+                            $insertData['extra'] = $extra->id;
+                            $insertData['reservation'] = $intID;
+                            if(!$this->purchasedExtraModel->add($insertData)){
+                                die("Something went wrong in reserving the flight. Error: 4");
+                            }
+                        }
+                    }
+                }
+                $data['successMessage'] = "Booking Completed.";
+                unset($_SESSION['reservationData']);
+            }else{
+                die("Something went wrong in reserving the flight. Error: 5");
+
+            }
+
+            $this->view("reservations/reserve", $data);
+
+        }
     }
 }

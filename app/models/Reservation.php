@@ -7,6 +7,21 @@ class Reservation{
         $this->db = new Database();
     }
 
+    public function getMaxId(){
+        $this->db->query("SELECT MAX(reservation_id) as id FROM `flight_reservation;");
+        $result = $this->db->single();
+        return $result->id;
+    }
+
+    public function add($data){
+        $this->db->query("INSERT INTO `flight_reservation`(`creation_date`, `total_fare`, `cabin_class`, `creator_account_id`, `reservation_status`) VALUES (:date, :fare, :class, :creator, 'active');");
+        $this->db->bind(":date", $data['reservation']['creationDate']);
+        $this->db->bind(":fare", $data['reservation']['totalFare']);
+        $this->db->bind(":class", $data['reservation']['cabinClass']);
+        $this->db->bind(":creator", $data['reservation']['creator']);
+        return $this->db->execute();
+    }
+
     public function searchFlight($data){
         $this->db->query("SELECT * FROM vw_flight_info
             WHERE ((`monday` AND :monday) 
