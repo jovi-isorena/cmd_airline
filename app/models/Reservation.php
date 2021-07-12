@@ -60,6 +60,40 @@ class Reservation{
         return $this->db->resultSet();
     }
 
+    public function searchFlightRebook($data){
+        $this->db->query("SELECT * FROM vw_flight_info
+            WHERE ((`monday` AND :monday) 
+                OR (`tuesday` AND :tuesday) 
+                OR (`wednesday` AND :wednesday) 
+                OR (`thursday` AND :thursday) 
+                OR (`friday` AND :friday) 
+                OR (`saturday` AND :saturday) 
+                OR (`sunday` AND :sunday))	
+            AND NOT schedule_status = 'inactive' 
+            AND NOT flight_status = 'inactive' 
+            AND (:dept_date BETWEEN effective_start_date AND effective_end_date)
+            AND (airport_origin LIKE :origin)
+            AND (airport_destination LIKE :destination)                 
+            ");
+        
+        $this->db->bind(":monday", $data['monday']);
+        $this->db->bind(":tuesday", $data['tuesday']);
+        $this->db->bind(":wednesday", $data['wednesday']);
+        $this->db->bind(":thursday", $data['thursday']);
+        $this->db->bind(":friday", $data['friday']);
+        $this->db->bind(":saturday", $data['saturday']);
+        $this->db->bind(":sunday", $data['sunday']);
+        $this->db->bind(":dept_date", $data['selectedDate']->format('Y-m-d'));
+        $this->db->bind(":origin", "%".$data['targetOrigin']."%");
+        // $this->db->bind(":originName", "%".$data['targetOrigin']->name."%");
+        // $this->db->bind(":originAdd", "%".$data['targetOrigin']->address."%");
+        $this->db->bind(":destination", "%".$data['targetDestination']."%");
+        // $this->db->bind(":destinationName", "%".$data['targetDestination']->name."%");
+        // $this->db->bind(":destinationAdd", "%".$data['targetDestination']->address."%");
+        // print_r($this->db->stmt());
+        return $this->db->resultSet();
+    }
+
     function getFaresByFlightClass($sched, $class){
         $this->db->query("SELECT * FROM vw_flight_prices WHERE schedule_id = :sched AND class=:class");
         $this->db->bind(":sched", $sched);
@@ -67,6 +101,12 @@ class Reservation{
         return $this->db->resultSet();
     }
 
+    function getFaresByFareId($sched, $fareId){
+        $this->db->query("SELECT * FROM vw_flight_prices WHERE schedule_id = :sched AND fare_id=:fareId");
+        $this->db->bind(":sched", $sched);
+        $this->db->bind(":fareId", $fareId);
+        return $this->db->resultSet();
+    }
     
 
     function searchMinimumPrice($data){
@@ -101,10 +141,48 @@ class Reservation{
         
         return $this->db->single();
     }
+    function searchMinimumPriceRebook($data){
+        $this->db->query("SELECT schedule_id, flight_no, MIN(price) as 'minimum_price'
+        FROM vw_flight_prices
+        WHERE :date BETWEEN effective_start_date AND effective_end_date
+            AND fare_id = :fareId
+            AND airport_origin = :origin
+            AND airport_destination = :destination
+            AND ((monday AND :monday)
+                OR (tuesday AND :tuesday)
+                OR (wednesday AND :wednesday)
+                OR (thursday AND :thursday)
+                OR (friday AND :friday)
+                OR (saturday AND :saturday)
+                OR (sunday AND :sunday))         
+            ");
+        // echo '<pre>';    
+        // var_dump($data);
+        // echo '</pre>';    
+        $this->db->bind(":date", $data['targetDate']);
+        $this->db->bind(":fareId", $data['reservedFlight']->fareDetail->fare_id);
+        $this->db->bind(":origin", $data['targetOrigin']);
+        $this->db->bind(":destination", $data['targetDestination']);
+        $this->db->bind(":monday", $data['monday']);
+        $this->db->bind(":tuesday", $data['tuesday']);
+        $this->db->bind(":wednesday", $data['wednesday']);
+        $this->db->bind(":thursday", $data['thursday']);
+        $this->db->bind(":friday", $data['friday']);
+        $this->db->bind(":saturday", $data['saturday']);
+        $this->db->bind(":sunday", $data['sunday']);
+        
+        return $this->db->single();
+    }
 
     public function getAllBookingsByUser($id){
         $this->db->query("SELECT * FROM `flight_reservation` WHERE `creator_account_id`=:id;");
         $this->db->bind(":id", $id);
         return $this->db->resultSet();
+    }
+
+    public function getReservationById($id){
+        $this->db->query("SELECT * FROM `flight_reservation` WHERE `reservation_id`=:id;");
+        $this->db->bind(":id", $id);
+        return $this->db->single();
     }
 }

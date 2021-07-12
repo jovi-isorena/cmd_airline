@@ -216,6 +216,7 @@ class Reservations extends Controller{
 
     public function select(){
         if(isset($_SESSION['redirectData'])) unset($_SESSION['redirectData']);
+
         if(isLoggedIn() !== "user"){
             header("location: " . URLROOT );
             exit(1);
@@ -457,22 +458,7 @@ class Reservations extends Controller{
             $data['fareMatrix']["returnFlights"] = $this->createFareMatrix($data['retFareList'], $data['retFlights']);
             }
 
-            //check all errors
-            // if(empty($data['nameError']) && empty($data['classError']) && empty($data['baggageError']) && empty($data['dateChangeError']) && empty($data['cancelFeeError']) && empty($data['noShowFeeError']) && empty($data['accrualError']) ){
-            //     if($this->fareModel->add($data)){
-            //         $data['successMessage'] = "Fare successfully added.";
-            //         $data['name'] ='';
-            //         $data['class'] ='';
-            //         $data['baggage'] ='';
-            //         $data['dateChange'] ='';
-            //         $data['cancelFee'] ='';
-            //         $data['noShowFee'] ='';
-            //         $data['accrual'] ='';
-            //     }else{
-            //         die('Something went wrong.');
-            //     }
-            // }
-            // $data['result'][] = $this->reservationModel->searchMinimumPrice($data);
+            
         }
         if(isset($_POST['continue'])){
             if(empty($data['deptFlightError']) && empty($data['retFlightError'])){
@@ -781,12 +767,13 @@ class Reservations extends Controller{
         $amount = 0;
         foreach($flights as $flight){
             // echo $amount . "+" . $flight['flightFare']->price;
-            $amount += $flight['flightFare']->price;
+            
             // echo "=".$amount . "<br>";
             // var_dump($flight['passengers']);
             // echo '<pre>';
 
             foreach($flight['passengers'] as $passenger){
+                $amount += $flight['flightFare']->price;
                 if(array_key_exists('extras', $passenger)){
                     foreach($passenger['extras'] as $extra){
                         // echo $amount . "+" . $extra->price;
@@ -826,7 +813,6 @@ class Reservations extends Controller{
             $data['reservation']['totalFare'] = $reservationData['total'];
             $data['reservation']['cabinClass'] = $_SESSION['reservationData']['cabinClass'];
             $data['reservation']['creator'] = $_SESSION['user_id'];
-            
             if($this->reservationModel->add($data)){
                 $intID = $this->reservationModel->getMaxId();
                 //insert to reserved_flight
@@ -835,6 +821,7 @@ class Reservations extends Controller{
                     $insertData['reservationId'] = $intID;
                     $insertData['scheduleId'] = $flight['flightDetail']->schedule_id;
                     $insertData['flightDate'] = $flight['flightDate']->format('Y-m-d');
+                    $insertData['fareId'] = $flight['flightFare']->id;
                     if(!$this->reservedFlightModel->add($insertData)){
                         die("Something went wrong in reserving the flight. Error: 1");
                     }

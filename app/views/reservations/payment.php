@@ -12,24 +12,27 @@
         <div class="row">
             <div class="card w-100">
                 <div class="card-header">
-                    <h4 class="card-title align-text-center align-center"> Total to be paid is USD <span class="font-weight-bold"><?php echo $data['total'];?></span> <span class="btn btn-primary btn-sm">Click here to view details</span></h4>
+                    <h4 class="card-title align-text-center align-center"> Total to be paid is USD <span class="font-weight-bold"><?php echo $data['total'];?></span> <span class="btn btn-primary btn-sm" onclick="showBill()">Click here to view details</span></h4>
                     <p>The system will not allow you change the payment mode after you click CONTINUE. The current transaction will be cancelled and you will be required to start a new transaction if you attempt to change your payment mode. Please select a method of payment.</p>
                 </div>
                 <div class="card-body p-5">
-                    <div class="row border rounded px-4 mb-5" id="billDetail">
+                    <div class="row border rounded px-4 mb-5 w-75 mx-auto d-none" id="billDetail">
                         <h3>Bill Breakdown</h3>
                         <ul class="w-100 p-0" style="list-style: none;">
                             <?php foreach($data['flights'] as $flight):?>
                                 <li>
                                     <div class="row justify-content-between">
                                             <h5><?php echo $flight['flightDetail']->flight_no;?> <span class="small font-italic">(Fare Type: <?php echo $flight['flightFare']->name;?>)</span></h5>
-                                            <h5><?php echo $flight['flightFare']->price;?></h5>
+                                            
                                     </div>
                                         <!-- <div class="col-10 w-100"> -->
                                     <ul  style="list-style: none;">
                                         <?php foreach($flight['passengers'] as $passenger):?>
                                             <li>
-                                                <?php echo $passenger['firstname'] . " " . $passenger['lastname'];?>
+                                                <div class="row justify-content-between">
+                                                    <h6><?php echo $passenger['firstname'] . " " . $passenger['lastname'];?></h6>
+                                                    <h6><?php echo $flight['flightFare']->price;?></h6>
+                                                </div>
                                                 <?php if(isset($passenger['extras'])):?>
                                                     <!-- <span>Extras:</span> -->
                                                     <ul>
@@ -40,7 +43,7 @@
                                                                         <span class="ml-2"><?php echo $extra->name;?></span>
                                                                     <!-- </div> -->
                                                                     <!-- <div class="col-2 p-0 text-right"> -->
-                                                                        <span class="font-weight-bold"><?php echo $extra->price;?></span>
+                                                                        <h6><?php echo $extra->price;?></h6>
                                                                     <!-- </div> -->
                                                                 </div>
                                                             </li>        
@@ -123,3 +126,9 @@
 </div>
 
 <?php require APPROOT . '/views/includes/foot.php'; ?>
+<script>
+    function showBill(){
+        document.getElementById("billDetail").classList.toggle("d-none");
+        console.log("hey");
+    }
+</script>

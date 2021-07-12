@@ -14,14 +14,6 @@ class Users extends Controller{
     }
 
     public function login(){
-        if(isLoggedIn()){
-            if(isset($_SESSION['redirectTo'])){
-                header($_SESSION['redirectTo']);
-                unset($_SESSION['redirectTo']);
-            }else{
-                header("location: " . URLROOT );
-            }
-        }
         $data = [
             'title' => 'User Login',
             'usernameError' => '',
@@ -57,6 +49,14 @@ class Users extends Controller{
                 if($loggedInUser){
                     // print_r($loggedInUser);
                     $this->createUserSession($loggedInUser);
+                    if(isLoggedIn() == "user"){
+                        if(isset($_SESSION['redirectTo'])){
+                            header($_SESSION['redirectTo']);
+                            unset($_SESSION['redirectTo']);
+                        }else{
+                            header("location: " . URLROOT );
+                        }
+                    }
                 }else{
                     $data['passwordError'] = 'Username or Password is incorrect. Please try again.';
                     $this->view('users/login', $data);

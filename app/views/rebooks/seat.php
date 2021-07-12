@@ -2,8 +2,9 @@
     require APPROOT . '/views/includes/head.php';
     require APPROOT . '/views/includes/navigation.php';
 ?>
-<pre><?php //var_dump($data);?></pre>
-
+<pre>
+<?php var_dump($data);?>
+</pre>
 <div class="container full-h">
     <div class="row">
         <div class="col-9 p-0 ">
@@ -17,11 +18,7 @@
                             <li class="nav-item">
                                 <div class="nav-link active flightTab" data-toggle="deptFlight"><?php echo $data['selectedDepartureFlight']->airport_origin . " - " . $data['selectedDepartureFlight']->airport_destination;?></div>
                             </li>
-                            <?php if($data['flightType']=="roundTrip"):?>
-                            <li class="nav-item">
-                                <div class="nav-link flightTab" data-toggle="retFlight"><?php echo $data['selectedReturnFlight']->airport_origin . " - " . $data['selectedReturnFlight']->airport_destination;?></div>
-                            </li>
-                            <?php endif;?>
+                            
                         </ul>
                     </div>
                     <div class="card-body">
@@ -131,7 +128,7 @@
                             
                         </div>
                         <!-- RETURN FLIGHT -->
-                        <?php if($data['flightType']== "roundTrip"):?>
+                        <?php if($data['flightType']):?>
                             <div id="retFlight" class="d-none">
                                 <div class="row">
                                     <div class="passenger-list col">
@@ -251,4 +248,3 @@
     </div>
 </div>
 <?php require APPROOT . '/views/includes/foot.php'; ?>
-<script src="<?php echo URLROOT . "/public/js/";?>seat-selection.js"></script>

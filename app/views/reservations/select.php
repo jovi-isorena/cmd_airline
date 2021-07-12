@@ -41,10 +41,8 @@
             <div class="date-row text-center mb-3" style="background-color: lightgray;">
                 <h5>
                     <?php 
-                        
-                        // $date = new DateTime($data['ret']);
                         echo $data['dept']->format('F Y');
-                        ?>
+                    ?>
                 </h5>
                 <ul class="nav nav-tabs justify-content-around" >
                 <?php foreach($data['resultDept'] as $result):?>
@@ -62,7 +60,6 @@
                             value="<?php echo $date->format('Y-m-d');?>" 
                             <?php echo ($result->minimum_price == null || $isSameDate)?'disabled':'';?>>
                             <span class="text-uppercase font-weight-bold"><?php echo $date->format('D d');?></span>
-                            <?php //echo $data['dept']->format('Y-m-d'); echo $date->format('Y-m-d');?>
                             <hr class="m-0">
                             
                             <?php echo ($result->minimum_price == null)?'Not<br>Available':'from USD<br>'.$result->minimum_price;?>
@@ -152,6 +149,7 @@
             <div class="row w-100 justify-content-end mb-5">
                 <!-- <button class="btn btn-primary rounded">SAVE FARE</button> -->
             </div>
+            <!-- RETURN FLIGHT -->
             <?php if($data['flightType'] == 'roundTrip'):?>
                 <div class="date-row text-center mb-3" style="background-color: lightgray;">
                     <h5>
@@ -202,70 +200,70 @@
                             <img src="<?php echo URLROOT . '/public/img/baseline_check_circle_outline_black_18dp.png'?>"/> Selection
                         </span>
                     </div>
-                <?php foreach($data['retFareList'] as $fare):?>
-                    <div class="col px-0 py-3 text-center border border-dark">
-                        <?php echo $fare;?>
-                    </div>
-                <?php endforeach;?>
-            </div>
-            <div class="row p-0 m-0 justify-content-center" id="retFlightResult">
-                <?php foreach($data['retFlights'] as $flight):?>
-                    <div class="flightDetail row w-100 justify-content-center p-3 my-3">
-                        <div class="col-4 p-0">
-                            <div>
-                                <span class="font-weight-bold">
-                                    <?php 
-                                        $departureTime = new DateTime($flight->departure_time);
-
-                                        echo $departureTime->format('h:i A');
-                                    ?>
-                                </span>
-                                <span><?php echo $flight->origin_name;?></span>
-                                <span>(<?php echo $flight->airport_origin;?>)</span>
-                            </div>
-                            <div>
-                                <span class="w-100 text-center">TO</span>
-                            </div>
-                            <div>
-                                <span class="font-weight-bold">
-                                    <?php 
-                                        $arrivalTime = new DateTime($flight->departure_time);
-                                        $arrivalTime->add(new DateInterval("PT".$flight->duration_minutes."M"));
-                                        echo $arrivalTime->format('h:i A');
-                                    ?>
-                                </span>
-                                <span><?php echo $flight->destination_name;?></span>
-                                <span>(<?php echo $flight->airport_destination;?>)</span>
-                            </div>
-                            <div>
-                                <span>Duration:</span>
-                                <span class="font-weight-bold"><?php echo floor(intval($flight->duration_minutes)/60) . 'H ' . intval($flight->duration_minutes)%60 . 'M';?></span>
-                            </div>
-                            <div>
-                                <span> Flight Number:</span>
-                                <span class="font-weight-bold"><?php echo $flight->flight_no;?></span>
-                            </div>
+                    <?php foreach($data['retFareList'] as $fare):?>
+                        <div class="col px-0 py-3 text-center border border-dark">
+                            <?php echo $fare;?>
                         </div>
-                        <?php foreach($data['retFareList'] as $fare):?>
-                            <div class="col px-2">
-                                <label for="<?php echo $flight->schedule_id.$fare;?>" class="text-center rounded w-100 h-100 fare <?php echo ($data['retFlight']==$flight->schedule_id) && ($data['retFare']==$fare)?'selectedFareBox ':'';echo $data['fareMatrix']["returnFlights"][$flight->schedule_id][$fare] === "Not Available"?' disabledFareBox':'fareBox';?>">
-                                    <input class="d-none" type="radio" <?php echo $data['fareMatrix']["returnFlights"][$flight->schedule_id][$fare] === "Not Available"?'':'name="retFareMatrix"';?> id="<?php echo $flight->schedule_id.$fare;?>" data-flight="<?php echo $flight->schedule_id;?>" data-fare="<?php echo $flight->fares[array_search($fare, array_column($flight->fares, "name"))]->id;;?>" <?php echo $data['fareMatrix']["returnFlights"][$flight->schedule_id][$fare] === "Not Available"?'disabled':'';?>>
-                                    
-                                    <div class="col pt-5">
-                                        <?php if($data['fareMatrix']["returnFlights"][$flight->schedule_id][$fare] == $minRetFare):?>
-                                            <i class="fas fa-tag text-danger justify-self-start" style="transform: rotate(90deg); "></i>
-                                        <?php endif;?>
-                                        <?php echo $data['fareMatrix']["returnFlights"][$flight->schedule_id][$fare];?>
-                                    </div>
-                                </label>
+                    <?php endforeach;?>
+                </div>
+                <div class="row p-0 m-0 justify-content-center" id="retFlightResult">
+                    <?php foreach($data['retFlights'] as $flight):?>
+                        <div class="flightDetail row w-100 justify-content-center p-3 my-3">
+                            <div class="col-4 p-0">
+                                <div>
+                                    <span class="font-weight-bold">
+                                        <?php 
+                                            $departureTime = new DateTime($flight->departure_time);
+
+                                            echo $departureTime->format('h:i A');
+                                        ?>
+                                    </span>
+                                    <span><?php echo $flight->origin_name;?></span>
+                                    <span>(<?php echo $flight->airport_origin;?>)</span>
+                                </div>
+                                <div>
+                                    <span class="w-100 text-center">TO</span>
+                                </div>
+                                <div>
+                                    <span class="font-weight-bold">
+                                        <?php 
+                                            $arrivalTime = new DateTime($flight->departure_time);
+                                            $arrivalTime->add(new DateInterval("PT".$flight->duration_minutes."M"));
+                                            echo $arrivalTime->format('h:i A');
+                                        ?>
+                                    </span>
+                                    <span><?php echo $flight->destination_name;?></span>
+                                    <span>(<?php echo $flight->airport_destination;?>)</span>
+                                </div>
+                                <div>
+                                    <span>Duration:</span>
+                                    <span class="font-weight-bold"><?php echo floor(intval($flight->duration_minutes)/60) . 'H ' . intval($flight->duration_minutes)%60 . 'M';?></span>
+                                </div>
+                                <div>
+                                    <span> Flight Number:</span>
+                                    <span class="font-weight-bold"><?php echo $flight->flight_no;?></span>
+                                </div>
                             </div>
-                        <?php endforeach;?>
-                    </div>
-                <?php endforeach;?>
-            </div>
-            <div class="row w-100 justify-content-end mb-5">
-                <!-- <button class="btn btn-primary rounded">SAVE FARE</button> -->
-            </div>
+                            <?php foreach($data['retFareList'] as $fare):?>
+                                <div class="col px-2">
+                                    <label for="<?php echo $flight->schedule_id.$fare;?>" class="text-center rounded w-100 h-100 fare <?php echo ($data['retFlight']==$flight->schedule_id) && ($data['retFare']==$fare)?'selectedFareBox ':'';echo $data['fareMatrix']["returnFlights"][$flight->schedule_id][$fare] === "Not Available"?' disabledFareBox':'fareBox';?>">
+                                        <input class="d-none" type="radio" <?php echo $data['fareMatrix']["returnFlights"][$flight->schedule_id][$fare] === "Not Available"?'':'name="retFareMatrix"';?> id="<?php echo $flight->schedule_id.$fare;?>" data-flight="<?php echo $flight->schedule_id;?>" data-fare="<?php echo $flight->fares[array_search($fare, array_column($flight->fares, "name"))]->id;;?>" <?php echo $data['fareMatrix']["returnFlights"][$flight->schedule_id][$fare] === "Not Available"?'disabled':'';?>>
+                                        
+                                        <div class="col pt-5">
+                                            <?php if($data['fareMatrix']["returnFlights"][$flight->schedule_id][$fare] == $minRetFare):?>
+                                                <i class="fas fa-tag text-danger justify-self-start" style="transform: rotate(90deg); "></i>
+                                            <?php endif;?>
+                                            <?php echo $data['fareMatrix']["returnFlights"][$flight->schedule_id][$fare];?>
+                                        </div>
+                                    </label>
+                                </div>
+                            <?php endforeach;?>
+                        </div>
+                    <?php endforeach;?>
+                </div>
+                <div class="row w-100 justify-content-end mb-5">
+                    <!-- <button class="btn btn-primary rounded">SAVE FARE</button> -->
+                </div>
             <?php endif;?>
             <div class="row justify-content-end">
                 <button type="submit" class="btn" style="background-color: #001e60;color:white;" name="continue">CONTINUE <i class="fas fa-caret-right"></i></button>
