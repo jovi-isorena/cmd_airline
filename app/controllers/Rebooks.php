@@ -12,6 +12,9 @@ class Rebooks extends Controller{
         $this->scheduleModel = $this->model('Schedule');
         $this->flightModel = $this->model('Flight');
         $this->flightFareModel = $this->model('FlightFare');
+        $this->scheduledAircraftModel = $this->model('ScheduledAircraft');
+        $this->seatLayoutModel = $this->model('SeatLayout');
+        $this->aircraftModel = $this->model('Aircraft');
     }
 
     public function initiate($id){
@@ -69,8 +72,16 @@ class Rebooks extends Controller{
                 $data['selectedDate'] = new DateTime($_POST['newDate']);
 
             }
+            $data['selectedFlight'] = $_POST['selectedFlight'];
+            $data['selectedFare'] = $_POST['selectedFare'];
             if(isset($_POST['continue'])){
-                $_SESSION['rebook']['step2data'] = $data;
+                
+                $_SESSION['rebook']['step2data']['newDate'] = $data['selectedDate'];
+                $_SESSION['rebook']['step2data']['newFlight'] = $data['selectedFlight'];
+                $_SESSION['rebook']['step2data']['newFlightDetail'] = $this->scheduleModel->getScheduleDetails($data['selectedFlight']);
+                $_SESSION['rebook']['step2data']['newFare'] = $data['selectedFare'];
+                $_SESSION['rebook']['step2data']['newFareDetail'] = $this->flightFareModel->getFlightFareById($data['selectedFare']);
+
                 header("location: " . URLROOT . "/rebooks/seat");
                 exit();
             }
@@ -178,12 +189,105 @@ class Rebooks extends Controller{
     }
 
     public function seat(){
+        if(isLoggedIn()!="user"){
+            header("location: " . URLROOT . "/users/login");
+        }
+        $rebookData1 = $_SESSION['rebook']['step1data'];
+        $rebookData2 = $_SESSION['rebook']['step2data'];
+        $passengers = $this->passengerModel->getAllPassengersByReservationId($rebookData1[0]->reservation_id,$rebookData1[1]->id);
+        $newFlightDetail = $this->scheduleModel->getScheduleDetails($rebookData2['newFlight']);
+        
+        $deptAircraft = $this->scheduledAircraftModel->getScheduledAircraft($newFlightDetail->schedule_id, $rebookData2['newDate']->format('l'));
+        $deptAircraft->layout = json_decode($this->seatLayoutModel->getLayoutById($deptAircraft->layout_id)->layout);
+        $deptAircraft->rowHeader = $this->getRowHeader($deptAircraft->layout);
+        $deptAircraft->colHeader = $this->getColHeader($deptAircraft->layout); 
+        $adetails = $this->aircraftModel->getAircraftById($deptAircraft->aircraft_id);
+        $deptAircraft->name = $adetails->name;
+        $deptAircraft->model = $adetails->model;
         $data = [
             'title' => 'Choose Seat',
-            'rebookData' => $_SESSION['rebook']['step2data']
+            'rebookData1' => $rebookData1,
+            'rebookData2' => $rebookData2,
+            'selectedFlightDetail' => $newFlightDetail,
+            'aircraft' => $deptAircraft,
+            'passengers' => $passengers,
+            'newSeats' => []
         ];
 
-        $this->view("rebooks/seat", $data);
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            // sanitize post
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            $data['newSeats'] = $_POST['deptSeat'];
+            if(sizeof($data['newSeats']) != 0){
+                $_SESSION['rebook']['step3data']['newSeats'] = $data['newSeats'];
+                header("location: " . URLROOT . "/rebooks/confirm");
+                exit();
+            }
+        }
+            $this->view("rebooks/seat", $data);
+    }
+    private function getColHeader($arr){
+        $xCoor = [];
+        $currentChar = 'A';
+        $colCount = sizeof($arr[0]);
+        $rowCount = sizeof($arr);
+        
+        for($index = 0; $index < $colCount; $index++){
+            $hasElement = false;
+            for ($index2 = 0; $index2 < $rowCount; $index2++) {
+                if($arr[$index2][$index] != "0"){
+                    $hasElement = true;
+                    break;
+                }
+            }
+            if($hasElement){
+                $xCoor[$index] = $currentChar;
+                $currentChar = ++$currentChar;
+            }else{
+                $xCoor[$index] = ' ';
+            }
+        }
+        return $xCoor;
+        
+    }
+    //naming rows
+    private function getRowHeader($arr){
+        $yCoor = [];
+        $currentChar = 1;
+        $colCount = sizeof($arr[0]);
+        $rowCount = sizeof($arr);
+        for($index = 0; $index < $rowCount; $index++){
+            $hasElement = false;
+            for ($index2 = 0; $index2 < $colCount; $index2++) {
+                if($arr[$index][$index2] != "0"){
+                    $hasElement = true;
+                    break;
+                }
+            }
+            if($hasElement){
+                $yCoor[$index] = $currentChar;
+                $currentChar += 1;
+            }else{
+                $yCoor[$index] = ' ';
+            }
+        }
+        return $yCoor;
+    }
+
+    public function confirm(){
+        $rebookData1 = $_SESSION['rebook']['step1data'];
+        $rebookData2 = $_SESSION['rebook']['step2data'];
+        $rebookData3 = $_SESSION['rebook']['step3data'];
+
+        $data = [
+            'title' => 'Confirm Rebook',
+            'rebookData1' => $rebookData1,
+            'rebookData2' => $rebookData2,
+            'rebookData3' => $rebookData3
+
+        ];
+
+        $this->view("rebooks/confirm", $data);
     }
 }
 
@@ -193,3 +297,9 @@ class Rebooks extends Controller{
 //umpisa sa date select flight at fare
 
 //kunin data sa database
+
+//update process
+//update old reserved flight
+//create new reserved flight
+//update reserved_flight_id in passenger
+//update reserved_flight_id in reserved_seat

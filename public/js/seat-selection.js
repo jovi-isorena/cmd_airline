@@ -41,6 +41,8 @@ for(const seat of seats){
             activePassenger.parentElement.nextElementSibling.children[1].children[0].classList.add("badge-success");
             seat.classList.add("selectedSeat");
         }
+            document.getElementsByName("continue")[0].classList.toggle("d-none",!isAllSeated());
+        
     }
 }
 for(const passenger of deptPassengers){
@@ -57,3 +59,13 @@ for(const passenger of retPassengers){
         document.getElementById("activeRetPassenger").innerText = activePassenger.nextElementSibling.innerText;
     }
 }
+
+isAllSeated = ()=>{
+    const passengers = document.querySelectorAll(".seatHidden");
+    for(const passenger of passengers){
+        if(passenger.value == null)
+            return false;
+    }
+    return true;
+
+};
