@@ -3,7 +3,7 @@
     require APPROOT . '/views/includes/navigation.php';
 ?>
 <pre>
-<?php var_dump($data);?>
+<?php //var_dump($data);?>
 </pre>
 
 <div class="container full-h">
@@ -26,9 +26,9 @@
             Fare Price (per person): <span class="font-weight-bold text-secondary"><?php echo $data['rebookData1'][1]->fareDetail->price;?></span>
             <h5>Passenger's Seat</h5>
             <?php foreach($data['rebookData1'][1]->passengers as $passenger):
-                echo $passenger->firstname . " "  . $passenger->lastname . ": ";
+                
             ?>
-                <span class="font-weight-bold text-secondary"><?php echo $passenger->seat[0]->seat_number;?></span>
+                <div><?php echo $passenger->firstname . " "  . $passenger->lastname . ": ";?><span class="font-weight-bold text-secondary"><?php echo $passenger->seat[0]->seat_number;?></span></div>
             <?php endforeach;?>
         </div>
         <div class="col-4">
@@ -37,12 +37,16 @@
             Departure Date: <span class="font-weight-bold <?php echo ($oldDate->format("M d Y")==$data['rebookData2']['newDate']->format("M d Y"))?'text-success':'text-danger';?>"><?php echo $data['rebookData2']['newDate']->format("M d Y");?></span><br>
             Fare Price (per person): <span class="font-weight-bold <?php echo ($data['rebookData1'][1]->fareDetail->price==$data['rebookData2']['newFareDetail']->price)?'text-success':'text-danger';?>"><?php echo $data['rebookData2']['newFareDetail']->price;?></span>
             <h5>Passenger's Seat</h5>
-            <?php foreach($data['rebookData1'][1]->passengers as $key=>$passenger):
-                echo $passenger->firstname . " " . $passenger->lastname . ": ";
-            ?>
-                <span class="font-weight-bold <?php echo ($passenger->seat[0]->seat_number==$data['rebookData3']['newSeats'][$key])?'text-success':'text-danger';?>"><?php echo $data['rebookData3']['newSeats'][$key];?></span>
+            <?php foreach($data['rebookData1'][1]->passengers as $key=>$passenger):?>
+                <div><?php echo $passenger->firstname . " " . $passenger->lastname . ": ";?><span class="font-weight-bold <?php echo ($passenger->seat[0]->seat_number==$data['rebookData3']['newSeats'][$key])?'text-success':'text-danger';?>"><?php echo $data['rebookData3']['newSeats'][$key];?></span></div>
             <?php endforeach;?>
         </div>
+    </div>
+    <div class="row">
+        <form action="<?php echo URLROOT;?>/rebooks/confirm" method="post">
+            <input type="submit" name="continue" class="btn custom-primary rounded" id="btnContinue" value="CONTINUE" >
+                
+        </form>
     </div>
 </div>
 <?php require APPROOT . '/views/includes/foot.php'; ?>

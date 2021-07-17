@@ -20,4 +20,10 @@ class PurchasedExtra{
         $this->db->bind(":id", $id);
         return $this->db->resultSet();
     }
+
+    public function getPurchasedExtraByReservationId($id){
+        $this->db->query("SELECT * FROM `purchased_extra` WHERE `reservation_id` = :id;");
+        $this->db->bind(":id", $id);
+        return $this->db->resultSet();
+    }
 }

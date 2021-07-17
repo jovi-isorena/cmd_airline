@@ -56,36 +56,37 @@
                             <p>Name: <?php echo $passenger->firstname . " " . $passenger->lastname?></p>
                             <p></p>    
                         <?php endforeach;?>
-
+                        
                         <button class="btn btn-info" data-toggle="modal" data-target="#rebookModal<?php echo $flight->id;?>">Rebook</button>
-                            <div class="modal fade" id="rebookModal<?php echo $flight->id;?>" tabindex="-1" role="dialog" aria-labelledby="rebookModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel<?php echo $flight->id;?>">Notice on Rebooking [<?php echo $flight->id;?>]</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p>You are about to initiate a rebooking. Please be aware that this operation may apply additional charges depending on the date of the flight and fare type.</p>
-                                            <p> Also, you can only change the flight number and/or flight date. Fare type is not adjustable.</p>
-                                            <p>Are you sure you want to continue?</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <a href="<?php echo URLROOT . "/rebooks/initiate/" . $flight->id;?>" class="btn btn-secondary">Yes</a>
-                                            <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                        </div>
+                        <div class="modal fade" id="rebookModal<?php echo $flight->id;?>" tabindex="-1" role="dialog" aria-labelledby="rebookModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel<?php echo $flight->id;?>">Notice on Rebooking [<?php echo $flight->id;?>]</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>You are about to initiate a rebooking. Please be aware that this operation may apply additional charges depending on the date of the flight and fare type.</p>
+                                        <p> Also, you can only change the flight number and/or flight date. Fare type is not adjustable.</p>
+                                        <p>Are you sure you want to continue?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="<?php echo URLROOT . "/rebooks/initiate/" . $flight->id;?>" class="btn btn-secondary">Yes</a>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
+                            <a class="btn btn-lg custom-primary" style="text-decoration:none; :hover:color: white;" href="<?php echo URLROOT . "/tickets/flightTicket/" . $flight->id?>" target="_blank">
+                                Print Ticket
+                            </a>
+                        </div>
                     </div> 
                     <?php endforeach;?>
-                    <div class="row">
-                        <div class="btn btn-sm custom-primary">
-                            Print Ticket
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         <?php endforeach;?>

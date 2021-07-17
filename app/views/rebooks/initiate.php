@@ -2,7 +2,7 @@
     require APPROOT . '/views/includes/head.php';
     require APPROOT . '/views/includes/navigation.php';
 ?>
-<pre><?php var_dump($data);?></pre>
+<pre><?php //var_dump($data);?></pre>
 <?php
     $fares = [];
     foreach($data['fareMatrix']['flights'] as $fl){
@@ -12,7 +12,10 @@
     
 ?> 
 <div class="container full-h">
-<div class="row w-100 p-0">
+    <div class="row">
+        <h1><?php echo $data['title']?></h1>
+    </div>
+    <div class="row w-100 p-0">
         <form action="<?php echo URLROOT;?>/rebooks/initiate/<?php echo $data['reservedFlight']->id;?>" method="post" class="w-100" id="myForm">
             <input type="hidden" name="selectedDate" id="selectedDate" value="<?php echo $data['selectedDate']->format('Y-m-d');?>">
             <input type="hidden" name="origin" value="<?php echo $data['reservedFlight']->scheduleDetail->airport_origin;?>">

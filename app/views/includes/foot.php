@@ -1,4 +1,4 @@
-<footer class="page-footer bg-secondary text-light mt-5 pt-md-3 w-100" style="position: relative;bottom:0px;">
+<footer class="page-footer bg-secondary text-light pt-md-3 w-100" style="position: relative;bottom:0px;">
         <div class="container-fluid text-center text-md-left">
             <div class="row">
                 <div class="col-md-6 mt-md-0 mt-3">

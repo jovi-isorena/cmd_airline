@@ -2,10 +2,13 @@
     require APPROOT . '/views/includes/head.php';
     require APPROOT . '/views/includes/navigation.php';
 ?>
-<div class="container">
-    <div class="pt-5 col-md-8 offset-md-2">
+<div class="userLoginBg">
+
+</div>
+<div class="container full-h">
+    <div class="p-5 col-md-8 offset-md-2 frosted text-center" style="border-radius:20px;color:#001e60">
         <h1>Registration</h1>
-        <hr>
+        <hr style="background-color:#001e60">
         
         <div class="px-2 alert-success text-success align-items-center rounded"><p><?php echo $data['registrationComplete'];?></p></div>
         <div class="px-2 alert-danger text-danger align-items-center rounded"><p><?php echo $data['registrationError'];?></p></div>
@@ -59,7 +62,7 @@
                     <input type="password" class="form-control" id="rep" name="rep" placeholder="Repeat Password">
                 </div>
             </div>
-            <input type="submit" value="REGISTER" class="btn btn-outline-primary w-100" name="register">
+            <input type="submit" value="REGISTER" class="btn custom-primary w-100" name="register">
         </form>
     </div>
 </div>

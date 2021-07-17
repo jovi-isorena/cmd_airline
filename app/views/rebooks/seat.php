@@ -3,7 +3,7 @@
     require APPROOT . '/views/includes/navigation.php';
 ?>
 <pre>
-<?php var_dump($data);?>
+<?php //var_dump($data);?>
 </pre>
 <div class="container full-h">
     <div class="row">

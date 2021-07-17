@@ -33,4 +33,21 @@ class Passenger{
         $this->db->bind(":flight", $flight);
         return $this->db->resultSet();
     }
+
+    public function update($data){
+        $this->db->query("UPDATE `passenger` SET `firstname`=:firstname,`lastname`=:lastname,`gender`=:gender,`birthdate`=:birthdate,`valid_id`=:idtype,`valid_id_no`=:idNo,`issuing_country`=:country,`expiration_date`=:expDate,`reservation_id`=:reservationId,`reserved_flight_id`=:flightId,`passenger_status`=:stat WHERE `id`=:id;");
+        $this->db->bind(":firstname", $data['firstname']);
+        $this->db->bind(":lastname", $data['lastname']);
+        $this->db->bind(":gender", $data['gender']);
+        $this->db->bind(":birthdate", $data['birthdate']);
+        $this->db->bind(":idtype", $data['valid_id']);
+        $this->db->bind(":idNo", $data['valid_id_no']);
+        $this->db->bind(":country", $data['issuing_country']);
+        $this->db->bind(":expDate", $data['expiration_date']);
+        $this->db->bind(":reservationId", $data['reservation_id']);
+        $this->db->bind(":flightId", $data['reserved_flight_id']);
+        $this->db->bind(":stat", $data['passenger_status']);
+        $this->db->bind(":id", $data['id']);
+        return $this->db->execute();
+    }
 }

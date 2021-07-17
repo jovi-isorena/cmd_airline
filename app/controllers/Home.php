@@ -5,15 +5,23 @@ class Home extends Controller{
     }
 
     public function index(){
-        $users = $this->userModel->getUsers();
+        if(isLoggedIn() === 'employee'){
+            header("Location: " . URLROOT . "/home/dashboard");
+        }
         $data = [
-            'title' => SITENAME,
-            'users' => $users
+            'title' => SITENAME
         ];
         $this->view('home/index', $data);
     }
 
     public function about(){
         $this->view('home/about');
+    }
+
+    public function dashboard(){
+        $data = [
+            'title' => 'Dashboard'
+        ];
+        $this->view("home/dashboard", $data);
     }
 }

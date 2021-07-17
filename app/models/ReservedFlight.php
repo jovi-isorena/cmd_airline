@@ -16,6 +16,12 @@ class ReservedFlight{
         return $this->db->execute();
     }
 
+    public function updateRebook($id){
+        $this->db->query("UPDATE `reserved_flight` SET `status`='rebook' WHERE `id`=:id;");
+        $this->db->bind(":id", $id);
+        
+        return $this->db->execute();
+    }
     public function getMaxId(){
         $this->db->query("SELECT MAX(id) as id FROM `reserved_flight;");
         $result = $this->db->single();
@@ -23,7 +29,7 @@ class ReservedFlight{
     }
 
     public function getFlightByReservationId($id){
-        $this->db->query("SELECT * FROM `reserved_flight` WHERE `reservation_id` = :id AND `status` = 'active';");
+        $this->db->query("SELECT * FROM `reserved_flight` WHERE `reservation_id` = :id AND `status` = 'active' ORDER BY `flight_date` ASC;");
         $this->db->bind(":id", $id);
         return $this->db->resultSet();
     }

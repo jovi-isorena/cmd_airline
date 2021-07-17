@@ -1,16 +1,18 @@
 <?php
     require APPROOT . '/views/includes/head.php';
-    require APPROOT . '/views/includes/navigation.php';
+    require APPROOT . '/views/includes/navigation-sp.php';
 
     if(isLoggedIn()){
         header("location: " . URLROOT );
     }
 ?>
+<div class="empLoginBg">
 
+</div>
     <div class="container full-h" >
     <!-- <div style='background-color: red; height: 100%; width: 100%'> -->
         <div class="container" >
-            <div class="mt-5 p-4 col-md-4 offset-md-4 rounded text-white" style="background-color: #001e60;">
+            <div class="mt-5 p-4 col-md-4 offset-md-4 frosted" style="color: #001e60; border-radius: 20px;">
                 <h1 class=" text-center ">Login As Employee</h1>
                 <hr style="background-color:white">
                 <?php if(isset($data['passwordError'])): ?>

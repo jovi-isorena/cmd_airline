@@ -15,6 +15,16 @@ class ReservedSeat{
         return $this->db->execute();
     }
     
+    public function update($data){
+        $this->db->query("UPDATE `reserved_seat` SET `reserved_flight_id`=:resFlight,`passenger_id`=:passenger,`seat_number`=:seatNumber,`status`=:stat WHERE `reserved_seat_id`=:id;");
+        $this->db->bind(":resFlight", $data['reserved_flight_id']);
+        $this->db->bind(":passenger", $data['passenger_id']);
+        $this->db->bind(":seatNumber", $data['seat_number']);
+        $this->db->bind(":stat", $data['status']);
+        $this->db->bind(":id", $data['reserved_seat_id']);
+        return $this->db->execute();
+    }
+
     public function getReservedSeatByPassengerId($id){
         $this->db->query("SELECT * FROM `reserved_seat` WHERE `passenger_id` = :id;");
         $this->db->bind(":id", $id);

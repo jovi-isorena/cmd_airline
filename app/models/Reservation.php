@@ -21,6 +21,17 @@ class Reservation{
         $this->db->bind(":creator", $data['reservation']['creator']);
         return $this->db->execute();
     }
+    public function update($data){
+        $this->db->query("UPDATE `flight_reservation` SET `creation_date`=:date,`total_fare`=:fare,`cabin_class`=:class,`creator_account_id`=:creator,`reservation_status`=:stat WHERE `reservation_id`=:id");
+        $this->db->bind(":date", $data['creation_date']);
+        $this->db->bind(":fare", $data['total_fare']);
+        $this->db->bind(":class", $data['cabin_class']);
+        $this->db->bind(":creator", $data['creator_account_id']);
+        $this->db->bind(":stat", $data['reservation_status']);
+        $this->db->bind(":id", $data['reservation_id']);
+        return $this->db->execute();
+    }
+
 
     public function searchFlight($data){
         $this->db->query("SELECT * FROM vw_flight_info
