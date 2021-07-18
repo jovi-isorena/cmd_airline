@@ -5,14 +5,28 @@
 <pre><?php //var_dump($data);?></pre>
 
 <div class="container full-h">
+    <ol class="progress custom-ol" style="height:fit-content;">
+        <li class="completed">Select Date</li>
+        <li class="completed">Select Flight</li>
+        <li class="is-active">Passengers</li>
+        <li >Choose Seats</li>
+        <li>Add Extras</li> 
+        <li>Payment</li>
+        <li>Complete</li>
+    </ol>
     <div class="row">
+        <div class="col-12">
+            <h1><?php echo $data['title'];?></h1>
+            <pre><?php //var_dump($data);?></pre>
+        </div>
         <div class="col-9">
             <h6>Passenger Count: <?php echo $data['passenger']?></h6>
             <form action="<?php echo URLROOT . "/reservations/seats";?>" method="post">
+            <input type="hidden" id="deptDate" value="<?php echo $data['dept']->format('Y-m-d');?>">
                 <?php for ($i=0; $i < intval($data['passenger']); $i++):?>
                     <div class="passenger-profile card mb-3">
                         <div class="card-header d-flex justify-content-between">
-                            <h3>ADULT 1</h3>
+                            <h3>Passenger <?php echo $i+1;?> <span id="passType[<?php echo $i;?>]"></span></h3>
                             <div class="btn edit-info d-none" style="background-color: #001e60;color:white;">EDIT INFORMATION</div>
                         </div>
                         <div class="card-body">
@@ -48,26 +62,7 @@
                                     </div>
                                 </div>
                             </fieldset>
-                            <!-- <fieldset>
-                                <legend>Frequent Flyer Details</legend>
-                                <div class="row">
-                                    <div class="col form-group">
-                                        <label for="ffairline">Frequent Flyer Airline:</label>
-                                        <span class="text-danger">* </span>
-                                        <select name="ffairline" id="ffairline" class="custom-select">
-                                            <option value="" class="capitalized" selected disabled>--</option>
-                                            <option value="ALL NIPPONG AIRWAYS" class="capitalized">ALL NIPPON AIRWAYS</option>
-                                            <option value="PHILIPPINE AIRLINES" class="capitalized">PHILIPPINE AIRLINES</option>
-                                        </select>
-                                    </div>
-                                    <div class="col form-group">
-                                        <label for="ffnumber">Frequent Flyer Number:</label>
-                                        <span class="text-danger">* </span>
-                                        <input type="text" name="ffnumber" id="ffnumber" class="form-control" placeholder="Enter your Number">
-                                    </div>
-                                </div>
-                            </fieldset> -->
-                            <fieldset>
+                           <fieldset>
                                 <legend>Identification Document</legend>
                                 <div class="row">
                                     <div class="col form-group">

@@ -2,9 +2,18 @@
     require APPROOT . '/views/includes/head.php';
     require APPROOT . '/views/includes/navigation.php';
 ?>
-<pre><?php var_dump($data);?></pre>
+<pre><?php //var_dump($data);?></pre>
 
 <div class="container full-h">
+         <ol class="progress custom-ol" style="height:fit-content;">
+        <li class="completed">Select Date</li>
+        <li class="completed">Select Flight</li>
+        <li class="completed">Passengers</li>
+        <li class="completed">Choose Seats</li>
+        <li class="completed">Add Extras</li> 
+        <li class="is-active">Payment</li>
+        <li>Complete</li>
+    </ol>
     <div class="col-9">
         <div class="row">
             <h1><?php echo $data['title']?></h1>
@@ -12,7 +21,7 @@
         <div class="row">
             <div class="card w-100">
                 <div class="card-header">
-                    <h4 class="card-title align-text-center align-center"> Total to be paid is USD <span class="font-weight-bold"><?php echo $data['total'];?></span> <span class="btn btn-primary btn-sm" onclick="showBill()">Click here to view details</span></h4>
+                    <h4 class="card-title align-text-center align-center"> Total to be paid is USD <span class="font-weight-bold"><?php echo number_format($data['total'],2);?></span> <span class="btn btn-primary btn-sm" onclick="showBill()">Click here to view details</span></h4>
                     <p>The system will not allow you change the payment mode after you click CONTINUE. The current transaction will be cancelled and you will be required to start a new transaction if you attempt to change your payment mode. Please select a method of payment.</p>
                 </div>
                 <div class="card-body p-5">

@@ -46,7 +46,7 @@ class Reservations extends Controller{
                 $retDestination = '';
             }
             $data = [
-                'title' => 'Search Flight',
+                'title' => 'Select Date',
                 'flightType' => $input['flightType'],
                 'dept' => new DateTime($input['departure']),
                 'ret' => new DateTime($input['return']),

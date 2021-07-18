@@ -18,12 +18,19 @@
     }
 ?> 
 <div class="container full-h">
+    <ol class="progress custom-ol" style="height:fit-content;">
+        <li class="completed">Select Date</li>
+        <li class="is-active">Select Flight</li>
+        <li>Passengers</li>
+        <li >Choose Seats</li>
+        <li>Add Extras</li>
+        <li>Payment</li>
+        <li>Complete</li>
+    </ol>
 
-    <div class="row">
-        <div class="col-9">
-        </div>
-        <div class="col-3">
-        </div>
+    <div class="col-12">
+        <h1><?php echo $data['title'];?></h1>
+        <pre><?php //var_dump($data);?></pre>
     </div>
     <div class="row w-100 p-0">
         <form action="<?php echo URLROOT;?>/reservations/select" method="post" class="w-100" id="myForm">
@@ -85,7 +92,7 @@
                     </span>
                 </div>
                 <?php foreach($data['deptFareList'] as $fare):?>
-                    <div class="col px-0 py-3 text-center border border-dark">
+                    <div class="col px-0 py-3 text-center border border-dark bg-warning">
                         <?php echo $fare;?>
                     </div>
                 <?php endforeach;?>
@@ -201,7 +208,7 @@
                         </span>
                     </div>
                     <?php foreach($data['retFareList'] as $fare):?>
-                        <div class="col px-0 py-3 text-center border border-dark">
+                        <div class="col px-0 py-3 text-center border border-dark bg-warning">
                             <?php echo $fare;?>
                         </div>
                     <?php endforeach;?>
@@ -265,7 +272,7 @@
                     <!-- <button class="btn btn-primary rounded">SAVE FARE</button> -->
                 </div>
             <?php endif;?>
-            <div class="row justify-content-end">
+            <div class="row justify-content-end m-5">
                 <button type="submit" class="btn" style="background-color: #001e60;color:white;" name="continue">CONTINUE <i class="fas fa-caret-right"></i></button>
             </div>    
         </form>

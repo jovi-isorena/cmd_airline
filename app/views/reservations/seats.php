@@ -5,12 +5,21 @@
 <pre><?php //var_dump($data);?></pre>
 
 <div class="container full-h">
+    <ol class="progress custom-ol" style="height:fit-content;">
+        <li class="completed">Select Date</li>
+        <li class="completed">Select Flight</li>
+        <li class="completed">Passengers</li>
+        <li class="is-active">Choose Seats</li>
+        <li>Add Extras</li> 
+        <li>Payment</li>
+        <li>Complete</li>
+    </ol>
     <div class="row">
-        <div class="col-9 p-0 ">
-            <div class="row">
-                <h1><?php echo $data['title'];?></h1>
-            </div>
-            <div id="card  border rounded">
+        <div class="col-12">
+            <h1><?php echo $data['title'];?></h1>
+        </div>
+        <div class="col-12">
+            <div id="card border rounded">
                 <form action="<?php echo URLROOT . "/reservations/extras"?>" method="post">
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs">
@@ -244,10 +253,7 @@
                 </form>
             </div>
         </div>
-        <div class="col-3">
-            test
-            <?php $hey = 'A'; echo ++$hey; echo $hey;?>
-        </div>
+        
     </div>
 </div>
 <?php require APPROOT . '/views/includes/foot.php'; ?>

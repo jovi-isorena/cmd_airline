@@ -9,21 +9,20 @@ class Tests extends Controller{
         $this->testModel = $this->model('Test');
     }
 
-    public function index($pass, $pass2){
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+    public function index(){
         $data = [
-            'pass' => $pass,
-            'pass2' => $pass2
+            'title' => "Test Page"
 
         ];
-        // if(isset($_POST['pass'])){
-        //     $data = [
-        //         'pass' =>$_POST['pass']
-        //     ];
-            
-        // }
-        // else
-        // $this->view('tests/index');
+        
         $this->view('tests/index', $data);
+    }
+
+    public function fetchAirport($term){
+        $airports = $this->testModel->getAirport($term);
+        $data = [
+            'airports' => json_encode($airports)
+        ] ;
+        $this->view("tests/fetchAirport", $data);
     }
 }

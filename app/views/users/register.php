@@ -1,11 +1,11 @@
 <?php
     require APPROOT . '/views/includes/head.php';
-    require APPROOT . '/views/includes/navigation.php';
+    require APPROOT . '/views/includes/navigation-sp.php';
 ?>
 <div class="userLoginBg">
 
 </div>
-<div class="container full-h">
+<div class="container full-h pt-5">
     <div class="p-5 col-md-8 offset-md-2 frosted text-center" style="border-radius:20px;color:#001e60">
         <h1>Registration</h1>
         <hr style="background-color:#001e60">

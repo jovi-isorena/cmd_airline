@@ -6,10 +6,24 @@
 
 
 <div class="container full-h">
+    <ol class="progress custom-ol" style="height:fit-content;">
+        <li class="completed">Select Date</li>
+        <li class="completed">Select Flight</li>
+        <li class="completed">Passengers</li>
+        <li class="completed">Choose Seats</li>
+        <li class="is-active">Add Extras</li> 
+        <li>Payment</li>
+        <li>Complete</li>
+    </ol>
     <div class="row">
         <div class="col-9 p-0">
             <div class="row">
-                <h1><?php echo $data['title'];?></h1>
+                <div class="col-12">
+                    <h1><?php echo $data['title'];?></h1>
+                </div>
+                <div class="col-12">
+                    <h6 class="text-muted">Extras are optional.</h6>
+                </div>
             </div>
             <div class="card  border rounded">
                 <form action="<?php echo URLROOT;?>/reservations/payment" method="post">

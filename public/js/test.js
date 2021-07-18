@@ -1,52 +1,55 @@
-let test = document.getElementById("test");
-let data = [[1,2,3,4],[1,2,3],[6,7,8]];
-test.addEventListener("click", ()=>{
-    console.log('test');
-    console.log(data);
-    let js = JSON.stringify(data);
-    console.log(js);
+// const txtOrigin = document.getElementById("origin");
+// const txtDestination = document.getElementById("destination");
+const inputs = document.querySelectorAll(".airportInput");
+
+inputs.forEach((input)=>{
+    input.onkeyup = ()=>{
+        suggestTab = document.getElementById(input.getAttribute("data-link"));
+        while(suggestTab.lastChild) suggestTab.removeChild(suggestTab.lastChild);
+        console.log(input.value.trim());
+        // check if value is not null before fetching
+        if(input.value.trim() != ""){
+            if(window.XMLHttpRequest)
+                var ajax = new XMLHttpRequest();
+            else
+                var ajax = new ActiveXObject("Microsoft.XMLHTTP");
     
+                let method = "GET";
+                let url = "/cmd_airline/tests/fetchAirport/" + input.value.trim();
+                let asynchronous = true;
+                ajax.open(method, url, asynchronous);
+                ajax.send(); //for post method
+                ajax.onreadystatechange = function(){
+                    if(this.readyState == 4 && this.status == 200){
+                        console.log("from ajax: " + (this.responseText));
+                        let resp =JSON.parse(this.responseText);
+                        console.table(resp);
+                        
+                        resp.forEach((airport)=>{
+                            const newItem = document.createElement("button");
+                            newItem.setAttribute("type", "button");
+                            newItem.classList.add("list-group-item", "list-group-item-action");
+                            const spanName = document.createElement("span");
+                            spanName.innerText = airport['airport_code'] + " - " + airport['name'];
+                            const spanAddr = document.createElement("span");
+                            spanAddr.innerText = airport['address'];
+                            newItem.append(spanName);
+                            newItem.append(document.createElement("br"));
+                            newItem.append(spanAddr);
 
-    if(js != ''){
-        if(window.XMLHttpRequest)
-            var ajax = new XMLHttpRequest();
-        else
-            var ajax = new ActiveXObject("Microsoft.XMLHTTP");
-
-        let method = "GET";
-        let url = "/cmd_airline/tests/index/1/" + js;
-        // let url = "/cmd_airline/controllers/tests/index.php";
-        let asynchronous = true;
-        ajax.open(method, url, asynchronous);
-        // ajax.setRequestHeader("Content-Type", "application/json");
-        
-        
-        ajax.send(); //for post method
-        //receiving response from db.php
-        ajax.onreadystatechange = function(){
-            //readystate
-            //0: request not initialized
-            //1: server connection established
-            //2: request received
-            //3: processing request
-            //4: request finished and response is ready
-            //status
-            //200: "OK"
-            //403: "Forbidden"
-            //404: "Not Found"
-            if(this.readyState == 4 && this.status == 200){
-                // convert json back to array
-                // let data = JSON.parse(this.responseText);
-                // console.log("from ajax: " + data);
-                console.log("from ajax: " + (this.responseText));
-                
-                // console.log("json parse: " + JSON.parse(this.responseText));
-            //    if(this.responseText == 1){
-                    
-                    // getAllAnswer();
-                    // location.reload();
-            //    }
-            }
+                            suggestTab.append(newItem);
+                        });
+                        
+                    }
+                }  
         }
     }
-});
+    
+})
+
+// <button type="button" class="list-group-item list-group-item-action">
+//     <span>MNL - Ninoy Aquino International Airport</span><br>
+//     <span>Pasay, Philippines</span>
+// </button>
+
+

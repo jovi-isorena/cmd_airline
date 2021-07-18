@@ -30,9 +30,6 @@
                     <a href="<?php echo URLROOT;?>/employees/logout" class="ml-2 nav-link btn btn-warning" style="font-size:small;">Logout</a>
                 </li>
             <?php else: ?>
-                <li class="nav-item">
-                    <a class="nav-link  active" href="about.html">Promo Fares<span class="sr-only">(current)</span></a>
-                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link  active dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Explore
@@ -57,9 +54,6 @@
                     <a class="nav-link  active" href="about.html">Promo Fares<span class="sr-only">(current)</span></a>
                 </li>
                 
-                <li class="nav-item">
-                    <a class="nav-link active" href="about.html">Mabuhay Miles<span class="sr-only">(current)</span></a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link active" href="about.html">Contact Us<span class="sr-only">(current)</span></a>
                 </li>

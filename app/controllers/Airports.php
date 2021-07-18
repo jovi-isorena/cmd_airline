@@ -181,4 +181,12 @@ class Airports extends Controller{
         }
 
     }
+
+    public function fetchAirport($term){
+        $airports = $this->airportModel->fetchAirport($term);
+        $data = [
+            'airports' => json_encode($airports)
+        ] ;
+        $this->view("airports/fetchAirport", $data);
+    }
 } 

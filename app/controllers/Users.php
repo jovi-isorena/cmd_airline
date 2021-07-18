@@ -227,6 +227,7 @@ class Users extends Controller{
         unset($_SESSION['suffix']);
         unset($_SESSION['birthdate']);
         unset($_SESSION['mobile_no']);
+        unset($_SESSION);
         header("location: " . URLROOT . "/users/login");
     }
 
