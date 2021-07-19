@@ -20,10 +20,10 @@
             <pre><?php //var_dump($data);?></pre>
         </div>
         <div class="col-9">
-            <h6>Passenger Count: <?php echo $data['passenger']?></h6>
-            <form action="<?php echo URLROOT . "/reservations/seats";?>" method="post">
-            <input type="hidden" id="deptDate" value="<?php echo $data['dept']->format('Y-m-d');?>">
-                <?php for ($i=0; $i < intval($data['passenger']); $i++):?>
+            <h6>Passenger Count: <?php echo $_SESSION['reservation']['step3']['passenger']?></h6>
+            <form action="<?php echo URLROOT . "/reservations/passengers";?>" method="post">
+            <input type="hidden" id="deptDate" value="<?php echo $_SESSION['reservation']['step3']['dept']->format('Y-m-d');?>">
+                <?php for ($i=0; $i < intval($_SESSION['reservation']['step3']['passenger']); $i++):?>
                     <div class="passenger-profile card mb-3">
                         <div class="card-header d-flex justify-content-between">
                             <h3>Passenger <?php echo $i+1;?> <span id="passType[<?php echo $i;?>]"></span></h3>

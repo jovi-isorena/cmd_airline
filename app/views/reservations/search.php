@@ -24,7 +24,7 @@
             <pre><?php //var_dump($data);?></pre>
         </div>
         <div class="col-12">
-            <form action="<?php echo URLROOT;?>/reservations/select" method="POST">
+            <form action="<?php echo URLROOT;?>/reservations/search" method="POST">
                 <input type="hidden" name="passenger" value="<?php echo $data['passenger'];?>">
                 <input type="hidden" name="cabinClass" value="<?php echo $data['cabinClass'];?>">
                 <input type="hidden" name="flightType" value="<?php echo $data['flightType'];?>">
@@ -60,6 +60,7 @@
                             <span>
                                 Please select new departure date
                             </span>
+                            <span style="color: red;">* <?php echo $data['selectedDeptDateError'];?></span>
                         </div>
                         
                         <div class="col-5">
@@ -100,8 +101,8 @@
                                                 <p class="card-title text-uppercase font-weight-bold"><?php echo $date->format('M'); ?></p>
                 
                                             </div>
-                                            <div class="col-4 p-0">
-                                                <?php if($result->minimum_price == $minFare) echo '<i class="fas fa-tag text-danger" style="transform: rotate(90deg); "></i>';?>
+                                            <div class="col-4 pr-3">
+                                                <?php if($result->minimum_price == $minFare) echo '<i class="fas fa-tag text-danger" style="transform: rotate(90deg);position: absolute; top: 1.6em; "></i>';?>
                 
                                             </div>
     
@@ -154,6 +155,7 @@
                                 <span>
                                     Please select new return date
                                 </span>
+                                <span style="color: red;">* <?php echo $data['selectedRetDateError'];?></span>
                             </div>
                             
                             <div class="col-5">
@@ -187,8 +189,8 @@
                                                     <p class="card-title text-uppercase font-weight-bold"><?php echo $date->format('M'); ?></p>
                     
                                                 </div>
-                                                <div class="col-4 p-0">
-                                                    <?php if($result->minimum_price == $minFare) echo '<i class="fas fa-tag text-danger" style="transform: rotate(90deg); "></i>';?>
+                                                <div class="col-4 pr-3">
+                                                    <?php if($result->minimum_price == $minFare) echo '<i class="fas fa-tag text-danger" style="transform: rotate(90deg);position: absolute; top: 1.6em;"></i>';?>
                     
                                                 </div>
     

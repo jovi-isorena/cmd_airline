@@ -43,7 +43,10 @@
                 default:
                     $type = PDO::PARAM_STR;
             }
+            // debug_print_backtrace();
             $this->statement->bindValue($parameter, $value, $type);
+            
+            
         }
         
         //execute the prepared statement

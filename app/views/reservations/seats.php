@@ -19,8 +19,9 @@
             <h1><?php echo $data['title'];?></h1>
         </div>
         <div class="col-12">
+            <span style="color: red;"><?php echo $data['seatError'];?></span>
             <div id="card border rounded">
-                <form action="<?php echo URLROOT . "/reservations/extras"?>" method="post">
+                <form action="<?php echo URLROOT . "/reservations/seats"?>" method="post">
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs">
                             <li class="nav-item">
@@ -51,8 +52,12 @@
                                                     <label for="deptPass<?php echo $key;?>"><?php echo $passenger['firstname'] . " " . $passenger['lastname'];?></label>
                                                 </div>
                                                 <div class="col text-center">
-                                                    <input type="hidden" name="deptSeat[<?php echo $key;?>]" id="deptSeat[<?php echo $key;?>]">
-                                                    <h5 class="m-0"><span class="badge badge-danger">No Seat Selected</span></h5>
+                                                    <input type="hidden" name="deptSeat[<?php echo $key;?>]" id="deptSeat[<?php echo $key;?>]" value="<?php echo isset($data['passengers'][$key]['departureSeat'])?$data['passengers'][$key]['departureSeat']:'';?>">
+                                                    <?php if(isset($data['passengers'][$key]['departureSeat'])):?>
+                                                        <h5 class="m-0"><span class="badge badge-success"><?php echo $data['passengers'][$key]['departureSeat'];?></span></h5>
+                                                    <?php else:?>
+                                                        <h5 class="m-0"><span class="badge badge-danger">No Seat Selected</span></h5>
+                                                    <?php endif;?>
                                                 </div>
                                             </div>
                                         </li>
@@ -120,8 +125,13 @@
 
                                                             }
                                                         }
+                                                        $selected = "";
+                                                        $dseats = array_column($data['passengers'],"departureSeat");
+                                                        if(in_array($data['departureAircraft']->colHeader[$keyCol].$data['departureAircraft']->rowHeader[$keyRow], $dseats)){
+                                                            $selected = "selectedSeat";
+                                                        }
                                                         ?>
-                                                        <div class="box2 <?php echo $class;?>" 
+                                                        <div class="box2 <?php echo $class . " " . $selected;?>" 
                                                         data-value="<?php echo $data['departureAircraft']->colHeader[$keyCol].$data['departureAircraft']->rowHeader[$keyRow]?>"  
                                                         data-source-for="deptPassenger">
                                                         </div>
@@ -157,8 +167,12 @@
                                                         <label for="retPass<?php echo $key;?>"><?php echo $passenger['firstname'] . " " . $passenger['lastname'];?></label>
                                                     </div>
                                                     <div class="col text-center">
-                                                        <input type="hidden" name="retSeat[<?php echo $key;?>]" id="retSeat[<?php echo $key;?>]">
-                                                        <h5 class="m-0"><span class="badge badge-danger">No Seat Selected</span></h5>
+                                                        <input type="hidden" name="retSeat[<?php echo $key;?>]" id="retSeat[<?php echo $key;?>]" value="<?php echo isset($data['passengers'][$key]['returnSeat'])?$data['passengers'][$key]['returnSeat']:'';?>">
+                                                        <?php if(isset($data['passengers'][$key]['returnSeat'])):?>
+                                                            <h5 class="m-0"><span class="badge badge-success"><?php echo $data['passengers'][$key]['returnSeat'];?></span></h5>
+                                                        <?php else:?>
+                                                            <h5 class="m-0"><span class="badge badge-danger">No Seat Selected</span></h5>
+                                                        <?php endif;?>
                                                     </div>
                                                 </div>
                                             </li>
@@ -226,8 +240,15 @@
 
                                                                 }
                                                             }
+                                                            
+                                                            $selected = "";
+                                                            $rseats = array_column($data['passengers'],"returnSeat");
+                                                            if(in_array($data['returnAircraft']->colHeader[$keyCol].$data['returnAircraft']->rowHeader[$keyRow], $rseats)){
+                                                                $selected = "selectedSeat";
+                                                            }
                                                             ?>
-                                                            <div class="box2 <?php echo $class;?>" 
+                                                            
+                                                            <div class="box2 <?php echo $class . " " . $selected;?>" 
                                                             data-value="<?php echo $data['returnAircraft']->colHeader[$keyCol].$data['returnAircraft']->rowHeader[$keyRow]?>"
                                                             data-source-for="retPassenger">
                                                             </div>

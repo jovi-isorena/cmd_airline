@@ -21,21 +21,22 @@ class Reservations extends Controller{
     public function search(){
         if(isLoggedIn() !== "user"){
             $_SESSION['redirectTo'] = "location: " . URLROOT . "/reservations/search";
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            $_SESSION['redirectData'] = $_POST;
+            // $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            // $_SESSION['redirectData'] = $_SESSION['reservation']['step1'] ;
             $_SESSION['redirectMessage'] = "Please login to continue.";
             header("location: " . URLROOT . "/users/login");
             exit(1);
         }
-        if($_SERVER['REQUEST_METHOD'] == 'POST' || isset($_SESSION['redirectData']) || isset($input)){
+        // if($_SERVER['REQUEST_METHOD'] == 'POST' || isset($_SESSION['redirectData']) || isset($input)){
             //sanitize post
-            if(isset($_SESSION['redirectData'])){
-                $input = $_SESSION['redirectData'];
+
+            // if(isset($_SESSION['redirectData'])){
+            //     $input = $_SESSION['redirectData'];
                 
-            }else{
-                $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-                $input = $_POST;
-            }
+            // }else{
+                // $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+                $input = $_SESSION['reservation']['step1'];
+            // }
             $deptOrigin = $this->airportModel->getAirportByCode($input['origin']);
             $deptDestination = $this->airportModel->getAirportByCode($input['destination']);
             if($input['flightType'] == "roundTrip"){
@@ -66,7 +67,9 @@ class Reservations extends Controller{
                 'targetDate' => '',
                 'targetOrigin' => '',
                 'targetDestination' => '',
-                'result' => []
+                'result' => [],
+                'selectedRetDateError' => '',
+                'selectedDeptDateError' => ''
             ];
             //validate inputs
             switch ($input['cabinClass']) {
@@ -170,24 +173,38 @@ class Reservations extends Controller{
                     $data['sunday'] = false;
                 }
             }
+        // }
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            //sanitize post
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            //validate
+            if(empty($_POST['selectedDeptDate'])){
+                $data['selectedDeptDateError'] = 'Please select a departure date.';
+            }else{
+                $today = new DateTime();
+                $selectedDept = new DateTime($_POST['selectedDeptDate']);
+                if($selectedDept < $today){
+                    $data['selectedDeptDateError'] = 'Invalid date. Please select a date at least 1 day from today';
+                }else{
+                    $data['selectedDeptDate'] = $selectedDept;
+                }
+            }
+            if(empty($_POST['selectedRetDate'])){
+                $data['selectedRetDateError'] = 'Please select a departure date.';
+            }else{
+                $today = new DateTime();
+                $selectedRet = new DateTime($_POST['selectedRetDate']);
+                if($selectedRet < $today){
+                    $data['selectedRetDateError'] = 'Invalid date. Please select a date at least 1 day from selected departure date';
+                }else{
+                    $data['selectedRetDate'] = $selectedRet;
+                }
+            }
+             if(empty($data['selectedRetDateError']) && empty($data['selectedDeptDateError'])){
+                $_SESSION['reservation']['step2'] = $data;
+                header("Location: " . URLROOT . "/reservations/select");
+             }
 
-            //check all errors
-            // if(empty($data['nameError']) && empty($data['classError']) && empty($data['baggageError']) && empty($data['dateChangeError']) && empty($data['cancelFeeError']) && empty($data['noShowFeeError']) && empty($data['accrualError']) ){
-            //     if($this->fareModel->add($data)){
-            //         $data['successMessage'] = "Fare successfully added.";
-            //         $data['name'] ='';
-            //         $data['class'] ='';
-            //         $data['baggage'] ='';
-            //         $data['dateChange'] ='';
-            //         $data['cancelFee'] ='';
-            //         $data['noShowFee'] ='';
-            //         $data['accrual'] ='';
-            //     }else{
-            //         die('Something went wrong.');
-            //     }
-            // }
-            // $data['result'] = $this->reservationModel->searchFlight($data);
-            // $data['result'][] = $this->reservationModel->searchMinimumPrice($data);
         }
 
         $this->view('reservations/search', $data);
@@ -221,6 +238,19 @@ class Reservations extends Controller{
             header("location: " . URLROOT );
             exit(1);
         }
+        $prevInput = $_SESSION['reservation']['step2'];
+        // var_dump($prevInput);
+        $deptOrigin = $this->airportModel->getAirportByCode($prevInput['deptOrigin']->airport_code);
+        $deptDestination = $this->airportModel->getAirportByCode($prevInput['deptDestination']->airport_code);
+        if($prevInput['flightType'] == "roundTrip"){
+            $retOrigin = $this->airportModel->getAirportByCode($prevInput['deptDestination']->airport_code);
+            $retDestination = $this->airportModel->getAirportByCode($prevInput['deptOrigin']->airport_code);
+            // $retDate = new DateTime($prevInput['selectedRetDate']);
+        }else{
+            $retOrigin = '';
+            $retDestination = '';
+            // $retDate = new DateTime();
+        }
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             //sanitize post
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
@@ -236,6 +266,7 @@ class Reservations extends Controller{
                 $retDestination = '';
                 $retDate = new DateTime();
             }
+            //from select
             if(isset($_POST['selectedDeptFlight'])){
                 $selectedDeptFlight = $_POST['selectedDeptFlight'];
             }else{
@@ -297,7 +328,56 @@ class Reservations extends Controller{
             if(isset($_POST['continue']) && ($data['flightType']=="roundTrip") && (empty($data['retFlight']) || empty($data['retFare']))){
                 $data['retFlightError'] = "Please select a flight.";
             }
-            $enteredDate = clone $data['dept'];
+            
+
+            if(isset($_POST['continue'])){
+                if(empty($data['deptFlightError']) && empty($data['retFlightError'])){
+                    // $_SESSION['reservationData'] = $data;
+                    $_SESSION['reservation']['step3'] = $data;
+                    header("location: " . URLROOT . "/reservations/passengers");
+                    
+                }
+            }
+        }
+
+        
+        else{
+            $data = [
+                'title' => 'Select Flight',
+                'flightType' => $prevInput['flightType'],
+                'dept' => $prevInput['selectedDeptDate'],
+                'ret' => $prevInput['selectedRetDate'],
+                'deptFlights' => [],
+                'retFlights' => [],
+                'availableFares' => [],
+                'monday' => false,
+                'tuesday' => false,
+                'wednesday' => false,
+                'thursday' => false,
+                'friday' => false,
+                'saturday' => false,
+                'sunday' => false,
+                'deptOrigin' => $deptOrigin,
+                'deptDestination' => $deptDestination,
+                'retOrigin' => $retOrigin,
+                'retDestination' => $retDestination,
+                'passenger' => $prevInput['passenger'],
+                'cabinClass' => $prevInput['cabinClass'],
+                'targetDate' => '',
+                'targetOrigin' => '',
+                'targetDestination' => '',
+                'result' => [],
+                'deptFareList' => [],
+                'retFareList' => [],
+                'deptFlight' => '',
+                'retFlight' => '',
+                'deptFare' => '',
+                'retFare' => '',
+                'deptFlightError' => '',
+                'retFlightError' => ''
+            ];
+        }
+        $enteredDate = clone $data['dept'];
             $data['targetOrigin'] = $data['deptOrigin'];
             $data['targetDestination'] = $data['deptDestination'];
             $enteredDate->sub(new DateInterval('P3D'));
@@ -457,20 +537,7 @@ class Reservations extends Controller{
             };
             $data['fareMatrix']["returnFlights"] = $this->createFareMatrix($data['retFareList'], $data['retFlights']);
             }
-
-            
-        }
-        if(isset($_POST['continue'])){
-            if(empty($data['deptFlightError']) && empty($data['retFlightError'])){
-                $_SESSION['reservationData'] = $data;
-                header("location: " . URLROOT . "/reservations/passengers");
-                
-            }else{
-                $this->view('reservations/select', $data);
-            }
-        }else{
-            $this->view('reservations/select', $data);
-        }
+        $this->view('reservations/select', $data);
     }
  
     public function passengers(){
@@ -479,19 +546,49 @@ class Reservations extends Controller{
             header("location: " . URLROOT);
             exit(1);
         }
-        if(isset($_SESSION['reservationData'])){
-            $data = $_SESSION['reservationData'];
-            // unset($_SESSION['reservationData']);
-            $data['title'] = 'Passengers Information';
-            // $data['']
-
-
-
-            $this->view('reservations/passengers', $data);
-
-        }else{
+        if(!isset($_SESSION['reservation']['step3'])){
             header("location: " . URLROOT);
         }
+        $prevData = $_SESSION['reservation']['step3'];
+        $data = [
+            'title' => 'Passengers Information',
+            'passengerCount' => $prevData['passenger'],
+            'passengers' => []
+        ];
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            //sanitize post
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            for ($i=0; $i < $data['passengerCount']; $i++) { 
+                $passenger = [];
+                $passenger['firstname'] = trim($_POST['firstname'][$i]);
+                $passenger['lastname'] = trim($_POST['lastname'][$i]);
+                $passenger['gender'] = $_POST['gender'][$i];
+                $passenger['dob'] = $_POST['dob'][$i];
+                $passenger['doctype'] = $_POST['doctype'][$i];
+                $passenger['docnumber'] = trim($_POST['docnumber'][$i]);
+                $passenger['issuingcountry'] = $_POST['issuingcountry'][$i];
+                $passenger['expiration'] = $_POST['expiration'][$i];
+                array_push($data['passengers'], $passenger);
+            }
+            $_SESSION['reservation']['step4'] = $data;
+            header("Location: " . URLROOT . "/reservations/seats");
+        }
+
+        $this->view('reservations/passengers', $data);
+
+        // if(isset($_SESSION['reservation']['step3'])){
+        //     $data = $_SESSION['reservation']['step3'];
+        //     // unset($_SESSION['reservationData']);
+        //     $data['title'] = 'Passengers Information';
+        //     // $data['']
+
+
+
+        //     $this->view('reservations/passengers', $data);
+
+        // }else{
+        //     header("location: " . URLROOT);
+        // }
     }
 
     public function seats(){
@@ -499,35 +596,32 @@ class Reservations extends Controller{
             header("location: " . URLROOT);
             exit(1);
         }
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            // $data = $_SESSION['reservationData'];
-            $deptFlightDetail = $this->scheduleModel->getScheduleDetails($_SESSION['reservationData']['deptFlight']);
-            $deptAircraft = $this->scheduledAircraftModel->getScheduledAircraft($deptFlightDetail->schedule_id, $_SESSION['reservationData']['dept']->format('l'));
+        $deptFlightDetail = $this->scheduleModel->getScheduleDetails($_SESSION['reservation']['step3']['deptFlight']);
+            $deptAircraft = $this->scheduledAircraftModel->getScheduledAircraft($deptFlightDetail->schedule_id, $_SESSION['reservation']['step3']['dept']->format('l'));
             $deptAircraft->layout = json_decode($this->seatLayoutModel->getLayoutById($deptAircraft->layout_id)->layout);
             $deptAircraft->rowHeader = $this->getRowHeader($deptAircraft->layout);
             $deptAircraft->colHeader = $this->getColHeader($deptAircraft->layout); 
             $adetails = $this->aircraftModel->getAircraftById($deptAircraft->aircraft_id);
             $deptAircraft->name = $adetails->name;
             $deptAircraft->model = $adetails->model;
-            $selectedDeptFare = $_SESSION['reservationData']['deptFare'];
-            $departureDate = $_SESSION['reservationData']['dept'];
+            $selectedDeptFare = $_SESSION['reservation']['step3']['deptFare'];
+            $departureDate = $_SESSION['reservation']['step3']['dept'];
             $retFlightDetail = new \stdClass;
             $retAircraft = new \stdClass;
             $retAircraft->layout = '';
             $selectedRetFare = '';
             $returnDate = '';
-            if($_SESSION['reservationData']['flightType'] == "roundTrip"){
-                $retFlightDetail = $this->scheduleModel->getScheduleDetails($_SESSION['reservationData']['retFlight']);
-                $retAircraft = $this->scheduledAircraftModel->getScheduledAircraft($retFlightDetail->schedule_id, $_SESSION['reservationData']['ret']->format('l'));
+            if($_SESSION['reservation']['step3']['flightType'] == "roundTrip"){
+                $retFlightDetail = $this->scheduleModel->getScheduleDetails($_SESSION['reservation']['step3']['retFlight']);
+                $retAircraft = $this->scheduledAircraftModel->getScheduledAircraft($retFlightDetail->schedule_id, $_SESSION['reservation']['step3']['ret']->format('l'));
                 $retAircraft->layout = json_decode($this->seatLayoutModel->getLayoutById($retAircraft->layout_id)->layout);
                 $adetails = $this->aircraftModel->getAircraftById($retAircraft->aircraft_id);
                 $retAircraft->name = $adetails->name;
                 $retAircraft->model = $adetails->model;
                 $retAircraft->rowHeader = $this->getRowHeader($retAircraft->layout);
                 $retAircraft->colHeader = $this->getColHeader($retAircraft->layout);
-                $returnDate = $_SESSION['reservationData']['ret'];
-                $selectedRetFare = $_SESSION['reservationData']['retFare'];
+                $returnDate = $_SESSION['reservation']['step3']['ret'];
+                $selectedRetFare = $_SESSION['reservation']['step3']['retFare'];
             }
 
             $data = [
@@ -540,25 +634,41 @@ class Reservations extends Controller{
                 'selectedReturnFlight' => $retFlightDetail,
                 'returnAircraft' => $retAircraft,
                 'selectedReturnFare' => $selectedRetFare,
-                'passenger' => $_SESSION['reservationData']['passenger'],
-                'flightType' => $_SESSION['reservationData']['flightType'],
-                'cabinClass' => $_SESSION['reservationData']['cabinClass'],
-                'passengers' => []
+                'passenger' => $_SESSION['reservation']['step3']['passenger'],
+                'flightType' => $_SESSION['reservation']['step3']['flightType'],
+                'cabinClass' => $_SESSION['reservation']['step3']['cabinClass'],
+                'passengers' => $_SESSION['reservation']['step4']['passengers'],
+                'seatError' => ''
             ];
-            
-            for ($i=0; $i < $data['passenger']; $i++) { 
-                $passenger = [];
-                $passenger['firstname'] = trim($_POST['firstname'][$i]);
-                $passenger['lastname'] = trim($_POST['lastname'][$i]);
-                $passenger['gender'] = $_POST['gender'][$i];
-                $passenger['dob'] = $_POST['dob'][$i];
-                $passenger['doctype'] = $_POST['doctype'][$i];
-                $passenger['docnumber'] = trim($_POST['docnumber'][$i]);
-                $passenger['issuingcountry'] = $_POST['issuingcountry'][$i];
-                $passenger['expiration'] = $_POST['expiration'][$i];
-                array_push($data['passengers'], $passenger);
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            // $data = $_SESSION['reservationData'];
+            for($i=0; $i < intval($_SESSION['reservation']['step3']['passenger']); $i++){
+                $data['passengers'][$i]['departureSeat'] = $_POST['deptSeat'][$i];
+                if($data['flightType'] == "roundTrip"){
+                    $data['passengers'][$i]['returnSeat'] = $_POST['retSeat'][$i];
+                }
             }
-            $_SESSION['reservationData'] = $data;
+            $dseats = array_column($data['passengers'],"departureSeat");
+            if(in_array("", $dseats)){
+                $data['seatError'] = "Incomplete";
+            }
+            if($data['flightType'] == "roundTrip"){
+                $rseats = array_column($data['passengers'],"returnSeat");
+                if(in_array("", $rseats)){
+                    $data['seatError'] = "Incomplete";
+                }
+            }
+
+            if(empty($data['seatError'])){
+                $_SESSION['reservation']['step5'] = $data;
+                header("Location: " . URLROOT . "/reservations/extras");
+            }
+
+        }
+        else{
+            
+            
         }
         $this->view('reservations/seats', $data);
     }
@@ -616,48 +726,65 @@ class Reservations extends Controller{
             header("location: " . URLROOT);
             exit(1);
         }
+        
+            
+        $deptFlight = $this->scheduleModel->getScheduleDetails($_SESSION['reservation']['step3']['deptFlight']);
+        $deptBaggage = $this->flightExtraModel->getBaggageByFlightNo($deptFlight->flight_no);
+        $deptMeal = $this->flightExtraModel->getMealByFlightNo($deptFlight->flight_no);
+        $deptRoaming = $this->flightExtraModel->getRoamingByFlightNo($deptFlight->flight_no);
+        $deptExtras = [
+            'baggage' => $deptBaggage,
+            'meal' => $deptMeal,
+            'roaming' => $deptRoaming
+        ];
+        $retExtras = [];
+        if($_SESSION['reservation']['step3']['flightType'] == 'roundTrip'){
+            $retFlight = $this->scheduleModel->getScheduleDetails($_SESSION['reservation']['step3']['retFlight']);
+            $retBaggage = $this->flightExtraModel->getBaggageByFlightNo($retFlight->flight_no);
+            $retMeal = $this->flightExtraModel->getMealByFlightNo($retFlight->flight_no);
+            $retRoaming = $this->flightExtraModel->getRoamingByFlightNo($retFlight->flight_no);
+            $retExtras = [
+                'baggage' => $retBaggage,
+                'meal' => $retMeal,
+                'roaming' => $retRoaming
+            ];
+        }
+        $data = [
+            'title' => 'Select Extras',
+            // 'reservationData' => $reservationData,
+            // 'post' => $_POST,
+            'selectedDepartureFlight' => $deptFlight,
+            'selectedReturnFlight' => $retFlight,
+            'flightType' => $_SESSION['reservation']['step3']['flightType'],
+            'deptExtras' => $deptExtras, 
+            'retExtras' => $retExtras,
+            'passengers' => $_SESSION['reservation']['step4']['passengers']
+        ];
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            $reservationData = $_SESSION['reservationData'];
+            // $reservationData = $_SESSION['reservation']['step5'];
             // $b = array_map(fn($n) => $n * $n * $n, $a);
-            
-            for($i=0; $i < intval($reservationData['passenger']); $i++){
-                $reservationData['passengers'][$i]['departureSeat'] = $_POST['deptSeat'][$i];
-                if($reservationData['flightType'] == "roundTrip"){
-                    $reservationData['passengers'][$i]['returnSeat'] = $_POST['retSeat'][$i];
+            // $_SESSION['reservation']['step6'] = $reservationData;
+            for($i=0; $i < $_SESSION['reservation']['step3']['passenger']; $i++){
+                $deptExtras = [];
+                $deptExtras[] = $_POST['deptBaggage'][$i];
+                $deptExtras[] = $_POST['deptMeal'][$i];
+                $deptExtras[] = $_POST['deptRoaming'][$i];
+                $data['passengers'][$i]['deptExtras'] = $deptExtras;
+            }
+            if($data['flightType'] == 'roundTrip'){
+                for($i=0; $i < $_SESSION['reservation']['step3']['passenger']; $i++){
+                    $retExtras = [];
+                    $retExtras[] = $_POST['retBaggage'][$i];
+                    $retExtras[] = $_POST['retMeal'][$i];
+                    $retExtras[] = $_POST['retRoaming'][$i];
+                    $data['passengers'][$i]['retExtras'] = $retExtras;
                 }
             }
-            $_SESSION['reservationData'] = $reservationData;
-
-            $deptBaggage = $this->flightExtraModel->getBaggageByFlightNo($reservationData['selectedDepartureFlight']->flight_no);
-            $deptMeal = $this->flightExtraModel->getMealByFlightNo($reservationData['selectedDepartureFlight']->flight_no);
-            $deptRoaming = $this->flightExtraModel->getRoamingByFlightNo($reservationData['selectedDepartureFlight']->flight_no);
-            $deptExtras = [
-                'baggage' => $deptBaggage,
-                'meal' => $deptMeal,
-                'roaming' => $deptRoaming
-            ];
-            $retExtras = [];
-            if($reservationData['flightType'] == 'roundTrip'){
-                $retBaggage = $this->flightExtraModel->getBaggageByFlightNo($reservationData['selectedReturnFlight']->flight_no);
-                $retMeal = $this->flightExtraModel->getMealByFlightNo($reservationData['selectedReturnFlight']->flight_no);
-                $retRoaming = $this->flightExtraModel->getRoamingByFlightNo($reservationData['selectedReturnFlight']->flight_no);
-                $retExtras = [
-                    'baggage' => $retBaggage,
-                    'meal' => $retMeal,
-                    'roaming' => $retRoaming
-                ];
+            if(isset($_POST['continue'])){
+                $_SESSION['reservation']['step6'] = $data;
+                header("Location: " . URLROOT . "/reservations/payment");
             }
-            $data = [
-                'title' => 'Select Extras',
-                'reservationData' => $reservationData,
-                'post' => $_POST,
-                'selectedDepartureFlight' => $reservationData['selectedDepartureFlight'],
-                'selectedReturnFlight' => $reservationData['selectedReturnFlight'],
-                'flightType' => $reservationData['flightType'],
-                'deptExtras' => $deptExtras, 
-                'retExtras' => $retExtras
-            ];
 
         }
         $this->view("reservations/extras", $data);
@@ -668,91 +795,77 @@ class Reservations extends Controller{
             header("location: " . URLROOT);
             exit(1);
         }
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            // deptBaggage[]
-            // deptMeal[]
-            // deptRoaming[]
-            $reservationData = $_SESSION['reservationData'];
-            for($i=0; $i < $reservationData['passenger']; $i++){
-                $deptExtras = [];
-                $deptExtras[] = $_POST['deptBaggage'][$i];
-                $deptExtras[] = $_POST['deptMeal'][$i];
-                $deptExtras[] = $_POST['deptRoaming'][$i];
-                $reservationData['passengers'][$i]['deptExtras'] = $deptExtras;
-            }
-            if($reservationData['flightType'] == 'roundTrip'){
-                for($i=0; $i < $reservationData['passenger']; $i++){
-                    $retExtras = [];
-                    $retExtras[] = $_POST['retBaggage'][$i];
-                    $retExtras[] = $_POST['retMeal'][$i];
-                    $retExtras[] = $_POST['retRoaming'][$i];
-                    $reservationData['passengers'][$i]['retExtras'] = $retExtras;
+        $data = [
+            'title' => 'Payment',
+            'flights' => [],
+            // 'reservationData' => $reservationData 
+
+        ];
+        $flightDetail = [
+            'flightDetail' => $_SESSION['reservation']['step5']['selectedDepartureFlight'],
+            'flightFare' => $this->flightFareModel->getFlightFareById($_SESSION['reservation']['step5']['selectedDepartureFare']),
+            'flightDate' => $_SESSION['reservation']['step5']['departureDate'],
+            'passengers' => []
+        ];
+        foreach($_SESSION['reservation']['step6']['passengers'] as $key=>$passenger){
+            $flightDetail['passengers'][$key] = $passenger;
+            $extras = array_filter($passenger['deptExtras']);
+            foreach($extras as $extra){
+                if($extra != 0){
+                    $flightDetail['passengers'][$key]['extras'][] = $this->extraModel->getExtraById($extra);
+                    // echo "<h1>HEYYYYYY ".$extra->name."</h1>";
                 }
             }
+            $flightDetail['passengers'][$key]['seat'] = $_SESSION['reservation']['step5']['passengers'][$key]['departureSeat'];
+            unset($flightDetail['passengers'][$key]['deptExtras']);
+            unset($flightDetail['passengers'][$key]['retExtras']);
+            unset($flightDetail['passengers'][$key]['departureSeat']);
+            unset($flightDetail['passengers'][$key]['returnSeat']);
+        }
+        $data['flights'][] = $flightDetail;
 
-            $data = [
-                'title' => 'Payment',
-                'flights' => [],
-                // 'reservationData' => $reservationData 
-
-            ];
+        if($_SESSION['reservation']['step3']['flightType'] == 'roundTrip'){
             $flightDetail = [
-                'flightDetail' => $reservationData['selectedDepartureFlight'],
-                'flightFare' => $this->flightFareModel->getFlightFareById($reservationData['selectedDepartureFare']),
-                'flightDate' => $reservationData['departureDate'],
+                'flightDetail' => $_SESSION['reservation']['step5']['selectedReturnFlight'],
+                'flightFare' => $this->flightFareModel->getFlightFareById($_SESSION['reservation']['step5']['selectedReturnFare']),
+                'flightDate' => $_SESSION['reservation']['step5']['returnDate'],
                 'passengers' => []
             ];
-            foreach($reservationData['passengers'] as $key=>$passenger){
+            foreach($_SESSION['reservation']['step6']['passengers'] as $key=>$passenger){
                 $flightDetail['passengers'][$key] = $passenger;
-                $extras = array_filter($passenger['deptExtras']);
+                $extras = array_filter($passenger['retExtras']);
+                
                 foreach($extras as $extra){
                     if($extra != 0){
                         $flightDetail['passengers'][$key]['extras'][] = $this->extraModel->getExtraById($extra);
-                        // echo "<h1>HEYYYYYY ".$extra->name."</h1>";
+                        // echo "<h1>".$extra->name."</h1>";
                     }
                 }
-                $flightDetail['passengers'][$key]['seat'] = $passenger['departureSeat'];
+                $flightDetail['passengers'][$key]['seat'] = $_SESSION['reservation']['step5']['passengers'][$key]['returnSeat'];
                 unset($flightDetail['passengers'][$key]['deptExtras']);
                 unset($flightDetail['passengers'][$key]['retExtras']);
                 unset($flightDetail['passengers'][$key]['departureSeat']);
                 unset($flightDetail['passengers'][$key]['returnSeat']);
             }
             $data['flights'][] = $flightDetail;
+        }
+        $subtotal = $this->computeTotalAmount($data['flights']);
+        // echo $subtotal . "<br>";
+        $data['fees'] = $subtotal * 0.12;
+        // echo $data['flights']['fees'] . "<br>";
+        $data['total'] = $data['fees'] + $subtotal;
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            // deptBaggage[]
+            // deptMeal[]
+            // deptRoaming[]
+            // $reservationData = $_SESSION['reservationData'];
+            
 
-            if($reservationData['flightType'] == 'roundTrip'){
-                $flightDetail = [
-                    'flightDetail' => $reservationData['selectedReturnFlight'],
-                    'flightFare' => $this->flightFareModel->getFlightFareById($reservationData['selectedReturnFare']),
-                    'flightDate' => $reservationData['returnDate'],
-                    'passengers' => []
-                ];
-                foreach($reservationData['passengers'] as $key=>$passenger){
-                    $flightDetail['passengers'][$key] = $passenger;
-                    $extras = array_filter($passenger['retExtras']);
-                    
-                    foreach($extras as $extra){
-                        if($extra != 0){
-                            $flightDetail['passengers'][$key]['extras'][] = $this->extraModel->getExtraById($extra);
-                            // echo "<h1>".$extra->name."</h1>";
-                        }
-                    }
-                    $flightDetail['passengers'][$key]['seat'] = $passenger['returnSeat'];
-                    unset($flightDetail['passengers'][$key]['deptExtras']);
-                    unset($flightDetail['passengers'][$key]['retExtras']);
-                    unset($flightDetail['passengers'][$key]['departureSeat']);
-                    unset($flightDetail['passengers'][$key]['returnSeat']);
-                }
-                $data['flights'][] = $flightDetail;
-            }
-            $subtotal = $this->computeTotalAmount($data['flights']);
-            // echo $subtotal . "<br>";
-            $data['fees'] = $subtotal * 0.12;
-            // echo $data['flights']['fees'] . "<br>";
-            $data['total'] = $data['fees'] + $subtotal;
+            
             // echo $data['flights']['total'] . "<br>";
-            $_SESSION['reservationData']['payment'] = $data;
-
+            $_SESSION['reservation']['step7'] = $data;
+            header("Location: " . URLROOT . "/reservations/reserve");
         }
         
         $this->view("reservations/payment", $data);
@@ -795,9 +908,7 @@ class Reservations extends Controller{
             header("location: " . URLROOT);
             exit(1);
         }
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            $reservationData = $_SESSION['reservationData']['payment'];
+        $reservationData = $_SESSION['reservation']['step7'];
 
             $data = [
                 'title' => 'Reservation Complete',
@@ -864,14 +975,17 @@ class Reservations extends Controller{
                     }
                 }
                 $data['successMessage'] = "Booking Completed.";
-                unset($_SESSION['reservationData']);
+                // unset($_SESSION['reservationData']);
             }else{
                 die("Something went wrong in reserving the flight. Error: 5");
 
             }
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            
 
-            $this->view("reservations/reserve", $data);
-
+            
         }
+        $this->view("reservations/reserve", $data);
     }
 }
