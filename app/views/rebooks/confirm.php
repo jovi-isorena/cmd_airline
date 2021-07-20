@@ -7,6 +7,12 @@
 </pre>
 
 <div class="container full-h">
+    <ol class="progress custom-ol" style="height:fit-content;">
+        <li class="completed">Select Date and Flight</li>
+        <li class="completed">Choose Seats</li>
+        <li class="is-active">Confirm</li>
+        <li>Complete</li>
+    </ol>
     <div class="row">
         <h1><?php echo $data['title']?></h1>
         <p>Please review all details before continuing. Once the change has been applied, there will be no guarantee you will be able to get back the previous booking. </p>
@@ -31,6 +37,9 @@
                 <div><?php echo $passenger->firstname . " "  . $passenger->lastname . ": ";?><span class="font-weight-bold text-secondary"><?php echo $passenger->seat[0]->seat_number;?></span></div>
             <?php endforeach;?>
         </div>
+        <div class="col-2 h-100 " style="padding-top: 40px;">
+            <img src="<?php echo URLROOT; ?>/public/img/upward-arrow.png" alt="" style="transform: rotate(90deg)" class="align-self-center m-auto">
+        </div>
         <div class="col-4">
             <h3>New Flight</h3>
             Flight Number: <span class="font-weight-bold <?php echo ($data['rebookData1'][1]->scheduleDetail->flight_no==$data['rebookData2']['newFlightDetail']->flight_no)?'text-success':'text-danger';?>"><?php echo $data['rebookData2']['newFlightDetail']->flight_no;?></span><br>
@@ -42,9 +51,11 @@
             <?php endforeach;?>
         </div>
     </div>
-    <div class="row">
-        <form action="<?php echo URLROOT;?>/rebooks/confirm" method="post">
-            <input type="submit" name="continue" class="btn custom-primary rounded" id="btnContinue" value="CONTINUE" >
+    <div class="row justify-content-right w-100">
+        <form action="<?php echo URLROOT;?>/rebooks/confirm" method="post" class="w-100">
+            <div class="row justify-content-end m-5 w-100">
+                <input type="submit" name="continue" class="btn custom-primary rounded ml-auto" id="btnContinue" value="CONTINUE" >
+            </div>
                 
         </form>
     </div>

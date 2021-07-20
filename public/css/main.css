@@ -14,6 +14,9 @@
     background-color: #001e60;
     color:white;
 }
+a.custom-primary:hover{
+    color:white;
+}
 
 .labelBox{
     height: 1.5rem;
@@ -210,6 +213,7 @@
         backdrop-filter: blur(8px);
     }
   }
+  
 
   .userLoginBg{
     background-image: url("../img/traveller-login-bg.jpg");
@@ -294,6 +298,7 @@
             position: absolute;
             top: 0;
             left: -1.25em; /* -20px */
+            height: 100%;
         }
         .progress li:first-child {
             padding-left: 0.75em;
@@ -311,6 +316,8 @@
             position: absolute;
             right: -1.25em; /* -20px */
             top: 0;
+            height: 100%;
+
         }
     .progress li.completed {
         background-color: #c9c9c9;
@@ -352,94 +359,11 @@
     }
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /* .circular {
-    border-radius: 100%;
-    }
-    .framed {
-    box-shadow: 0 2px 2px #E9E9E9;
-    border: 1px solid #CCC;
-    padding: 0.25em;
-    display: inline-block;
-    }
-    .framed.circular img {
-    border-radius: 100%;
-    } */
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /* ul {
-    list-style-type: square;
-    padding: 0;
-    }
-    .stats {
-    overflow: hidden;
-    }
-    .stats li {
-    list-style: none;
-    margin: 0 0.75em 0 0;
-    padding: 0 0.75em 0 0;
-    border-right: 1px solid #E9E9E9;
-    float: left;
-    }
-    .stats a {
-    font-weight: 700;
-    font-size: 1.125em;
-    line-height: 1.3334;
-    border: 0 none;
-    display: block;
-    float: left;
-    }
-    .stats span {
-    font-weight: 400;
-    font-size: 0.6667em;
-    line-height: 1.3334;
-    display: block;
-    }
-    
-    .stats a:link, .stats a:visited, .stats a:hover {
-    transition: all 0.2s ease;
-    }
-    
-    .stats a {
-    color: #25D;
-    text-decoration: none;
-    border-bottom: 1px solid rgba(34, 85, 221, 0.1);
-    }
-     */
-    
-    
-    
-    
-    
+/* =============payment================= */
+
+.ccthumbnail{
+    height: 60px;
+}
     
     
     

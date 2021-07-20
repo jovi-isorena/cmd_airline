@@ -54,7 +54,11 @@
                                                 <div class="col text-center">
                                                     <input type="hidden" name="deptSeat[<?php echo $key;?>]" id="deptSeat[<?php echo $key;?>]" value="<?php echo isset($data['passengers'][$key]['departureSeat'])?$data['passengers'][$key]['departureSeat']:'';?>">
                                                     <?php if(isset($data['passengers'][$key]['departureSeat'])):?>
-                                                        <h5 class="m-0"><span class="badge badge-success"><?php echo $data['passengers'][$key]['departureSeat'];?></span></h5>
+                                                        <?php if($data['passengers'][$key]['departureSeat'] != ""):?>
+                                                            <h5 class="m-0"><span class="badge badge-success"><?php echo $data['passengers'][$key]['departureSeat'];?></span></h5>
+                                                        <?php else: ?>
+                                                            <h5 class="m-0"><span class="badge badge-danger">No Seat Selected</span></h5>
+                                                        <?php endif;?>
                                                     <?php else:?>
                                                         <h5 class="m-0"><span class="badge badge-danger">No Seat Selected</span></h5>
                                                     <?php endif;?>

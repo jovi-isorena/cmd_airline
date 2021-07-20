@@ -1,5 +1,6 @@
 <?php 
-
+//Only report fatal errors and parse errors.
+error_reporting(E_ERROR | E_PARSE);
 
 class Reservations extends Controller{
     public function __construct(){
@@ -27,67 +28,175 @@ class Reservations extends Controller{
             header("location: " . URLROOT . "/users/login");
             exit(1);
         }
-        // if($_SERVER['REQUEST_METHOD'] == 'POST' || isset($_SESSION['redirectData']) || isset($input)){
-            //sanitize post
+        $skip1 = true;
+        $skip2 = true;
+        $input = $_SESSION['reservation']['step1'];
+        $deptOrigin = $this->airportModel->getAirportByCode($input['origin']);
+        $deptDestination = $this->airportModel->getAirportByCode($input['destination']);
+        if($input['flightType'] == "roundTrip"){
+            $retOrigin = $this->airportModel->getAirportByCode($input['destination']);
+            $retDestination = $this->airportModel->getAirportByCode($input['origin']);
+        }else{
+            $retOrigin = '';
+            $retDestination = '';
+        }
+        $data = [
+            'title' => 'Select Date',
+            'flightType' => $input['flightType'],
+            'dept' => new DateTime($input['departure']),
+            'ret' => new DateTime($input['return']),
+            'monday' => false,
+            'tuesday' => false,
+            'wednesday' => false,
+            'thursday' => false,
+            'friday' => false,
+            'saturday' => false,
+            'sunday' => false,
+            'deptOrigin' => $deptOrigin,
+            'deptDestination' => $deptDestination,
+            'retOrigin' => $retOrigin,
+            'retDestination' => $retDestination,
+            'passenger' => $input['passenger'],
+            'cabinClass' => $input['cabinClass'],
+            'targetDate' => '',
+            'targetOrigin' => '',
+            'targetDestination' => '',
+            'result' => [],
+            'selectedRetDate' => '',
+            'selectedDeptDate' => '',
+            'selectedRetDateError' => '',
+            'selectedDeptDateError' => ''
+        ];
+        //validate inputs
+        switch ($input['cabinClass']) {
+            case '1':
+                $data['cabinClass'] = 'economy';
+                break;
+            case '2':
+                $data['cabinClass'] = 'premium economy';
+                break;
+            case '3':
+                $data['cabinClass'] = 'business';
+                break;
+            
 
-            // if(isset($_SESSION['redirectData'])){
-            //     $input = $_SESSION['redirectData'];
-                
-            // }else{
-                // $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-                $input = $_SESSION['reservation']['step1'];
-            // }
-            $deptOrigin = $this->airportModel->getAirportByCode($input['origin']);
-            $deptDestination = $this->airportModel->getAirportByCode($input['destination']);
-            if($input['flightType'] == "roundTrip"){
-                $retOrigin = $this->airportModel->getAirportByCode($input['destination']);
-                $retDestination = $this->airportModel->getAirportByCode($input['origin']);
+        }
+        $enteredDate = clone $data['dept'];
+        $data['targetOrigin'] = $data['deptOrigin'];
+        $data['targetDestination'] = $data['deptDestination'];
+
+        //check if there is available
+        $wd = getdate(date_timestamp_get($enteredDate))['weekday'];
+        switch ($wd) {
+            case 'Monday':
+                $data['monday'] = true;
+                break;
+            case 'Tuesday':
+                $data['tuesday'] = true;
+                break;
+            case 'Wednesday':
+                $data['wednesday'] = true;
+                break;
+            case 'Thursday':
+                $data['thursday'] = true;
+                break;
+            case 'Friday':
+                $data['friday'] = true;
+                break;
+            case 'Saturday':
+                $data['saturday'] = true;
+                break;
+            case 'Sunday':
+                $data['sunday'] = true;
+                break;
+        }
+        $data['targetDate'] = $enteredDate->format('Y-m-d');
+        if($this->reservationModel->searchMinimumPrice($data)->minimum_price != null){
+            $skip1 = true;
+        }else{
+            $skip1 = false;
+        }
+        // $result->minimum_price
+        //end check
+
+        $enteredDate->sub(new DateInterval('P3D'));
+        for($i = 0; $i < 7; $i++){
+            $wd = getdate(date_timestamp_get($enteredDate))['weekday'];
+            switch ($wd) {
+                case 'Monday':
+                    $data['monday'] = true;
+                    break;
+                case 'Tuesday':
+                    $data['tuesday'] = true;
+                    break;
+                case 'Wednesday':
+                    $data['wednesday'] = true;
+                    break;
+                case 'Thursday':
+                    $data['thursday'] = true;
+                    break;
+                case 'Friday':
+                    $data['friday'] = true;
+                    break;
+                case 'Saturday':
+                    $data['saturday'] = true;
+                    break;
+                case 'Sunday':
+                    $data['sunday'] = true;
+                    break;
+            }
+            $data['targetDate'] = $enteredDate->format('Y-m-d'); 
+            $data['resultDept'][$enteredDate->format('Y-m-d')] = ($this->reservationModel->searchMinimumPrice($data));
+            $data['resultDept'][$enteredDate->format('Y-m-d')]->day = $wd;
+            $data['resultDept'][$enteredDate->format('Y-m-d')]->date = $enteredDate;
+            $enteredDate->add(new DateInterval('P1D'));
+            $data['monday'] = false;
+            $data['tuesday'] = false;
+            $data['wednesday'] = false;
+            $data['thursday'] = false;
+            $data['friday'] = false;
+            $data['saturday'] = false;
+            $data['sunday'] = false;
+        }
+        if($data['flightType'] == "roundTrip"){
+            $enteredDate = clone $data['ret']; 
+            $data['targetOrigin'] = $data['retOrigin'];
+            $data['targetDestination'] = $data['retDestination'];
+
+            //check if there is available
+            $wd = getdate(date_timestamp_get($enteredDate))['weekday'];
+            switch ($wd) {
+                case 'Monday':
+                    $data['monday'] = true;
+                    break;
+                case 'Tuesday':
+                    $data['tuesday'] = true;
+                    break;
+                case 'Wednesday':
+                    $data['wednesday'] = true;
+                    break;
+                case 'Thursday':
+                    $data['thursday'] = true;
+                    break;
+                case 'Friday':
+                    $data['friday'] = true;
+                    break;
+                case 'Saturday':
+                    $data['saturday'] = true;
+                    break;
+                case 'Sunday':
+                    $data['sunday'] = true;
+                    break;
+            }
+            $data['targetDate'] = $enteredDate->format('Y-m-d');
+            if($this->reservationModel->searchMinimumPrice($data)->minimum_price != null){
+                $skip2 = true;
             }else{
-                $retOrigin = '';
-                $retDestination = '';
+                $skip2 = false;
             }
-            $data = [
-                'title' => 'Select Date',
-                'flightType' => $input['flightType'],
-                'dept' => new DateTime($input['departure']),
-                'ret' => new DateTime($input['return']),
-                'monday' => false,
-                'tuesday' => false,
-                'wednesday' => false,
-                'thursday' => false,
-                'friday' => false,
-                'saturday' => false,
-                'sunday' => false,
-                'deptOrigin' => $deptOrigin,
-                'deptDestination' => $deptDestination,
-                'retOrigin' => $retOrigin,
-                'retDestination' => $retDestination,
-                'passenger' => $input['passenger'],
-                'cabinClass' => $input['cabinClass'],
-                'targetDate' => '',
-                'targetOrigin' => '',
-                'targetDestination' => '',
-                'result' => [],
-                'selectedRetDateError' => '',
-                'selectedDeptDateError' => ''
-            ];
-            //validate inputs
-            switch ($input['cabinClass']) {
-                case '1':
-                    $data['cabinClass'] = 'economy';
-                    break;
-                case '2':
-                    $data['cabinClass'] = 'premium economy';
-                    break;
-                case '3':
-                    $data['cabinClass'] = 'business';
-                    break;
-                
+            // $result->minimum_price
+            //end check
 
-            }
-            $enteredDate = clone $data['dept'];
-            $data['targetOrigin'] = $data['deptOrigin'];
-            $data['targetDestination'] = $data['deptDestination'];
             $enteredDate->sub(new DateInterval('P3D'));
             for($i = 0; $i < 7; $i++){
                 $wd = getdate(date_timestamp_get($enteredDate))['weekday'];
@@ -116,9 +225,9 @@ class Reservations extends Controller{
                         break;
                 }
                 $data['targetDate'] = $enteredDate->format('Y-m-d'); 
-                $data['resultDept'][$enteredDate->format('Y-m-d')] = ($this->reservationModel->searchMinimumPrice($data));
-                $data['resultDept'][$enteredDate->format('Y-m-d')]->day = $wd;
-                $data['resultDept'][$enteredDate->format('Y-m-d')]->date = $enteredDate;
+                $data['resultRet'][$enteredDate->format('Y-m-d')] = ($this->reservationModel->searchMinimumPrice($data));
+                $data['resultRet'][$enteredDate->format('Y-m-d')]->day = $wd;
+                $data['resultRet'][$enteredDate->format('Y-m-d')]->date = $enteredDate;
                 $enteredDate->add(new DateInterval('P1D'));
                 $data['monday'] = false;
                 $data['tuesday'] = false;
@@ -128,52 +237,13 @@ class Reservations extends Controller{
                 $data['saturday'] = false;
                 $data['sunday'] = false;
             }
-            if($data['flightType'] == "roundTrip"){
-                $enteredDate = clone $data['ret']; 
-                $data['targetOrigin'] = $data['retOrigin'];
-                $data['targetDestination'] = $data['retDestination'];
-                $enteredDate->sub(new DateInterval('P3D'));
-                for($i = 0; $i < 7; $i++){
-                    $wd = getdate(date_timestamp_get($enteredDate))['weekday'];
-                    // echo getdate(date_timestamp_get($enteredDate))['weekday'];
-                    switch ($wd) {
-                        case 'Monday':
-                            $data['monday'] = true;
-                            break;
-                        case 'Tuesday':
-                            $data['tuesday'] = true;
-                            break;
-                        case 'Wednesday':
-                            $data['wednesday'] = true;
-                            break;
-                        case 'Thursday':
-                            $data['thursday'] = true;
-                            break;
-                        case 'Friday':
-                            $data['friday'] = true;
-                            break;
-                        case 'Saturday':
-                            $data['saturday'] = true;
-                            break;
-                        case 'Sunday':
-                            $data['sunday'] = true;
-                            break;
-                    }
-                    $data['targetDate'] = $enteredDate->format('Y-m-d'); 
-                    $data['resultRet'][$enteredDate->format('Y-m-d')] = ($this->reservationModel->searchMinimumPrice($data));
-                    $data['resultRet'][$enteredDate->format('Y-m-d')]->day = $wd;
-                    $data['resultRet'][$enteredDate->format('Y-m-d')]->date = $enteredDate;
-                    $enteredDate->add(new DateInterval('P1D'));
-                    $data['monday'] = false;
-                    $data['tuesday'] = false;
-                    $data['wednesday'] = false;
-                    $data['thursday'] = false;
-                    $data['friday'] = false;
-                    $data['saturday'] = false;
-                    $data['sunday'] = false;
-                }
-            }
-        // }
+        }
+        if($skip1 && $skip2){
+            $data['selectedDeptDate'] = new DateTime($input['departure']);
+            $data['selectedRetDate'] = new DateTime($input['return']);
+            $_SESSION['reservation']['step2'] = $data;
+            header("Location: " . URLROOT . "/reservations/select");
+        }
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             //sanitize post
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
@@ -189,24 +259,27 @@ class Reservations extends Controller{
                     $data['selectedDeptDate'] = $selectedDept;
                 }
             }
-            if(empty($_POST['selectedRetDate'])){
-                $data['selectedRetDateError'] = 'Please select a departure date.';
-            }else{
-                $today = new DateTime();
-                $selectedRet = new DateTime($_POST['selectedRetDate']);
-                if($selectedRet < $today){
-                    $data['selectedRetDateError'] = 'Invalid date. Please select a date at least 1 day from selected departure date';
+            if($data['flightType'] == "roundTrip"){
+                if(empty($_POST['selectedRetDate']) ){
+                    $data['selectedRetDateError'] = 'Please select a departure date.';
                 }else{
-                    $data['selectedRetDate'] = $selectedRet;
+                    $today = new DateTime();
+                    $selectedRet = new DateTime($_POST['selectedRetDate']);
+                    if($selectedRet < $today){
+                        $data['selectedRetDateError'] = 'Invalid date. Please select a date at least 1 day from selected departure date';
+                    }else{
+                        $data['selectedRetDate'] = $selectedRet;
+                    }
                 }
+            }else{
+                // $data['selectedRetDate'] = '';
             }
-             if(empty($data['selectedRetDateError']) && empty($data['selectedDeptDateError'])){
+            
+             if(empty($data['selectedRetDateError']) && (!$data['flightType'] == "roundTrip") || empty($data['selectedDeptDateError'])){
                 $_SESSION['reservation']['step2'] = $data;
                 header("Location: " . URLROOT . "/reservations/select");
              }
-
         }
-
         $this->view('reservations/search', $data);
     }
 
@@ -651,12 +724,12 @@ class Reservations extends Controller{
             }
             $dseats = array_column($data['passengers'],"departureSeat");
             if(in_array("", $dseats)){
-                $data['seatError'] = "Incomplete";
+                $data['seatError'] = "Incomplete seat designation.";
             }
             if($data['flightType'] == "roundTrip"){
                 $rseats = array_column($data['passengers'],"returnSeat");
                 if(in_array("", $rseats)){
-                    $data['seatError'] = "Incomplete";
+                    $data['seatError'] = "Incomplete seat designation. Please complete seat designation on return flight.";
                 }
             }
 
@@ -737,6 +810,7 @@ class Reservations extends Controller{
             'meal' => $deptMeal,
             'roaming' => $deptRoaming
         ];
+        $retFlight = '';
         $retExtras = [];
         if($_SESSION['reservation']['step3']['flightType'] == 'roundTrip'){
             $retFlight = $this->scheduleModel->getScheduleDetails($_SESSION['reservation']['step3']['retFlight']);
@@ -864,8 +938,11 @@ class Reservations extends Controller{
 
             
             // echo $data['flights']['total'] . "<br>";
-            $_SESSION['reservation']['step7'] = $data;
-            header("Location: " . URLROOT . "/reservations/reserve");
+            if(isset($_POST['continue'])){
+                $_SESSION['reservation']['step7'] = $data;
+                header("Location: " . URLROOT . "/reservations/reserve");
+            }
+
         }
         
         $this->view("reservations/payment", $data);
@@ -908,7 +985,9 @@ class Reservations extends Controller{
             header("location: " . URLROOT);
             exit(1);
         }
-        $reservationData = $_SESSION['reservation']['step7'];
+        // var_dump($_SESSION['reservation']);
+        if(isset($_SESSION['reservation'])){
+            $reservationData = $_SESSION['reservation']['step7'];
 
             $data = [
                 'title' => 'Reservation Complete',
@@ -922,7 +1001,7 @@ class Reservations extends Controller{
             $data['reservation']['creationDate'] = new DateTime(); 
             $data['reservation']['creationDate'] = $data['reservation']['creationDate']->format('Y-m-d H:i:s');
             $data['reservation']['totalFare'] = $reservationData['total'];
-            $data['reservation']['cabinClass'] = $_SESSION['reservationData']['cabinClass'];
+            $data['reservation']['cabinClass'] = $_SESSION['reservation']['step1']['cabinClass'];
             $data['reservation']['creator'] = $_SESSION['user_id'];
             if($this->reservationModel->add($data)){
                 $intID = $this->reservationModel->getMaxId();
@@ -975,11 +1054,15 @@ class Reservations extends Controller{
                     }
                 }
                 $data['successMessage'] = "Booking Completed.";
-                // unset($_SESSION['reservationData']);
+                unset($_SESSION['reservation']);
             }else{
                 die("Something went wrong in reserving the flight. Error: 5");
 
             }
+        }else{
+            header("Location:" . URLROOT . "/home");
+        }
+        
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             

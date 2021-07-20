@@ -5,7 +5,7 @@
 <pre><?php //var_dump($data);?></pre>
 
 <div class="container full-h">
-         <ol class="progress custom-ol" style="height:fit-content;">
+    <ol class="progress custom-ol" style="height:fit-content;">
         <li class="completed">Select Date</li>
         <li class="completed">Select Flight</li>
         <li class="completed">Passengers</li>
@@ -105,16 +105,150 @@
                         </div>
                         <div class="tab-content h-100 p-4" id="v-pills-tabContent">
                             <div class="tab-pane fade show active" id="pay-creditcard" role="tabpanel" aria-labelledby="pay-creditcard-tab">
-                                <div class="">American Express, Diners, Discover, JCB, MasterCard, UATP and Visa credit and debit cards used online for international tickets will be quoted in the currency of the country of departure. All domestic fares are quoted and charged in PHP while International tickets originating from the Philippines and Vietnam will be quoted and billed in USD. Conversion to another currency is available. Billing and payment currency shall be based on the cardholders agreement with the card issuer. Transactions made online are considered purchases in the Philippines. Certain banks may charge foreign transaction fees if the credit card used online is issued outside the Philippines. You may refer to your credit card policy statement if foreign transaction fee will apply to purchases made at www.philippineairlines.com. By clicking CONTINUE, you agree to the payment terms and conditions of American Express Safekey, Diners/Discover ProtectBuy, J/Secure, Mastercard Secure Code, Verified by Visa, Multi-Currency Pricing and your credit/debit card and/or ATM card issuer. Please select a type of credit card</div>
+                                <div class="">
+                                    <p>
+                                        American Express, Diners, Discover, JCB, MasterCard, UATP and Visa credit and debit cards used online for international tickets will be quoted in the currency of the country of departure. All domestic fares are quoted and charged in PHP while International tickets originating from the Philippines and Vietnam will be quoted and billed in USD. Conversion to another currency is available. Billing and payment currency shall be based on the cardholders agreement with the card issuer. Transactions made online are considered purchases in the Philippines. Certain banks may charge foreign transaction fees if the credit card used online is issued outside the Philippines. You may refer to your credit card policy statement if foreign transaction fee will apply to purchases made at www.philippineairlines.com. By clicking CONTINUE, you agree to the payment terms and conditions of American Express Safekey, Diners/Discover ProtectBuy, J/Secure, Mastercard Secure Code, Verified by Visa, Multi-Currency Pricing and your credit/debit card and/or ATM card issuer. Please select a type of credit card
+                                    </p>
+                                    <div>
+                                        <div class="row">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked>
+                                                <label class="form-check-label" for="inlineRadio1"><img src="<?php echo URLROOT;?>/public/img/icons8-mastercard-48.png" alt="" class="ccthumbnail"></label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label" for="inlineRadio2"><img src="<?php echo URLROOT;?>/public/img/icons8-visa-144.png" alt="" class="ccthumbnail"></label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                                                <label class="form-check-label" for="inlineRadio3"><img src="<?php echo URLROOT;?>/public/img/icons8-american-express-squared-48.png" alt="" class="ccthumbnail"></label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="ccnumber">Credit Card Number</label>
+                                                    <span style="color: red;">* <?php ?></span>
+                                                    <input type="text" class="form-control" id="ccnumber" name="ccnumber"  value="<?php ?>">
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="seccode">Security Code</label>
+                                                    <span style="color: red;">* <?php ?></span>
+                                                    <input type="text" class="form-control" id="seccode" name="seccode"  value="<?php ?>" placeholder="e.g. 1234">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <label for="month">Expiry</label>
+                                                <span style="color: red;">* <?php ?></span>
+                                                <select name="month" id="month" class="custom-select form-control ">
+                                                    <option <?php ?> value="">Month</option>
+                                                    <option value="01">01</option>
+                                                    <option value="02">02</option>
+                                                    <option value="03">03</option>
+                                                    <option value="04">04</option>
+                                                    <option value="05">05</option>
+                                                    <option value="06">06</option>
+                                                    <option value="07">07</option>
+                                                    <option value="08">08</option>
+                                                    <option value="09">09</option>
+                                                    <option value="10">10</option>
+                                                    <option value="11">11</option>
+                                                    <option value="12">12</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-3">
+                                                <label for="year"> &nbsp;</label>
+                                                <span style="color: red;"><?php ?></span>
+                                                <select name="year" id="year" class="custom-select form-control ">
+                                                    <option <?php ?> value="">Year</option>
+                                                    <option value="2021">2021</option>
+                                                    <option value="2022">2022</option>
+                                                    <option value="2023">2023</option>
+                                                    <option value="2024">2024</option>
+                                                    <option value="2025">2025</option>
+                                                    <option value="2026">2026</option>
+                                                    <option value="2027">2027</option>
+                                                    <option value="2028">2028</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="cardname">Name on Card</label>
+                                                    <span style="color: red;">* <?php ?></span>
+                                                    <input type="text" class="form-control" id="cardname" name="cardname"  value="<?php ?>" placeholder="Enter the name on card">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div>
+                                            <h2>Credit card billing address</h2>
+                                            <span style="font-weight: 600;">(for verification purposes)</span>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label for="address1">Street address, P.O. box, company name</label>
+                                                    <span style="color: red;">* <?php ?></span>
+                                                    <input type="text" class="form-control" id="address1" name="address1"  value="<?php ?>" placeholder="Enter address details">
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label for="address2">Apartment, suite, unit, building, floor, etc</label>
+                                                    <span style="color: red;">* <?php ?></span>
+                                                    <input type="text" class="form-control" id="address2" name="address2"  value="<?php ?>" placeholder="Enter address details">
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="postal">Postal</label>
+                                                    <span style="color: red;">* <?php ?></span>
+                                                    <input type="text" class="form-control" id="postal" name="postal"  value="<?php ?>" placeholder="Enter postal code">
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="city">City</label>
+                                                    <span style="color: red;">* <?php ?></span>
+                                                    <input type="text" class="form-control" id="city" name="city"  value="<?php ?>" placeholder="Enter city name">
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="country">Country</label>
+                                                    <span style="color: red;">* <?php ?></span>
+                                                    <input type="text" class="form-control" id="country" name="country"  value="<?php ?>" placeholder="Enter country name">
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="pay-cash" role="tabpanel" aria-labelledby="pay-cash-tab">
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita, amet.</p>
+                                
+                                <p>Please be advised that reference number is only valid within 24hours after successful booking. </p>
+                                <p>Use the reference code below to make payment on our credited payment centers.</p>
+                                <hr>
+                                <h6>Reference number:</h6>
+                                <h1>
+                                    <?php 
+                                    function generateRandomString($length = 8) {
+                                        return substr(str_shuffle(str_repeat($x='123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
+                                    }
+                                    echo generateRandomString();
+                                    ?>
+                                </h1>
                             </div>
                             <div class="tab-pane fade" id="pay-paypal" role="tabpanel" aria-labelledby="pay-paypal-tab">
                                 <p>PayPal is a safe, easy way to pay through credit cards, bank accounts and balances.</p>
                             </div>
                         </div>
-                        <form action="<?php echo URLROOT;?>/reservations/reserve" method="post">
+                        <form action="<?php echo URLROOT;?>/reservations/payment" method="post">
                             
                             <div class="row justify-content-end my-5 mx-0 pr-5">
                                 <button type="submit" class="btn" style="background-color: #001e60;color:white;" name="continue">CONTINUE <i class="fas fa-caret-right"></i></button>

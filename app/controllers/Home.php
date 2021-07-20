@@ -61,7 +61,7 @@ class Home extends Controller{
             }else{
                 $selectedRet = new DateTime($data['return']);
                 $today = new DateTime();
-                if($selectedRet < $today || $selectedRet < $selectedDept){
+                if(($selectedRet < $today || $selectedRet < $selectedDept) && ($data['flightType'] == 'roundTrip')){
                     $data['returnError'] = '<br>Invalid date.';
                 }
             }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 17, 2021 at 05:09 PM
+-- Generation Time: Jul 20, 2021 at 12:31 PM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.3.9
 
@@ -245,41 +245,41 @@ CREATE TABLE `flight_extra` (
 --
 
 INSERT INTO `flight_extra` (`id`, `flight_no`, `extra_id`, `status`) VALUES
-(2, '11111', 2, 'active'),
-(4, '11111', 3, 'active'),
-(5, '11111', 4, 'active'),
-(7, '11111', 5, 'active'),
-(8, '11111', 6, 'active'),
-(13, '11111', 7, 'active'),
-(14, '11111', 8, 'active'),
-(15, '11111', 9, 'active'),
-(17, '11123', 2, 'active'),
-(18, '11123', 5, 'active'),
-(19, '11123', 10, 'active'),
-(21, 'PR1332', 5, 'active'),
-(22, 'PR1332', 6, 'active'),
-(23, 'PR1332', 1, 'active'),
-(24, 'PR1332', 2, 'active'),
-(25, 'PR1332', 3, 'active'),
-(26, 'PR1332', 7, 'active'),
-(27, 'test4', 1, 'active'),
-(28, 'test4', 2, 'active'),
-(29, 'test4', 3, 'active'),
-(30, 'test4', 5, 'active'),
-(31, 'test4', 6, 'active'),
-(32, 'test4', 7, 'active'),
-(33, 'test4', 8, 'active'),
-(34, 'test4', 9, 'active'),
-(35, 'test5', 1, 'active'),
-(36, 'test5', 2, 'active'),
-(37, 'test5', 3, 'active'),
-(38, 'test5', 6, 'active'),
-(39, 'test5', 7, 'active'),
-(40, 'test6', 1, 'active'),
-(41, 'test6', 2, 'active'),
-(42, 'test6', 3, 'active'),
-(43, 'test6', 6, 'active'),
-(44, 'test6', 8, 'active'),
+(2, '11111', 2, 'inactive'),
+(4, '11111', 3, 'inactive'),
+(5, '11111', 4, 'inactive'),
+(7, '11111', 5, 'inactive'),
+(8, '11111', 6, 'inactive'),
+(13, '11111', 7, 'inactive'),
+(14, '11111', 8, 'inactive'),
+(15, '11111', 9, 'inactive'),
+(17, '11123', 2, 'inactive'),
+(18, '11123', 5, 'inactive'),
+(19, '11123', 10, 'inactive'),
+(21, 'PR1332', 5, 'inactive'),
+(22, 'PR1332', 6, 'inactive'),
+(23, 'PR1332', 1, 'inactive'),
+(24, 'PR1332', 2, 'inactive'),
+(25, 'PR1332', 3, 'inactive'),
+(26, 'PR1332', 7, 'inactive'),
+(27, 'test4', 1, 'inactive'),
+(28, 'test4', 2, 'inactive'),
+(29, 'test4', 3, 'inactive'),
+(30, 'test4', 5, 'inactive'),
+(31, 'test4', 6, 'inactive'),
+(32, 'test4', 7, 'inactive'),
+(33, 'test4', 8, 'inactive'),
+(34, 'test4', 9, 'inactive'),
+(35, 'test5', 1, 'inactive'),
+(36, 'test5', 2, 'inactive'),
+(37, 'test5', 3, 'inactive'),
+(38, 'test5', 6, 'inactive'),
+(39, 'test5', 7, 'inactive'),
+(40, 'test6', 1, 'inactive'),
+(41, 'test6', 2, 'inactive'),
+(42, 'test6', 3, 'inactive'),
+(43, 'test6', 6, 'inactive'),
+(44, 'test6', 8, 'inactive'),
 (45, 'test1', 1, 'active'),
 (46, 'test1', 2, 'active'),
 (47, 'test1', 3, 'active'),
@@ -417,7 +417,7 @@ CREATE TABLE `flight_reservation` (
 --
 
 INSERT INTO `flight_reservation` (`reservation_id`, `creation_date`, `total_fare`, `cabin_class`, `creator_account_id`, `reservation_status`) VALUES
-(18, '2021-07-13 07:21:49', '2088.00', 'economy', 1, 'rebooked');
+(18, '2021-07-13 07:21:49', '4578.56', 'economy', 1, 'active');
 
 -- --------------------------------------------------------
 
@@ -494,10 +494,10 @@ CREATE TABLE `passenger` (
 --
 
 INSERT INTO `passenger` (`id`, `firstname`, `lastname`, `gender`, `birthdate`, `valid_id`, `valid_id_no`, `issuing_country`, `expiration_date`, `reservation_id`, `reserved_flight_id`, `passenger_status`) VALUES
-(35, 'Jovi', 'Isorena', 'MALE', '1992-09-07', 'PASSPORT', '1111', 'PHILIPPINES', '2022-01-01', 18, 43, 'active'),
-(36, 'Star', 'Mores', 'FEMALE', '1994-12-09', 'PASSPORT', '22222', 'PHILIPPINES', '2023-01-01', 18, 43, 'active'),
-(37, 'Jovi', 'Isorena', 'MALE', '1992-09-07', 'PASSPORT', '1111', 'PHILIPPINES', '2022-01-01', 18, 42, 'active'),
-(38, 'Star', 'Mores', 'FEMALE', '1994-12-09', 'PASSPORT', '22222', 'PHILIPPINES', '2023-01-01', 18, 42, 'active');
+(35, 'Jovi', 'Isorena', 'MALE', '1992-09-07', 'PASSPORT', '1111', 'PHILIPPINES', '2022-01-01', 18, 26, 'active'),
+(36, 'Star', 'Mores', 'FEMALE', '1994-12-09', 'PASSPORT', '22222', 'PHILIPPINES', '2023-01-01', 18, 26, 'active'),
+(37, 'Jovi', 'Isorena', 'MALE', '1992-09-07', 'PASSPORT', '1111', 'PHILIPPINES', '2022-01-01', 18, 27, 'active'),
+(38, 'Star', 'Mores', 'FEMALE', '1994-12-09', 'PASSPORT', '22222', 'PHILIPPINES', '2023-01-01', 18, 27, 'active');
 
 -- --------------------------------------------------------
 
@@ -542,11 +542,8 @@ CREATE TABLE `reserved_flight` (
 --
 
 INSERT INTO `reserved_flight` (`id`, `reservation_id`, `schedule_id`, `fare_id`, `flight_date`, `status`) VALUES
-(26, 18, 13, 16, '2021-07-16', 'rebook'),
-(27, 18, 17, 34, '2021-07-22', 'rebook'),
-(41, 18, 15, 26, '2021-07-16', 'rebook'),
-(42, 18, 17, 34, '2021-07-22', 'active'),
-(43, 18, 13, 16, '2021-07-16', 'active');
+(26, 18, 13, 16, '2021-07-16', 'active'),
+(27, 18, 17, 34, '2021-07-22', 'active');
 
 -- --------------------------------------------------------
 
@@ -567,10 +564,10 @@ CREATE TABLE `reserved_seat` (
 --
 
 INSERT INTO `reserved_seat` (`reserved_seat_id`, `reserved_flight_id`, `passenger_id`, `seat_number`, `status`) VALUES
-(32, 43, 35, 'D8', 'active'),
-(33, 43, 36, 'D7', 'active'),
-(34, 42, 37, 'D7', 'active'),
-(35, 42, 38, 'D8', 'active');
+(32, 26, 35, 'B4', 'active'),
+(33, 26, 36, 'C4', 'active'),
+(34, 27, 37, 'B6', 'active'),
+(35, 27, 38, 'C6', 'active');
 
 -- --------------------------------------------------------
 
@@ -946,7 +943,7 @@ ALTER TABLE `flight_fare`
 -- AUTO_INCREMENT for table `flight_reservation`
 --
 ALTER TABLE `flight_reservation`
-  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `flight_schedule`
@@ -958,25 +955,25 @@ ALTER TABLE `flight_schedule`
 -- AUTO_INCREMENT for table `passenger`
 --
 ALTER TABLE `passenger`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `purchased_extra`
 --
 ALTER TABLE `purchased_extra`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `reserved_flight`
 --
 ALTER TABLE `reserved_flight`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT for table `reserved_seat`
 --
 ALTER TABLE `reserved_seat`
-  MODIFY `reserved_seat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `reserved_seat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `scheduled_aircraft`

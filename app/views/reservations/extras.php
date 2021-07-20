@@ -27,7 +27,7 @@
                 <h6 class="text-muted">Extras are optional.</h6>
             </div>
         </div>
-        <div class="card  border rounded">
+        <div class="card  border rounded w-100">
             <form action="<?php echo URLROOT;?>/reservations/extras" method="post">
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs">

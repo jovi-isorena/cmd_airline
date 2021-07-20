@@ -6,6 +6,12 @@
 <?php //var_dump($data);?>
 </pre>
 <div class="container full-h">
+    <ol class="progress custom-ol" style="height:fit-content;">
+        <li class="completed">Select Date and Flight</li>
+        <li class="is-active">Choose Seats</li>
+        <li>Confirm</li>
+        <li>Complete</li>
+    </ol>
     <div class="row">
         <div class="col-9 p-0 ">
             <div class="row">

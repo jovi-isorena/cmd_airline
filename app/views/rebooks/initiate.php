@@ -12,6 +12,12 @@
     
 ?> 
 <div class="container full-h">
+    <ol class="progress custom-ol" style="height:fit-content;">
+        <li class="is-active">Select Date and Flight</li>
+        <li>Choose Seats</li>
+        <li>Confirm</li>
+        <li>Complete</li>
+    </ol>
     <div class="row">
         <h1><?php echo $data['title']?></h1>
     </div>

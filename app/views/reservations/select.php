@@ -38,13 +38,13 @@
             <input type="hidden" name="cabinClass" value="<?php echo $data['cabinClass'];?>">
             <input type="hidden" name="flightType" value="<?php echo $data['flightType'];?>">
             <input type="hidden" name="selectedDeptDate" id="selectedDeptDate" value="<?php echo $data['dept']->format('Y-m-d');?>">
-            <input type="hidden" name="selectedRetDate" id="selectedRetDate" value="<?php echo $data['ret']->format('Y-m-d');?>">
+            <input type="hidden" name="selectedRetDate" id="selectedRetDate" value="<?php echo ($data['flightType']=='roundTrip')?$data['ret']->format('Y-m-d'):'';?>">
             <input type="hidden" name="deptOrigin" value="<?php echo $data['deptOrigin']->airport_code;?>">
             <input type="hidden" name="deptDestination" value="<?php echo $data['deptDestination']->airport_code;?>">
             <input type="hidden" name="selectedDeptFlight" id="selectedDeptFlight" value="<?php echo $data['deptFlight']?>">
-            <input type="hidden" name="selectedRetFlight" id="selectedRetFlight" value="<?php echo $data['retFlight']?>">
+            <input type="hidden" name="selectedRetFlight" id="selectedRetFlight" value="<?php echo ($data['flightType']=='roundTrip')?$data['retFlight']:''?>">
             <input type="hidden" name="selectedDeptFare" id="selectedDeptFare" value="<?php echo $data['deptFare']?>">
-            <input type="hidden" name="selectedRetFare" id="selectedRetFare" value="<?php echo $data['retFare']?>">
+            <input type="hidden" name="selectedRetFare" id="selectedRetFare" value="<?php echo ($data['flightType']=='roundTrip')?$data['retFare']:''?>">
             <div class="date-row text-center mb-3" style="background-color: lightgray;">
                 <h5>
                     <?php 

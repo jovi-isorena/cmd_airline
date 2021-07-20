@@ -59,9 +59,9 @@
                 </li>
                 
                 <?php if(isLoggedIn() == 'user') : ?>
-                    <li class="nav-item">
-                        <a class="nav-link  active" href="<?php echo URLROOT;?>/users/mybookings">My Bookings<span class="sr-only">(current)</span></a>
-                    </li>   
+                    <!-- <li class="nav-item">
+                        <a class="nav-link  active" href="<?php //echo URLROOT;?>/users/mybookings">My Bookings<span class="sr-only">(current)</span></a>
+                    </li>    -->
                     <!-- <li class="nav-item">
                         <a href="<?php //echo URLROOT;?>/users/logout" class="nav-link btn btn-outline-danger text-light" style="font-size:small;">Logout</a>
                     </li> -->
@@ -70,7 +70,7 @@
                             <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Hi, <span class="text-capitalize"><?php echo $_SESSION['firstname'];?></span>
                             </button>
-                            <div class="dropdown-menu dropdown-menu-right frosted">
+                            <div class="dropdown-menu dropdown-menu-right frosed">
                                 
                                 <a class="dropdown-item" href="#"><i class="fas fa-user text-dark mr-3"></i>Profile</a>
                                 <a class="dropdown-item" href="<?php echo URLROOT;?>/users/mybookings"><i class="fas fa-plane-departure text-dark mr-3"></i>My Booking</a>
@@ -85,7 +85,7 @@
                             <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Login
                             </button>
-                            <div class="dropdown-menu dropdown-menu-right frosted">
+                            <div class="dropdown-menu dropdown-menu-right frosed">
                                 
                                 <a href="<?php echo URLROOT;?>/users/login" class="dropdown-item ">As Traveller</a>
                                 <div class="dropdown-divider"></div>
