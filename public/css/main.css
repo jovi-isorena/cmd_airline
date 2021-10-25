@@ -364,6 +364,19 @@ a.custom-primary:hover{
 .ccthumbnail{
     height: 60px;
 }
+
+.dashboard-card{
+    border-radius: 20px;
+    box-shadow: 5px 5px 2px gray;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: white;
+    /* background-color: #1b62fd; */
+    height: 10em;
+    padding-top: 3em;
+    /* width: 180px; */
+}
     
     
     

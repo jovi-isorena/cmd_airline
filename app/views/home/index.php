@@ -23,15 +23,20 @@
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade  show active" id="booking" role="tabpanel" aria-labelledby="booking-tab">
                             <form action="<?php echo URLROOT . "/home/index";?>" method="post" class="pt-2">
-                                <div class="row pl-4">
-                
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="flightType" id="roundTrip" value="roundTrip" checked>
-                                        <label class="form-check-label" for="roundTrip">Round Trip</label>
+                                <div class="row pl-4 justify-content-between">
+                                    <div class="col pt-3">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="flightType" id="roundTrip" value="roundTrip" checked>
+                                            <label class="form-check-label" for="roundTrip">Round Trip</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="flightType" id="oneWay" value="oneWay">
+                                            <label class="form-check-label" for="oneWay">One Way</label>
+                                        </div>
+                                        
                                     </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="flightType" id="oneWay" value="oneWay">
-                                        <label class="form-check-label" for="oneWay">One Way</label>
+                                    <div class="col-auto text-right p-1">
+                                        <a class="btn btn-outline-light" href="<?php echo URLROOT;?>/home/reservationinsructions" target="_blank"><i class="far fa-question-circle mr-2"></i>Help</a>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -83,7 +88,7 @@
                                         <div class="form-group">
                                             <label for="passenger">Passenger</label>
                                             <span style="color: red;">* <?php echo $data['passengerError'];?></span>
-                                            <input type="number" name="passenger" id="passenger" class="form-control" value="<?php echo $data['passenger'];?>">
+                                            <input type="number" name="passenger" id="passenger" class="form-control" value="<?php echo empty($data['passenger'])?$data['passenger']:1;?>">
                                         </div>
                                     </div>
                                     <div class="col-6">

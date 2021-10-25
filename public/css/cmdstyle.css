@@ -1,0 +1,95 @@
+*{
+	  margin: 0;
+	  padding: 0;
+	  font-family: Century Gothic;
+}
+
+
+h1{
+	font-family: century gothic;
+	text-align: center;
+	color: #000000;
+	margin-top: -130px;
+}
+
+p{
+	font-family: century gothic;
+	text-align: right;
+	color: #fff;
+}
+
+ul li {
+	display: inline-block;
+	margin-left: 50px;
+	margin-top: 1px;
+}
+
+
+.qcpu img{
+    float: center;
+	width: 205px;
+	height: 200px;
+	position: relative;
+	margin-left: 10px;
+        margin-top: 100px;
+    padding: 10px;
+}
+
+.main{
+	max-width: 1350px;
+
+}
+
+
+@media screen and (max=width:959px){
+	margin: 1%;
+	margin-top: -130px;
+	height: 70%;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position:center;
+	background-size: 100%;
+}
+body{
+	margin: 1%;
+	margin-top: -130px;
+	height: 70%;
+	background-image: url(white.jpeg);
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position:center;
+	background-size:100%;
+
+}
+
+
+
+
+.qcu {
+
+        position: absolute;
+        float: left;
+	width: 50%;
+	margin: 5%;
+	margin-left: 31%;
+	transform: translate(-50%,-50%);
+}
+
+
+
+
+
+
+
+
+
+
+.steps{
+	position: absolute;
+    float: center;
+	width: 40%;
+	margin: 40%;
+	margin-top: 240%;
+	transform: translate(-50%,-50%);
+}
+

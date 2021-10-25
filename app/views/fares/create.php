@@ -4,7 +4,7 @@
 ?>
 
 
-<div class="container pt-5">
+<div class="container full-h py-5">
     <a href="<?php echo URLROOT;?>/fares" class="btn btn-secondary"><i class="far fa-arrow-alt-circle-left"></i> Back To List</a>
     <h1><?php echo $data['title'];?></h1>
     <?php if(!empty($data['successMessage'])):?>

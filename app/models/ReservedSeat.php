@@ -30,4 +30,9 @@ class ReservedSeat{
         $this->db->bind(":id", $id);
         return $this->db->resultSet();
     }
+
+    //input: schedule id, flight date and 
+    public function takenSeatInFlight($schedule, $date){
+
+    }
 }

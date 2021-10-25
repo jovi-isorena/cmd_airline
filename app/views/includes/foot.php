@@ -6,10 +6,10 @@
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, consectetur.</p>
                     <p class="lead">Connect With Us</p>
                     <ul class="list-inline">
-                        <li class="list-inline-item"><img src="resources/fb.png" alt="fb" class="icon"></li>
-                        <li class="list-inline-item"><img src="resources/ig.png" alt="ig" class="icon"></li>
-                        <li class="list-inline-item"><img src="resources/tw.png" alt="tw" class="icon"></li>
-                        <li class="list-inline-item"><img src="resources/yt.png" alt="yt" class="icon"></li>
+                        <li class="list-inline-item ccthumbnail"><img src="<?php echo URLROOT;?>/img/fb.png" alt="fb"></li>
+                        <li class="list-inline-item ccthumbnail"><img src="<?php echo URLROOT;?>/img/ig.png" alt="ig"></li>
+                        <li class="list-inline-item ccthumbnail"><img src="<?php echo URLROOT;?>/img/tw.png" alt="tw"></li>
+                        <li class="list-inline-item ccthumbnail"><img src="<?php echo URLROOT;?>/img/yt.png" alt="yt"></li>
                     </ul>
                     
                 </div>

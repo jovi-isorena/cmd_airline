@@ -196,4 +196,28 @@ class Reservation{
         $this->db->bind(":id", $id);
         return $this->db->single();
     }
+
+    public function cancel($reservationId){
+        $this->db->query("UPDATE `flight_reservation` SET `reservation_status`='cancelled' WHERE `reservation_id`=:id");
+        $this->db->bind(":id", $reservationId);
+        return $this->db->execute();
+    }
+
+    public function dailyReservation(){
+        $today = new DateTime();
+        $this->db->query("SELECT COUNT(*) as daily FROM `flight_reservation` WHERE `creation_date` BETWEEN :sdate AND :edate");
+        $this->db->bind(":sdate", $today->format('Y-m-d') . ' 00:00:00');
+        $this->db->bind(":edate", $today->format('Y-m-d') . ' 23:59:00');
+        return $this->db->single();
+
+    }
+
+    public function dailyRebook(){
+        $this->db->query("SELECT COUNT(*) as daily FROM `flight_reservation` WHERE `reservation_status` = 'rebook'");
+        return $this->db->single();
+    }
+    public function dailyCancel(){
+        $this->db->query("SELECT COUNT(*) as daily FROM `flight_reservation` WHERE `reservation_status` = 'cancelled'");
+        return $this->db->single();
+    }
 }

@@ -73,4 +73,27 @@ class Schedule{
             return false;
         }
     }
+
+    public function getDailyFlight($data){
+        $this->db->query("SELECT COUNT(*) as 'Total_Flight' FROM `flight_schedule`
+        WHERE :date BETWEEN effective_start_date AND effective_end_date
+            AND NOT schedule_status = 'inactive'
+            AND ((monday AND :monday)
+                OR (tuesday AND :tuesday)
+                OR (wednesday AND :wednesday)
+                OR (thursday AND :thursday)
+                OR (friday AND :friday)
+                OR (saturday AND :saturday)
+                OR (sunday AND :sunday))         
+            ");
+        $this->db->bind(":date", $data['today']);
+        $this->db->bind(":monday", $data['monday']);
+        $this->db->bind(":tuesday", $data['tuesday']);
+        $this->db->bind(":wednesday", $data['wednesday']);
+        $this->db->bind(":thursday", $data['thursday']);
+        $this->db->bind(":friday", $data['friday']);
+        $this->db->bind(":saturday", $data['saturday']);
+        $this->db->bind(":sunday", $data['sunday']);
+        return $this->db->single();
+    }
 }

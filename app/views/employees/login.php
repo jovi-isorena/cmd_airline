@@ -31,9 +31,6 @@
                     <a href="#">Forgot your password?</a>
                     <button type="submit" class="btn btn-primary btn-block" name="submit">Submit</button>
                 </form>
-                <div class="">
-                    <p>Not yet registered? <a href="register">Create an account here.</a></p>
-                </div>
             </div>
         </div>
     </div>

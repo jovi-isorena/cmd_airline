@@ -3,6 +3,9 @@ class Home extends Controller{
     public function __construct(){
         $this->userModel = $this->model('User');
         $this->airportModel = $this->model('Airport');
+        $this->scheduleModel = $this->model('Schedule');
+        $this->reservationModel = $this->model('Reservation');
+        $this->reservedFlightModel = $this->model('ReservedFlight');
     }
 
     public function index(){
@@ -111,9 +114,56 @@ class Home extends Controller{
     }
 
     public function dashboard(){
+
+        //counting flights
+        $today = new DateTime();
         $data = [
-            'title' => 'Dashboard'
+            'title' => 'Dashboard',
+            'monday' => false,
+            'tuesday' => false,
+            'wednesday' => false,
+            'thursday' => false,
+            'friday' => false,
+            'saturday' => false,
+            'sunday' => false,
+            'today' => $today->format("Y-m-d")
         ];
+
+        
+        $wd = $today->format('l');
+        switch ($wd) {
+            case 'Monday':
+                $data['monday'] = true;
+                break;
+            case 'Tuesday':
+                $data['tuesday'] = true;
+                break;
+            case 'Wednesday':
+                $data['wednesday'] = true;
+                break;
+            case 'Thursday':
+                $data['thursday'] = true;
+                break;
+            case 'Friday':
+                $data['friday'] = true;
+                break;
+            case 'Saturday':
+                $data['saturday'] = true;
+                break;
+            case 'Sunday':
+                $data['sunday'] = true;
+                break;
+        };
+
+        $data['dailyFlight'] = $this->scheduleModel->getDailyFlight($data)->Total_Flight;
+        $data['dailyReservation'] = $this->reservationModel->dailyReservation()->daily;
+        $data['dailyRebook'] = $this->reservedFlightModel->dailyRebook()->daily;
+        $data['dailyCancel'] = $this->reservationModel->dailyCancel()->daily;
+        
         $this->view("home/dashboard", $data);
+    }
+
+    public function reservationinsructions(){
+        $this->view("home/reservationinsructions");
     }
 }

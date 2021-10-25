@@ -2,7 +2,7 @@
     require APPROOT . '/views/includes/head.php';
     require APPROOT . '/views/includes/navigation.php';
 ?>
-<div class="container text-center">
+<div class="container full-h text-center">
     <div class="row">
         <a href="<?php echo URLROOT;?>/extras/create" class="btn btn-outline-success mt-5"><i class="far fa-plus-square mr-2"></i>Add Extra</a>
     </div>

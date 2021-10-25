@@ -5,7 +5,7 @@
 ?>
 
 
-<div class="container pt-5">
+<div class="container full-h py-5">
     <h1>Update Schedule</h1>
     <?php if(!empty($data['successMessage'])):?>
     <span class="alert-success text-success px-2  align-content-center">

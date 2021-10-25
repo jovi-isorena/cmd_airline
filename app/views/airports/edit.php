@@ -3,7 +3,7 @@
     require APPROOT . '/views/includes/navigation.php';
 ?>
     
-<div class="container pt-5">
+<div class="container full-h pt-5">
 
 <h1>Edit Airport</h1>
 <?php if(!empty($data['successMessage'])):?>

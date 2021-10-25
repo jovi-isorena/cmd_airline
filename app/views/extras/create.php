@@ -5,7 +5,7 @@
 ?>
 
 
-<div class="container pt-5">
+<div class="container full-h pt-5">
     <a href="<?php echo URLROOT;?>/extras" class="btn btn-secondary"><i class="far fa-arrow-alt-circle-left"></i> Back To List</a>
     <h1>Add Extra</h1>
     <?php if(!empty($data['successMessage'])):?>

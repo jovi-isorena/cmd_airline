@@ -3,11 +3,11 @@
     require APPROOT . '/views/includes/navigation.php';
     
 ?>
-<div class="alert-warning text-warning border border-warning text-center">
+<!-- <div class="alert-warning text-warning border border-warning text-center">
     <p>This page is under construction.</p>
-</div>
+</div> -->
 
-<div class="container pt-5">
+<div class="container full-h py-5">
     <a href="<?php echo URLROOT;?>/fares" class="btn btn-secondary"><i class="far fa-arrow-alt-circle-left"></i> Back To List</a>
     <h1><?php echo $data['title'];?></h1>
     <?php if(!empty($data['successMessage'])):?>

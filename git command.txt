@@ -1,0 +1,16 @@
+git init
+git remote add origin https://github.com/jovi-isorena/cmd_airline.git
+git push -u origin main
+git pull origin
+
+
+=======
+currency api
+https://currencyapi.net/account
+
+https://currencyapi.net/documentation
+
+key: akH71lS8Fdu4RvN2T9IKtXCBoK0MLtg37Pvb
+
+RATES endpoint
+https://currencyapi.net/api/v1/rates?key=akH71lS8Fdu4RvN2T9IKtXCBoK0MLtg37Pvb&base=USD

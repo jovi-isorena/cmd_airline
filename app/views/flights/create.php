@@ -3,7 +3,7 @@
     require APPROOT . '/views/includes/navigation.php';
 ?>
 
-<div class="container pt-5">
+<div class="container full-h pt-5">
     <a href="<?php echo URLROOT;?>/flights" class="btn btn-secondary"><i class="far fa-arrow-alt-circle-left"></i> Back To List</a>
     <h1>Create Flight</h1>
     <?php if(!empty($data['successMessage'])):?>

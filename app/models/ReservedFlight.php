@@ -38,4 +38,8 @@ class ReservedFlight{
         $this->db->bind(":id", $id);
         return $this->db->single();
     }
+    public function dailyRebook(){
+        $this->db->query("SELECT COUNT(*) as daily FROM `reserved_flight` WHERE `status` = 'rebook'");
+        return $this->db->single();
+    }
 }

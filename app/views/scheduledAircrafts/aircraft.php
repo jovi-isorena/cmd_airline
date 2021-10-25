@@ -3,7 +3,7 @@
     require APPROOT . '/views/includes/navigation.php';
 ?>
 <pre><?php //var_dump($data);?></pre>
-<div class="container full-h">
+<div class="container full-h py-5">
     <div class="row mb-5">
         <a href="<?php echo URLROOT;?>/schedules" class="btn btn-secondary"><i class="far fa-arrow-alt-circle-left"></i> Back To List</a>
     </div>

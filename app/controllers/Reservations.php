@@ -1054,6 +1054,7 @@ class Reservations extends Controller{
                     }
                 }
                 $data['successMessage'] = "Booking Completed.";
+                $data['flight'] = $this->reservedFlightModel->getMaxId();
                 unset($_SESSION['reservation']);
             }else{
                 die("Something went wrong in reserving the flight. Error: 5");
@@ -1070,5 +1071,16 @@ class Reservations extends Controller{
             
         }
         $this->view("reservations/reserve", $data);
+    }
+
+    public function cancel($reservationId){
+        if(isLoggedIn() !== "user"){
+            header("location: " . URLROOT);
+            exit(1);
+        }
+
+        if($this->reservationModel->cancel($reservationId)){
+            header("Location: " . URLROOT . "/users/mybookings");
+        }
     }
 }

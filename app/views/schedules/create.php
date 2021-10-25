@@ -5,7 +5,7 @@
 ?>
 
 
-<div class="container pt-5">
+<div class="container full-h py-5">
     <a href="<?php echo URLROOT;?>/schedules" class="btn btn-secondary"><i class="far fa-arrow-alt-circle-left"></i> Back To List</a>
     <h1>Create Schedule</h1>
     <?php if(!empty($data['successMessage'])):?>

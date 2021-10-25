@@ -3,7 +3,7 @@
     require APPROOT . '/views/includes/navigation.php';
 ?>
 <div class="container">
-    <div class="pt-5 col-md-8 offset-md-2">
+    <div class="full-h py-5 col-md-8 offset-md-2">
         <h1>Registration for Employees</h1>
         <hr>
         

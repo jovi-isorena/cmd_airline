@@ -6,7 +6,7 @@
 
 <pre><?php 
 // var_dump($data);
-//var_dump($_SESSION['reservation']['step7']);
+// var_dump($_SESSION['reservation']['step7']);
 ?></pre>
 <div class="done-Bg">
     
@@ -27,7 +27,7 @@
             <p>Your flight has been successfully booked. </p><hr>
         </div>
         <a href="<?php echo URLROOT ?>/users/mybookings" class="btn btn-light rounded">View Bookings</a>
-        <a href="#" class="btn custom-primary rounded">Print Tickets</a>
+        <a href="<?php echo URLROOT . "/tickets/flightTicket/" . $data['flight'];?>" class="btn custom-primary rounded" target="_blank">Print Tickets</a>
             
         
     </div>
